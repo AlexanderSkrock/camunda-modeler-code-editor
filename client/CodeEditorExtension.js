@@ -1,17 +1,7 @@
-/* eslint-disable no-unused-vars*/
 import React, { Fragment, useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
 
-import { withCustomEditorActions } from "./CustomEditorActionsMiddleware";
-import {OPEN_CODE_EDITOR, SAVE_CODE_EDITOR} from "./utils/EventHelper";
+import {OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR} from "./utils/events";
 import CodeEditorModal from "./CodeEditorModal";
-
-const EXTENSION_NAME = 'code-editor';
-const CONFIG_SEGMENT = 'config';
-
-const OPEN_EXTENSION_CONFIGURATION_ACTION = 'open-code-editor-configuration';
-
-const DEFAULT_CONFIGURATION = {
-};
 
 /**
  * The component props include everything the Application offers plugins,
@@ -22,10 +12,7 @@ const DEFAULT_CONFIGURATION = {
  * - log: log information into the Log panel
  * - displayNotification: show notifications inside the application
  */
-export default ({ config, subscribe, displayNotification }) => {
-    const [extensionConfiguration, setExtensionConfiguration] = useState(DEFAULT_CONFIGURATION);
-    const [isConfigShown, setConfigShown] = useState(false);
-
+export default ({ subscribe }) => {
     const [isCodeEditorOpen, setCodeEditorOpen] = useState(false);
     const [ codeText, setCodeText ] = useState("");
 
@@ -34,35 +21,6 @@ export default ({ config, subscribe, displayNotification }) => {
     const [ tabModeler, setTabModeler ] = useState([]);
 
     const [ element, setElement ] = useState();
-
-    useEffect(() => {
-        const bpmnSubscription = subscribe('bpmn.modeler.configure', (event) => {
-            event.middlewares.push(withCustomEditorActions({ [OPEN_EXTENSION_CONFIGURATION_ACTION]: () => setConfigShown(true) }));
-        });
-        const dmnSubscription = subscribe('dmn.modeler.configure', (event) => {
-            event.middlewares.push(withCustomEditorActions({ [OPEN_EXTENSION_CONFIGURATION_ACTION]: () => setConfigShown(true) }));
-        });
-        return () => bpmnSubscription.cancel() && dmnSubscription.cancel();
-    }, []);
-
-    useEffect(() => {
-        config.getForPlugin(EXTENSION_NAME, CONFIG_SEGMENT, DEFAULT_CONFIGURATION).then(setExtensionConfiguration);
-    }, [config, setExtensionConfiguration])
-
-    const handleConfigFormSubmit = useCallback((updatedConfiguration) => {
-        setConfigShown(false);
-
-        if (updatedConfiguration) {
-            setExtensionConfiguration(updatedConfiguration);
-            config.setForPlugin(EXTENSION_NAME, CONFIG_SEGMENT, updatedConfiguration)
-                .then(() => {
-                    displayNotification({
-                        title: "Saved",
-                        content: "Configuration was successfully saved."
-                    })
-                }).catch(console.error);
-        }
-    }, [setConfigShown, setExtensionConfiguration]);
 
     useEffect(() => {
         if (eventBus) {
@@ -75,19 +33,6 @@ export default ({ config, subscribe, displayNotification }) => {
     }, [eventBus, setCodeEditorOpen]);
 
     useEffect(() => {
-        const saveTab = ({ activeTab }) => {
-            if (activeTab.file && activeTab.file.path) {
-
-                // trigger a tab save operation
-                triggerAction('save')
-                    .then(tab => {
-                        if (!tab) {
-                            return displayNotification({ title: 'Failed to save' });
-                        }
-                    });
-            }
-        };
-
         const initModeler = ({ modeler, tab }) => {
             setModeler(modeler);
             setTabModeler(prevTabModeler => ([ ...prevTabModeler, { tabId: tab.id, modeler: modeler } ]));
@@ -119,12 +64,7 @@ export default ({ config, subscribe, displayNotification }) => {
 
                 setModeler(activeModeler.modeler);
             }
-
-            // Seems to have a problem with DMN, need some checks. Will temporarily be commented
-            // saveTab(tab);
         });
-
-        subscribe('close-all-tabs', saveTab);
     }, []);
 
     const handleEditorChange = useCallback(({ value }) => {
@@ -134,7 +74,7 @@ export default ({ config, subscribe, displayNotification }) => {
 
     const handleClose = useCallback(() => {
         setCodeEditorOpen(false);
-        eventBus.fire(SAVE_CODE_EDITOR, {
+        eventBus.fire(CLOSE_CODE_EDITOR, {
           element,
           data: codeText,
         });

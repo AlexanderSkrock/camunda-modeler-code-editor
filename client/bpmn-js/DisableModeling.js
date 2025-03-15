@@ -1,10 +1,10 @@
 import { query, classes } from 'min-dom';
 import {
   OPEN_CODE_EDITOR,
-  SAVE_CODE_EDITOR,
-} from '../utils/EventHelper';
+  CLOSE_CODE_EDITOR,
+} from '../utils/events';
 
-var HIGH_PRIORITY = 10005;
+const HIGH_PRIORITY = 10005;
 
 export default function DisableModeling(eventBus, canvas, contextPad, dragging, directEditing, editorActions, modeling, palette, moveCanvas) {
   const self = this;
@@ -40,14 +40,14 @@ export default function DisableModeling(eventBus, canvas, contextPad, dragging, 
     palette._update();
   });
 
-  eventBus.on(SAVE_CODE_EDITOR, HIGH_PRIORITY, function() {
+  eventBus.on(CLOSE_CODE_EDITOR, HIGH_PRIORITY, function() {
     self.modelingDisabled = false;
     enable();
     palette._update();
   });
 
   function intercept(obj, fnName, cb) {
-    var fn = obj[fnName];
+    const fn = obj[fnName];
     obj[fnName] = function() {
       return cb.call(this, fn, arguments);
     };
@@ -104,7 +104,7 @@ export default function DisableModeling(eventBus, canvas, contextPad, dragging, 
   throwIfModelingDisabled(modeling, 'reconnectEnd');
 
   intercept(editorActions, 'trigger', function(fn, args) {
-    var action = args[0];
+    const action = args[0];
 
     if (self.modelingDisabled && isAnyAction([
       'undo',
