@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "test": "run-s lint",
     "prepublishOnly": "run-s bundle",
-    "prepare": "npx camunda-modeler-provisioner install --overwrite",
+    "provision": "npx camunda-modeler-provisioner install --overwrite",
     "start": "npx camunda-modeler-provisioner launch"
   },
   "repository": {

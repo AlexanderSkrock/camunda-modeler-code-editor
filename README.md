@@ -20,7 +20,7 @@ Re-start the app in order to recognize the newly linked plugin.
 Alternatively, if you prefer not to modify your local Camunda Modeler installation, you can run the following to have a preconfigured distribution provisioned. If you choose to use this, no manual linking is required.
 
 ```sh
-npm run prepare
+npm run provision
 ```
 
 ## Building the plugin
