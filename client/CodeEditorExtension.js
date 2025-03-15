@@ -1,7 +1,8 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
-import {OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR} from "./utils/events";
-import CodeEditorModal from "./CodeEditorModal";
+import { OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR } from './utils/events';
+import CodeEditorModal from './CodeEditorModal';
+import useModeler from './utils/useModeler';
 
 /**
  * The component props include everything the Application offers plugins,
@@ -13,78 +14,47 @@ import CodeEditorModal from "./CodeEditorModal";
  * - displayNotification: show notifications inside the application
  */
 export default ({ subscribe }) => {
-    const [isCodeEditorOpen, setCodeEditorOpen] = useState(false);
-    const [ codeText, setCodeText ] = useState("");
+  const [ isCodeEditorOpen, setCodeEditorOpen ] = useState(false);
+  const [ codeText, setCodeText ] = useState('');
 
-    const [ modeler, setModeler ] = useState();
-    const [ eventBus, setEventBus ] = useState();
-    const [ tabModeler, setTabModeler ] = useState([]);
+  const [ modeler ] = useModeler({ subscribe });
+  const eventBus = useMemo(() => {
+    if (!modeler) {
+      return null;
+    }
+    return modeler.get ? modeler.get('eventBus') : modeler._eventBus;
+  }, [ modeler ]);
 
-    const [ element, setElement ] = useState();
+  const [ element, setElement ] = useState();
 
-    useEffect(() => {
-        if (eventBus) {
-            eventBus.on(OPEN_CODE_EDITOR, (evt) => {
-                setElement(evt.element);
-                setCodeText(evt.data);
-                setCodeEditorOpen(true)
-            });
-        }
-    }, [eventBus, setCodeEditorOpen]);
+  useEffect(() => {
+    if (eventBus) {
+      eventBus.on(OPEN_CODE_EDITOR, (evt) => {
+        setElement(evt.element);
+        setCodeText(evt.data);
+        setCodeEditorOpen(true);
+      });
+    }
+  }, [ eventBus, setCodeEditorOpen ]);
 
-    useEffect(() => {
-        const initModeler = ({ modeler, tab }) => {
-            setModeler(modeler);
-            setTabModeler(prevTabModeler => ([ ...prevTabModeler, { tabId: tab.id, modeler: modeler } ]));
-        };
+  const handleEditorChange = useCallback(({ value }) => {
+    setCodeText(value);
 
-        subscribe('bpmn.modeler.created', ({ modeler, tab }) => {
-            setEventBus(modeler.get('eventBus'));
+  }, [ eventBus, element ]);
 
-            initModeler({ modeler, tab });
-        });
+  const handleClose = useCallback(() => {
+    setCodeEditorOpen(false);
+    eventBus.fire(CLOSE_CODE_EDITOR, {
+      element,
+      data: codeText,
+    });
+  }, [ eventBus, element, codeText ]);
 
-        subscribe('dmn.modeler.created', ({ modeler, tab }) => {
-            setEventBus(modeler._eventBus);
-
-            initModeler({ modeler, tab });
-        });
-
-        subscribe('app.activeTabChanged', tab => {
-            let activeTabId = tab.activeTab.id;
-
-            const activeModeler = tabModeler.find(o => o.tabId === activeTabId);
-            if (activeModeler) {
-
-                if (activeModeler.modeler?.get) {
-                    setEventBus(activeModeler.modeler.get('eventBus'));
-                } else if (activeModeler.modeler?._eventBus) {
-                    setEventBus(activeModeler.modeler._eventBus);
-                }
-
-                setModeler(activeModeler.modeler);
-            }
-        });
-    }, []);
-
-    const handleEditorChange = useCallback(({ value }) => {
-        setCodeText(value);
-
-    }, [eventBus, element]);
-
-    const handleClose = useCallback(() => {
-        setCodeEditorOpen(false);
-        eventBus.fire(CLOSE_CODE_EDITOR, {
-          element,
-          data: codeText,
-        });
-    }, [eventBus, element, codeText]);
-
-    return <Fragment>
-        {
-            isCodeEditorOpen && (
-                <CodeEditorModal title="Code Editor" code={ codeText } onChange={ handleEditorChange } onClose={ handleClose } />
-            )
-        }
-    </Fragment>
-}
+  return <Fragment>
+    {
+      isCodeEditorOpen && (
+        <CodeEditorModal title="Code Editor" code={ codeText } onChange={ handleEditorChange } onClose={ handleClose } />
+      )
+    }
+  </Fragment>;
+};

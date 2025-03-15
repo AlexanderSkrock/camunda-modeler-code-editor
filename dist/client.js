@@ -16,6 +16,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/events */ "./client/utils/events.js");
 /* harmony import */ var _CodeEditorModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CodeEditorModal */ "./client/CodeEditorModal.js");
+/* harmony import */ var _utils_useModeler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/useModeler */ "./client/utils/useModeler.js");
+
 
 
 
@@ -33,10 +35,16 @@ __webpack_require__.r(__webpack_exports__);
   subscribe
 }) => {
   const [isCodeEditorOpen, setCodeEditorOpen] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
-  const [codeText, setCodeText] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)("");
-  const [modeler, setModeler] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)();
-  const [eventBus, setEventBus] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)();
-  const [tabModeler, setTabModeler] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [codeText, setCodeText] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [modeler] = (0,_utils_useModeler__WEBPACK_IMPORTED_MODULE_3__["default"])({
+    subscribe
+  });
+  const eventBus = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    if (!modeler) {
+      return null;
+    }
+    return modeler.get ? modeler.get('eventBus') : modeler._eventBus;
+  }, [modeler]);
   const [element, setElement] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)();
   (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (eventBus) {
@@ -47,50 +55,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   }, [eventBus, setCodeEditorOpen]);
-  (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    const initModeler = ({
-      modeler,
-      tab
-    }) => {
-      setModeler(modeler);
-      setTabModeler(prevTabModeler => [...prevTabModeler, {
-        tabId: tab.id,
-        modeler: modeler
-      }]);
-    };
-    subscribe('bpmn.modeler.created', ({
-      modeler,
-      tab
-    }) => {
-      setEventBus(modeler.get('eventBus'));
-      initModeler({
-        modeler,
-        tab
-      });
-    });
-    subscribe('dmn.modeler.created', ({
-      modeler,
-      tab
-    }) => {
-      setEventBus(modeler._eventBus);
-      initModeler({
-        modeler,
-        tab
-      });
-    });
-    subscribe('app.activeTabChanged', tab => {
-      let activeTabId = tab.activeTab.id;
-      const activeModeler = tabModeler.find(o => o.tabId === activeTabId);
-      if (activeModeler) {
-        if (activeModeler.modeler?.get) {
-          setEventBus(activeModeler.modeler.get('eventBus'));
-        } else if (activeModeler.modeler?._eventBus) {
-          setEventBus(activeModeler.modeler._eventBus);
-        }
-        setModeler(activeModeler.modeler);
-      }
-    });
-  }, []);
   const handleEditorChange = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(({
     value
   }) => {
@@ -280,7 +244,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ DisableModeling)
 /* harmony export */ });
-/* harmony import */ var min_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! min-dom */ "./node_modules/min-dom/dist/index.esm.js");
+/* harmony import */ var min_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! min-dom */ "./node_modules/min-dom/dist/index.js");
 /* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/events */ "./client/utils/events.js");
 
 
@@ -635,6 +599,67 @@ __webpack_require__.r(__webpack_exports__);
 const codePrefix = 'code-editor';
 const OPEN_CODE_EDITOR = codePrefix + '.open';
 const CLOSE_CODE_EDITOR = codePrefix + '.close';
+
+/***/ }),
+
+/***/ "./client/utils/useModeler.js":
+/*!************************************!*\
+  !*** ./client/utils/useModeler.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
+/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({
+  subscribe
+}) => {
+  const [activeModeler, setActiveModeler] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+  const [tabModelers, setTabModelers] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const initModeler = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(({
+    modeler,
+    tab
+  }) => {
+    setActiveModeler(modeler);
+    setTabModelers(prevTabModeler => ({
+      ...prevTabModeler,
+      [tab.id]: modeler
+    }));
+  }, []);
+  (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    subscribe('bpmn.modeler.created', ({
+      modeler,
+      tab
+    }) => {
+      initModeler({
+        modeler,
+        tab
+      });
+    });
+    subscribe('dmn.modeler.created', ({
+      modeler,
+      tab
+    }) => {
+      initModeler({
+        modeler,
+        tab
+      });
+    });
+    subscribe('app.activeTabChanged', tab => {
+      const activeTabId = tab.activeTab.id;
+      const activeTabModeler = tabModelers[activeTabId];
+      if (activeTabModeler) {
+        setActiveModeler(activeTabModeler);
+      }
+    });
+  }, []);
+  return [activeModeler];
+});
 
 /***/ }),
 
@@ -27079,6 +27104,96 @@ module.exports.DIFF_EQUAL = DIFF_EQUAL;
 
 /***/ }),
 
+/***/ "./node_modules/domify/index.js":
+/*!**************************************!*\
+  !*** ./node_modules/domify/index.js ***!
+  \**************************************/
+/***/ ((module) => {
+
+const wrapMap = {
+	legend: [1, '<fieldset>', '</fieldset>'],
+	tr: [2, '<table><tbody>', '</tbody></table>'],
+	col: [2, '<table><tbody></tbody><colgroup>', '</colgroup></table>'],
+	_default: [0, '', ''],
+};
+
+wrapMap.td
+= wrapMap.th = [3, '<table><tbody><tr>', '</tr></tbody></table>'];
+
+wrapMap.option
+= wrapMap.optgroup = [1, '<select multiple="multiple">', '</select>'];
+
+wrapMap.thead
+= wrapMap.tbody
+= wrapMap.colgroup
+= wrapMap.caption
+= wrapMap.tfoot = [1, '<table>', '</table>'];
+
+wrapMap.polyline
+= wrapMap.ellipse
+= wrapMap.polygon
+= wrapMap.circle
+= wrapMap.text
+= wrapMap.line
+= wrapMap.path
+= wrapMap.rect
+= wrapMap.g = [1, '<svg xmlns="http://www.w3.org/2000/svg" version="1.1">', '</svg>'];
+
+function domify(htmlString, document = globalThis.document) {
+	if (typeof htmlString !== 'string') {
+		throw new TypeError('String expected');
+	}
+
+	// Handle comment nodes
+	const commentMatch = /^<!--(.*?)-->$/s.exec(htmlString);
+	if (commentMatch) {
+		return document.createComment(commentMatch[1]);
+	}
+
+	const tagName = /<([\w:]+)/.exec(htmlString)?.[1];
+
+	if (!tagName) {
+		return document.createTextNode(htmlString);
+	}
+
+	htmlString = htmlString.trim();
+
+	// Body support
+	if (tagName === 'body') {
+		const element = document.createElement('html');
+		element.innerHTML = htmlString;
+		const {lastChild} = element;
+		lastChild.remove();
+		return lastChild;
+	}
+
+	// Wrap map
+	let [depth, prefix, suffix] = Object.hasOwn(wrapMap, tagName) ? wrapMap[tagName] : wrapMap._default;
+	let element = document.createElement('div');
+	element.innerHTML = prefix + htmlString + suffix;
+	while (depth--) {
+		element = element.lastChild;
+	}
+
+	// One element
+	if (element.firstChild === element.lastChild) {
+		const {firstChild} = element;
+		firstChild.remove();
+		return firstChild;
+	}
+
+	// Several elements
+	const fragment = document.createDocumentFragment();
+	fragment.append(...element.childNodes);
+
+	return fragment;
+}
+
+module.exports = domify;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash.get/index.js":
 /*!******************************************!*\
   !*** ./node_modules/lodash.get/index.js ***!
@@ -30802,11 +30917,11 @@ function merge(target, ...sources) {
 
 /***/ }),
 
-/***/ "./node_modules/min-dom/dist/index.esm.js":
-/*!************************************************!*\
-  !*** ./node_modules/min-dom/dist/index.esm.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ "./node_modules/min-dom/dist/index.js":
+/*!********************************************!*\
+  !*** ./node_modules/min-dom/dist/index.js ***!
+  \********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
@@ -30817,13 +30932,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   clear: () => (/* binding */ clear),
 /* harmony export */   closest: () => (/* binding */ closest),
 /* harmony export */   delegate: () => (/* binding */ delegate),
-/* harmony export */   domify: () => (/* binding */ domify$1),
+/* harmony export */   domify: () => (/* reexport default export from named module */ domify__WEBPACK_IMPORTED_MODULE_0__),
 /* harmony export */   event: () => (/* binding */ event),
 /* harmony export */   matches: () => (/* binding */ matches),
 /* harmony export */   query: () => (/* binding */ query),
 /* harmony export */   queryAll: () => (/* binding */ all),
 /* harmony export */   remove: () => (/* binding */ remove)
 /* harmony export */ });
+/* harmony import */ var min_dash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! min-dash */ "./node_modules/min-dash/dist/index.esm.js");
+/* harmony import */ var domify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! domify */ "./node_modules/domify/index.js");
+
+
+
 function _mergeNamespaces(n, m) {
   m.forEach(function (e) {
     e && typeof e !== 'string' && !Array.isArray(e) && Object.keys(e).forEach(function (k) {
@@ -30840,84 +30960,6 @@ function _mergeNamespaces(n, m) {
 }
 
 /**
- * Flatten array, one level deep.
- *
- * @template T
- *
- * @param {T[][] | T[] | null} [arr]
- *
- * @return {T[]}
- */
-
-const nativeToString = Object.prototype.toString;
-const nativeHasOwnProperty = Object.prototype.hasOwnProperty;
-
-function isUndefined(obj) {
-  return obj === undefined;
-}
-
-function isArray(obj) {
-  return nativeToString.call(obj) === '[object Array]';
-}
-
-/**
- * Return true, if target owns a property with the given key.
- *
- * @param {Object} target
- * @param {String} key
- *
- * @return {Boolean}
- */
-function has(target, key) {
-  return nativeHasOwnProperty.call(target, key);
-}
-
-
-/**
- * Iterate over collection; returning something
- * (non-undefined) will stop iteration.
- *
- * @template T
- * @param {Collection<T>} collection
- * @param { ((item: T, idx: number) => (boolean|void)) | ((item: T, key: string) => (boolean|void)) } iterator
- *
- * @return {T} return result that stopped the iteration
- */
-function forEach(collection, iterator) {
-
-  let val,
-      result;
-
-  if (isUndefined(collection)) {
-    return;
-  }
-
-  const convertKey = isArray(collection) ? toNum : identity;
-
-  for (let key in collection) {
-
-    if (has(collection, key)) {
-      val = collection[key];
-
-      result = iterator(val, convertKey(key));
-
-      if (result === false) {
-        return val;
-      }
-    }
-  }
-}
-
-
-function identity(arg) {
-  return arg;
-}
-
-function toNum(arg) {
-  return Number(arg);
-}
-
-/**
  * Assigns style attributes in a style-src compliant way.
  *
  * @param {Element} element
@@ -30928,12 +30970,12 @@ function toNum(arg) {
 function assign(element, ...styleSources) {
   const target = element.style;
 
-  forEach(styleSources, function(style) {
+  (0,min_dash__WEBPACK_IMPORTED_MODULE_1__.forEach)(styleSources, function(style) {
     if (!style) {
       return;
     }
 
-    forEach(style, function(value, key) {
+    (0,min_dash__WEBPACK_IMPORTED_MODULE_1__.forEach)(style, function(value, key) {
       target[key] = value;
     });
   });
@@ -31184,13 +31226,14 @@ var unbind_1 = componentEvent.unbind = function(el, type, fn, capture){
 var event = /*#__PURE__*/_mergeNamespaces({
   __proto__: null,
   bind: bind_1,
-  unbind: unbind_1,
-  'default': componentEvent
+  default: componentEvent,
+  unbind: unbind_1
 }, [componentEvent]);
 
 /**
  * Module dependencies.
  */
+
 
 /**
  * Delegate event `type` to `selector`
@@ -31247,120 +31290,6 @@ var delegate = {
 };
 
 /**
- * Expose `parse`.
- */
-
-var domify = parse;
-
-/**
- * Tests for browser support.
- */
-
-var innerHTMLBug = false;
-var bugTestDiv;
-if (typeof document !== 'undefined') {
-  bugTestDiv = document.createElement('div');
-  // Setup
-  bugTestDiv.innerHTML = '  <link/><table></table><a href="/a">a</a><input type="checkbox"/>';
-  // Make sure that link elements get serialized correctly by innerHTML
-  // This requires a wrapper element in IE
-  innerHTMLBug = !bugTestDiv.getElementsByTagName('link').length;
-  bugTestDiv = undefined;
-}
-
-/**
- * Wrap map from jquery.
- */
-
-var map = {
-  legend: [1, '<fieldset>', '</fieldset>'],
-  tr: [2, '<table><tbody>', '</tbody></table>'],
-  col: [2, '<table><tbody></tbody><colgroup>', '</colgroup></table>'],
-  // for script/link/style tags to work in IE6-8, you have to wrap
-  // in a div with a non-whitespace character in front, ha!
-  _default: innerHTMLBug ? [1, 'X<div>', '</div>'] : [0, '', '']
-};
-
-map.td =
-map.th = [3, '<table><tbody><tr>', '</tr></tbody></table>'];
-
-map.option =
-map.optgroup = [1, '<select multiple="multiple">', '</select>'];
-
-map.thead =
-map.tbody =
-map.colgroup =
-map.caption =
-map.tfoot = [1, '<table>', '</table>'];
-
-map.polyline =
-map.ellipse =
-map.polygon =
-map.circle =
-map.text =
-map.line =
-map.path =
-map.rect =
-map.g = [1, '<svg xmlns="http://www.w3.org/2000/svg" version="1.1">','</svg>'];
-
-/**
- * Parse `html` and return a DOM Node instance, which could be a TextNode,
- * HTML DOM Node of some kind (<div> for example), or a DocumentFragment
- * instance, depending on the contents of the `html` string.
- *
- * @param {String} html - HTML string to "domify"
- * @param {Document} doc - The `document` instance to create the Node for
- * @return {DOMNode} the TextNode, DOM Node, or DocumentFragment instance
- * @api private
- */
-
-function parse(html, doc) {
-  if ('string' != typeof html) throw new TypeError('String expected');
-
-  // default to the global `document` object
-  if (!doc) doc = document;
-
-  // tag name
-  var m = /<([\w:]+)/.exec(html);
-  if (!m) return doc.createTextNode(html);
-
-  html = html.replace(/^\s+|\s+$/g, ''); // Remove leading/trailing whitespace
-
-  var tag = m[1];
-
-  // body support
-  if (tag == 'body') {
-    var el = doc.createElement('html');
-    el.innerHTML = html;
-    return el.removeChild(el.lastChild);
-  }
-
-  // wrap map
-  var wrap = Object.prototype.hasOwnProperty.call(map, tag) ? map[tag] : map._default;
-  var depth = wrap[0];
-  var prefix = wrap[1];
-  var suffix = wrap[2];
-  var el = doc.createElement('div');
-  el.innerHTML = prefix + html + suffix;
-  while (depth--) el = el.lastChild;
-
-  // one element
-  if (el.firstChild == el.lastChild) {
-    return el.removeChild(el.firstChild);
-  }
-
-  // several elements
-  var fragment = doc.createDocumentFragment();
-  while (el.firstChild) {
-    fragment.appendChild(el.removeChild(el.firstChild));
-  }
-
-  return fragment;
-}
-
-var domify$1 = domify;
-
-/**
  * @param { HTMLElement } element
  * @param { String } selector
  *
@@ -31387,7 +31316,7 @@ function remove(el) {
 }
 
 
-//# sourceMappingURL=index.esm.js.map
+//# sourceMappingURL=index.js.map
 
 
 /***/ }),
