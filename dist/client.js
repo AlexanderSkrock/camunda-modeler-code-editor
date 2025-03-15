@@ -180,29 +180,6 @@ const Footer = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODUL
 
 /***/ }),
 
-/***/ "./client/bpmn-js/BpmnJsExtension.js":
-/*!*******************************************!*\
-  !*** ./client/bpmn-js/BpmnJsExtension.js ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _CodePropertiesProvider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CodePropertiesProvider */ "./client/bpmn-js/CodePropertiesProvider.js");
-/* harmony import */ var _DisableModeling__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DisableModeling */ "./client/bpmn-js/DisableModeling.js");
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  __init__: ['codePropertiesProvider', 'disableModelingCode'],
-  codePropertiesProvider: ['type', _CodePropertiesProvider__WEBPACK_IMPORTED_MODULE_0__["default"]],
-  disableModelingCode: ['type', _DisableModeling__WEBPACK_IMPORTED_MODULE_1__["default"]]
-});
-
-/***/ }),
-
 /***/ "./client/bpmn-js/CodePropertiesProvider.js":
 /*!**************************************************!*\
   !*** ./client/bpmn-js/CodePropertiesProvider.js ***!
@@ -225,69 +202,70 @@ __webpack_require__.r(__webpack_exports__);
 
 const SUPPORTED_LANGUAGES = ['js', 'JavaScript', 'javascript'];
 class CodePropertiesProvider {
-  constructor(propertiesPanel, injector) {
+  constructor(propertiesPanel) {
     propertiesPanel.registerProvider(200, this);
-    this.injector = injector;
   }
-
-  /**
-     * Return the groups provided for the given element.
-     *
-     * @param element
-     *
-     * @return groups middleware
-     */
   getGroups(element) {
     return groups => {
-      const businessObject = (0,bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__.getBusinessObject)(element);
-      const scriptGroup = groups.find(entry => entry.id === 'CamundaPlatform__Script');
-      if (scriptGroup && (0,_props_ScriptProps__WEBPACK_IMPORTED_MODULE_1__.getScriptType)(element) === 'script' && SUPPORTED_LANGUAGES.includes((0,_props_ScriptProps__WEBPACK_IMPORTED_MODULE_1__.getScriptFormat)(businessObject))) {
-        let script = scriptGroup.entries.find(entry => entry.id === 'scriptValue');
-        script.component = _props_ScriptProps__WEBPACK_IMPORTED_MODULE_1__.Script;
-        script.isEdited = _bpmn_io_properties_panel__WEBPACK_IMPORTED_MODULE_0__.isTextFieldEntryEdited;
-      }
-      let conditionGroup = groups.find(entry => entry.id === 'CamundaPlatform__Condition');
-      if (conditionGroup && (0,_props_ConditionalProps__WEBPACK_IMPORTED_MODULE_2__.getScriptType)(element) === 'script' && SUPPORTED_LANGUAGES.includes((0,_props_ConditionalProps__WEBPACK_IMPORTED_MODULE_2__.getScriptLanguage)(businessObject))) {
-        let script = conditionGroup.entries.find(entry => entry.id === 'conditionScriptValue');
-        script.component = _props_ConditionalProps__WEBPACK_IMPORTED_MODULE_2__.ConditionalScript;
-        script.isEdited = _bpmn_io_properties_panel__WEBPACK_IMPORTED_MODULE_0__.isTextFieldEntryEdited;
-      }
-      let taskListenerGroup = groups.find(entry => entry.id === 'CamundaPlatform__TaskListener');
-      if (taskListenerGroup) {
-        decorateGroup(taskListenerGroup);
-      }
-      let execListenerGroup = groups.find(entry => entry.id === 'CamundaPlatform__ExecutionListener');
-      if (execListenerGroup) {
-        decorateGroup(execListenerGroup);
-      }
-
-      // I/O Params
-      let inputGroup = groups.find(entry => entry.id === 'CamundaPlatform__Input');
-      if (inputGroup) {
-        decorateGroup(inputGroup);
-      }
-      let outputGroup = groups.find(entry => entry.id === 'CamundaPlatform__Output');
-      if (outputGroup) {
-        decorateGroup(outputGroup);
-      }
+      decorateGroup(groups, 'CamundaPlatform__Script', scriptGroup => decorateScriptGroup(scriptGroup, element));
+      decorateGroup(groups, 'CamundaPlatform__Condition', scriptGroup => decorateConditionGroup(scriptGroup, element));
+      decorateGroup(groups, 'CamundaPlatform__TaskListener', decorateScriptLikeGroup);
+      decorateGroup(groups, 'CamundaPlatform__ExecutionListener', decorateScriptLikeGroup);
+      decorateGroup(groups, 'CamundaPlatform__Input', decorateScriptLikeGroup);
+      decorateGroup(groups, 'CamundaPlatform__Output', decorateScriptLikeGroup);
       return groups;
     };
   }
 }
-function decorateGroup(group) {
+function decorateGroup(groups, groupId, decorator) {
+  const group = groups.find(entry => entry.id === groupId);
+  if (group) {
+    decorator(group);
+  }
+}
+function decorateConditionGroup(group, element) {
+  if ((0,_props_ConditionalProps__WEBPACK_IMPORTED_MODULE_2__.getScriptType)(element) !== 'script') {
+    return;
+  }
+  const businessObject = (0,bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__.getBusinessObject)(element);
+  const scriptLanguage = (0,_props_ConditionalProps__WEBPACK_IMPORTED_MODULE_2__.getScriptLanguage)(businessObject);
+  if (SUPPORTED_LANGUAGES.includes(scriptLanguage)) {
+    const script = group.entries.find(entry => entry.id === 'conditionScriptValue');
+    decorateConditionalScript(script);
+  }
+}
+function decorateScriptGroup(group, element) {
+  if ((0,_props_ScriptProps__WEBPACK_IMPORTED_MODULE_1__.getScriptType)(element) !== 'script') {
+    return;
+  }
+  const businessObject = (0,bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__.getBusinessObject)(element);
+  const scriptFormat = (0,_props_ScriptProps__WEBPACK_IMPORTED_MODULE_1__.getScriptFormat)(businessObject);
+  if (SUPPORTED_LANGUAGES.includes(scriptFormat)) {
+    const script = group.entries.find(entry => entry.id === 'scriptValue');
+    decorateScript(script);
+  }
+}
+function decorateScriptLikeGroup(group) {
   group.items.map(item => {
-    let scriptValue = item.entries.find(entry => entry.id.endsWith('scriptValue'));
+    const scriptValue = item.entries.find(entry => entry.id.endsWith('scriptValue'));
     if (scriptValue) {
-      let scriptObject = scriptValue.script;
-      let scriptFormat = scriptObject.get('scriptFormat');
+      const scriptObject = scriptValue.script;
+      const scriptFormat = scriptObject.get('scriptFormat');
       if (SUPPORTED_LANGUAGES.includes(scriptFormat)) {
-        scriptValue.component = _props_ScriptProps__WEBPACK_IMPORTED_MODULE_1__.Script;
-        scriptValue.isEdited = _bpmn_io_properties_panel__WEBPACK_IMPORTED_MODULE_0__.isTextFieldEntryEdited;
+        decorateScript(scriptValue);
       }
     }
   });
 }
-CodePropertiesProvider.$inject = ['propertiesPanel', 'injector'];
+function decorateScript(script) {
+  script.component = _props_ScriptProps__WEBPACK_IMPORTED_MODULE_1__.Script;
+  script.isEdited = _bpmn_io_properties_panel__WEBPACK_IMPORTED_MODULE_0__.isTextFieldEntryEdited;
+}
+function decorateConditionalScript(script) {
+  script.component = _props_ConditionalProps__WEBPACK_IMPORTED_MODULE_2__.ConditionalScript;
+  script.isEdited = _bpmn_io_properties_panel__WEBPACK_IMPORTED_MODULE_0__.isTextFieldEntryEdited;
+}
+CodePropertiesProvider.$inject = ['propertiesPanel'];
 
 /***/ }),
 
@@ -404,6 +382,29 @@ DisableModeling.$inject = ['eventBus', 'canvas', 'contextPad', 'dragging', 'dire
 function isAnyAction(actions, action) {
   return actions.indexOf(action) > -1;
 }
+
+/***/ }),
+
+/***/ "./client/bpmn-js/index.js":
+/*!*********************************!*\
+  !*** ./client/bpmn-js/index.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CodePropertiesProvider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CodePropertiesProvider */ "./client/bpmn-js/CodePropertiesProvider.js");
+/* harmony import */ var _DisableModeling__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DisableModeling */ "./client/bpmn-js/DisableModeling.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  __init__: ['codePropertiesProvider', 'disableModelingCode'],
+  codePropertiesProvider: ['type', _CodePropertiesProvider__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  disableModelingCode: ['type', _DisableModeling__WEBPACK_IMPORTED_MODULE_1__["default"]]
+});
 
 /***/ }),
 
@@ -33862,11 +33863,11 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers */ "./node_modules/camunda-modeler-plugin-helpers/index.js");
 /* harmony import */ var _CodeEditorExtension__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CodeEditorExtension */ "./client/CodeEditorExtension.js");
-/* harmony import */ var _bpmn_js_BpmnJsExtension__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bpmn-js/BpmnJsExtension */ "./client/bpmn-js/BpmnJsExtension.js");
+/* harmony import */ var _bpmn_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./bpmn-js */ "./client/bpmn-js/index.js");
 
 
 
-(0,camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__.registerBpmnJSPlugin)(_bpmn_js_BpmnJsExtension__WEBPACK_IMPORTED_MODULE_2__["default"]);
+(0,camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__.registerBpmnJSPlugin)(_bpmn_js__WEBPACK_IMPORTED_MODULE_2__["default"]);
 (0,camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__.registerClientExtension)(_CodeEditorExtension__WEBPACK_IMPORTED_MODULE_1__["default"]);
 })();
 

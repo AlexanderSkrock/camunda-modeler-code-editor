@@ -7,11 +7,7 @@ import { TextFieldEntry } from '@bpmn-io/properties-panel';
 import { OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR } from '../../utils/events';
 
 export function Script(props) {
-  const {
-    element,
-    idPrefix,
-    script
-  } = props;
+  const { element, idPrefix, script } = props;
 
   const eventBus = useService('eventBus');
   const commandStack = useService('commandStack');
