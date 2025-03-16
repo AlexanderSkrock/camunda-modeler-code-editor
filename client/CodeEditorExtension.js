@@ -1,10 +1,9 @@
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
+import DefaultCodeEditor from "./components/DefaultCodeEditor";
+import Modal from "./components/Modal";
+import useModeler from './hooks/useModeler';
 import { OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR } from './utils/events';
-import useModeler from './utils/useModeler';
-
-import DefaultCodeEditor from "./DefaultCodeEditor";
-import Modal from "./Modal";
 
 /**
  * The component props include everything the Application offers plugins,
