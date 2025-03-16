@@ -5,8 +5,6 @@ import { Script, getScriptType, getScriptFormat } from './props/ScriptProps';
 
 import { ConditionalScript, getScriptLanguage, getScriptType as getConditionalScriptType } from './props/ConditionalProps';
 
-const SUPPORTED_LANGUAGES = [ 'js', 'JavaScript', 'javascript' ];
-
 export default class CodePropertiesProvider {
 
   constructor(propertiesPanel) {
@@ -53,7 +51,7 @@ function decorateScriptGroup(group, element) {
 
   const businessObject = getBusinessObject(element);
   const scriptFormat = getScriptFormat(businessObject);
-  if (SUPPORTED_LANGUAGES.includes(scriptFormat)) {
+  if (isScriptFormatSupported(scriptFormat)) {
     const script = group.entries.find(entry => entry.id === 'scriptValue');
     decorateScript(script);
   }
@@ -67,7 +65,7 @@ function decorateScriptLikeGroup(group) {
       const scriptObject = scriptValue.script;
       const scriptFormat = scriptObject.get('scriptFormat');
 
-      if (SUPPORTED_LANGUAGES.includes(scriptFormat)) {
+      if (isScriptFormatSupported(scriptFormat)) {
         decorateScript(scriptValue);
       }
     }
@@ -82,6 +80,10 @@ function decorateScript(script) {
 function decorateConditionalScript(script) {
   script.component = ConditionalScript;
   script.isEdited = isTextFieldEntryEdited;
+}
+
+function isScriptFormatSupported(format) {
+    return true;
 }
 
 CodePropertiesProvider.$inject = [ 'propertiesPanel' ];

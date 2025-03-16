@@ -1,8 +1,10 @@
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import { OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR } from './utils/events';
-import CodeEditorModal from './CodeEditorModal';
 import useModeler from './utils/useModeler';
+
+import DefaultCodeEditor from "./DefaultCodeEditor";
+import Modal from "./Modal";
 
 /**
  * The component props include everything the Application offers plugins,
@@ -53,7 +55,9 @@ export default ({ subscribe }) => {
   return <Fragment>
     {
       isCodeEditorOpen && (
-        <CodeEditorModal title="Code Editor" code={ codeText } onChange={ handleEditorChange } onClose={ handleClose } />
+        <Modal title="Code Editor" onClose={ handleClose }>
+          <DefaultCodeEditor value={ codeText } onChange={ handleEditorChange } />
+        </Modal>
       )
     }
   </Fragment>;
