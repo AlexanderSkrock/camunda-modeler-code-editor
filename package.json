@@ -23,7 +23,7 @@
     "code",
     "js"
   ],
-  "author": "Alenxander Skrock",
+  "author": "Alexander Skrock",
   "license": "MIT",
   "dependencies": {
     "@bpmn-io/properties-panel": "^3.26.3",
