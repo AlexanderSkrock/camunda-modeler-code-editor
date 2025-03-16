@@ -27,13 +27,10 @@ export default ({ subscribe }) => {
     return modeler.get ? modeler.get('eventBus') : modeler._eventBus;
   }, [ modeler ]);
 
-  const [ element, setElement ] = useState();
-
   useEffect(() => {
     if (eventBus) {
-      eventBus.on(OPEN_CODE_EDITOR, (evt) => {
-        setElement(evt.element);
-        setCodeText(evt.data);
+      eventBus.on(OPEN_CODE_EDITOR, 1, (evt) => {
+        setCodeText(evt.value);
         setCodeEditorOpen(true);
       });
     }
@@ -41,16 +38,14 @@ export default ({ subscribe }) => {
 
   const handleEditorChange = useCallback(({ value }) => {
     setCodeText(value);
-
-  }, [ eventBus, element ]);
+  }, [ setCodeText ]);
 
   const handleClose = useCallback(() => {
     setCodeEditorOpen(false);
     eventBus.fire(CLOSE_CODE_EDITOR, {
-      element,
-      data: codeText,
+      value: codeText,
     });
-  }, [ eventBus, element, codeText ]);
+  }, [ eventBus, codeText ]);
 
   return <Fragment>
     {

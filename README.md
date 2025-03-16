@@ -39,6 +39,29 @@ To prepare the plugin for release, executing all necessary steps, run:
 npm run all
 ```
 
+## Extending the plugin
+
+To provide a custom editor ui feel free to implement another plugin next to this one.
+
+You need to listen to the `code-editor.open` which has the following structure:
+
+```json
+{
+  "language": "",
+  "value": ""
+}
+```
+It is important that, in case you decide to handle the event, that the stopPropagation function is called on the event, to prevent multiple code editor to pop up.
+
+When the user finished editing the code you'll need to fire the `code-editor.close` event with the following data:
+
+```json
+{
+  "language": "",
+  "value": ""
+}
+```
+
 ## Licence
 
 MIT

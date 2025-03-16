@@ -47,12 +47,10 @@ __webpack_require__.r(__webpack_exports__);
     }
     return modeler.get ? modeler.get('eventBus') : modeler._eventBus;
   }, [modeler]);
-  const [element, setElement] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)();
   (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (eventBus) {
-      eventBus.on(_utils_events__WEBPACK_IMPORTED_MODULE_1__.OPEN_CODE_EDITOR, evt => {
-        setElement(evt.element);
-        setCodeText(evt.data);
+      eventBus.on(_utils_events__WEBPACK_IMPORTED_MODULE_1__.OPEN_CODE_EDITOR, 1, evt => {
+        setCodeText(evt.value);
         setCodeEditorOpen(true);
       });
     }
@@ -61,14 +59,13 @@ __webpack_require__.r(__webpack_exports__);
     value
   }) => {
     setCodeText(value);
-  }, [eventBus, element]);
+  }, [setCodeText]);
   const handleClose = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
     setCodeEditorOpen(false);
     eventBus.fire(_utils_events__WEBPACK_IMPORTED_MODULE_1__.CLOSE_CODE_EDITOR, {
-      element,
-      data: codeText
+      value: codeText
     });
-  }, [eventBus, element, codeText]);
+  }, [eventBus, codeText]);
   return /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, isCodeEditorOpen && /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
     title: "Code Editor",
     onClose: handleClose
@@ -435,15 +432,13 @@ function ConditionalScript(props) {
     onClick: () => {
       eventBus.once(_utils_events__WEBPACK_IMPORTED_MODULE_1__.CLOSE_CODE_EDITOR, 10000, event => {
         const {
-          data
+          value
         } = event;
-        setValue(data);
+        setValue(value);
       });
       eventBus.fire(_utils_events__WEBPACK_IMPORTED_MODULE_1__.OPEN_CODE_EDITOR, {
-        element: element,
-        data: getValue(),
-        mode: getScriptLanguage(element),
-        inputParameters: []
+        value: getValue(),
+        language: getScriptLanguage(element)
       });
     },
     children: [(0,_bpmn_io_properties_panel__WEBPACK_IMPORTED_MODULE_2__.TextFieldEntry)({
@@ -548,15 +543,13 @@ function Script(props) {
     onClick: () => {
       eventBus.once(_utils_events__WEBPACK_IMPORTED_MODULE_3__.CLOSE_CODE_EDITOR, 10000, event => {
         const {
-          data
+          value
         } = event;
-        setValue(data);
+        setValue(value);
       });
       eventBus.fire(_utils_events__WEBPACK_IMPORTED_MODULE_3__.OPEN_CODE_EDITOR, {
-        element: element,
-        data: getValue(),
-        mode: getScriptFormat(businessObject),
-        inputParameters: []
+        value: getValue(),
+        language: getScriptFormat(businessObject)
       });
     },
     children: [(0,_bpmn_io_properties_panel__WEBPACK_IMPORTED_MODULE_2__.TextFieldEntry)({

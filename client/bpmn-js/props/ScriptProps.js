@@ -34,15 +34,13 @@ export function Script(props) {
     onClick: () => {
 
       eventBus.once(CLOSE_CODE_EDITOR, 10000, event => {
-        const { data } = event;
-        setValue(data);
+        const { value } = event;
+        setValue(value);
       });
 
       eventBus.fire(OPEN_CODE_EDITOR, {
-        element: element,
-        data: getValue(),
-        mode: getScriptFormat(businessObject),
-        inputParameters: []
+        value: getValue(),
+        language: getScriptFormat(businessObject),
       });
 
     },
