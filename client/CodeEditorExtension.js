@@ -1,7 +1,8 @@
+// eslint-disable-next-line no-unused-vars
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
-import DefaultCodeEditor from "./components/DefaultCodeEditor";
-import Modal from "./components/Modal";
+import DefaultCodeEditor from './components/DefaultCodeEditor';
+import Modal from './components/Modal';
 import useModeler from './hooks/useModeler';
 import { OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR } from './utils/events';
 

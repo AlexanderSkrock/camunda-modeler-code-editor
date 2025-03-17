@@ -14,10 +14,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/events */ "./client/utils/events.js");
-/* harmony import */ var _utils_useModeler__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/useModeler */ "./client/utils/useModeler.js");
-/* harmony import */ var _DefaultCodeEditor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DefaultCodeEditor */ "./client/DefaultCodeEditor.js");
-/* harmony import */ var _Modal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Modal */ "./client/Modal.js");
+/* harmony import */ var _components_DefaultCodeEditor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/DefaultCodeEditor */ "./client/components/DefaultCodeEditor.js");
+/* harmony import */ var _components_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Modal */ "./client/components/Modal.js");
+/* harmony import */ var _hooks_useModeler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hooks/useModeler */ "./client/hooks/useModeler.js");
+/* harmony import */ var _utils_events__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/events */ "./client/utils/events.js");
+// eslint-disable-next-line no-unused-vars
 
 
 
@@ -38,7 +39,7 @@ __webpack_require__.r(__webpack_exports__);
 }) => {
   const [isCodeEditorOpen, setCodeEditorOpen] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [codeText, setCodeText] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
-  const [modeler] = (0,_utils_useModeler__WEBPACK_IMPORTED_MODULE_2__["default"])({
+  const [modeler] = (0,_hooks_useModeler__WEBPACK_IMPORTED_MODULE_3__["default"])({
     subscribe
   });
   const eventBus = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
@@ -49,7 +50,7 @@ __webpack_require__.r(__webpack_exports__);
   }, [modeler]);
   (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     if (eventBus) {
-      eventBus.on(_utils_events__WEBPACK_IMPORTED_MODULE_1__.OPEN_CODE_EDITOR, 1, evt => {
+      eventBus.on(_utils_events__WEBPACK_IMPORTED_MODULE_4__.OPEN_CODE_EDITOR, 1, evt => {
         setCodeText(evt.value);
         setCodeEditorOpen(true);
       });
@@ -62,93 +63,18 @@ __webpack_require__.r(__webpack_exports__);
   }, [setCodeText]);
   const handleClose = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
     setCodeEditorOpen(false);
-    eventBus.fire(_utils_events__WEBPACK_IMPORTED_MODULE_1__.CLOSE_CODE_EDITOR, {
+    eventBus.fire(_utils_events__WEBPACK_IMPORTED_MODULE_4__.CLOSE_CODE_EDITOR, {
       value: codeText
     });
   }, [eventBus, codeText]);
-  return /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, isCodeEditorOpen && /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_Modal__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  return /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, isCodeEditorOpen && /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Modal__WEBPACK_IMPORTED_MODULE_2__["default"], {
     title: "Code Editor",
     onClose: handleClose
-  }, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_DefaultCodeEditor__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_DefaultCodeEditor__WEBPACK_IMPORTED_MODULE_1__["default"], {
     value: codeText,
     onChange: handleEditorChange
   })));
 });
-
-/***/ }),
-
-/***/ "./client/DefaultCodeEditor.js":
-/*!*************************************!*\
-  !*** ./client/DefaultCodeEditor.js ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
-/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_ace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-ace */ "./node_modules/react-ace/lib/index.js");
-/* harmony import */ var ace_builds_src_noconflict_mode_text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ace-builds/src-noconflict/mode-text */ "./node_modules/ace-builds/src-noconflict/mode-text.js");
-/* harmony import */ var ace_builds_src_noconflict_mode_text__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_mode_text__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ace-builds/src-noconflict/theme-github */ "./node_modules/ace-builds/src-noconflict/theme-github.js");
-/* harmony import */ var ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var ace_builds_src_noconflict_ext_searchbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ace-builds/src-noconflict/ext-searchbox */ "./node_modules/ace-builds/src-noconflict/ext-searchbox.js");
-/* harmony import */ var ace_builds_src_noconflict_ext_searchbox__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_ext_searchbox__WEBPACK_IMPORTED_MODULE_4__);
-
-
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({
-  value,
-  onChange
-}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_ace__WEBPACK_IMPORTED_MODULE_1__["default"], {
-  name: "default-code-editor",
-  mode: "text",
-  theme: "github",
-  value: value,
-  onChange: onChange
-}));
-
-/***/ }),
-
-/***/ "./client/Modal.js":
-/*!*************************!*\
-  !*** ./client/Modal.js ***!
-  \*************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
-/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/components */ "./node_modules/camunda-modeler-plugin-helpers/components.js");
-
-
-const Title = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Modal.Title || (({
-  children
-}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, children));
-const Body = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Modal.Body || (({
-  children
-}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, children));
-const Footer = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Modal.Footer || (({
-  children
-}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, children));
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({
-  title,
-  children,
-  onClose
-}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
-  onClose: onClose
-}, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Title, null, title, " "), /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Body, null, " ", children, " "), /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Footer, null, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-  onClick: onClose
-}, "Close"))));
 
 /***/ }),
 
@@ -200,7 +126,7 @@ function decorateConditionGroup(group, element) {
   }
   const businessObject = (0,bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__.getBusinessObject)(element);
   const scriptLanguage = (0,_props_ConditionalProps__WEBPACK_IMPORTED_MODULE_2__.getScriptLanguage)(businessObject);
-  if (SUPPORTED_LANGUAGES.includes(scriptLanguage)) {
+  if (isScriptFormatSupported(scriptLanguage)) {
     const script = group.entries.find(entry => entry.id === 'conditionScriptValue');
     decorateConditionalScript(script);
   }
@@ -590,27 +516,86 @@ function isScript(element) {
 
 /***/ }),
 
-/***/ "./client/utils/events.js":
-/*!********************************!*\
-  !*** ./client/utils/events.js ***!
-  \********************************/
+/***/ "./client/components/DefaultCodeEditor.js":
+/*!************************************************!*\
+  !*** ./client/components/DefaultCodeEditor.js ***!
+  \************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   CLOSE_CODE_EDITOR: () => (/* binding */ CLOSE_CODE_EDITOR),
-/* harmony export */   OPEN_CODE_EDITOR: () => (/* binding */ OPEN_CODE_EDITOR)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-const codePrefix = 'code-editor';
-const OPEN_CODE_EDITOR = codePrefix + '.open';
-const CLOSE_CODE_EDITOR = codePrefix + '.close';
+/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
+/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_ace__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-ace */ "./node_modules/react-ace/lib/index.js");
+/* harmony import */ var ace_builds_src_noconflict_mode_text__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ace-builds/src-noconflict/mode-text */ "./node_modules/ace-builds/src-noconflict/mode-text.js");
+/* harmony import */ var ace_builds_src_noconflict_mode_text__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_mode_text__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ace-builds/src-noconflict/theme-github */ "./node_modules/ace-builds/src-noconflict/theme-github.js");
+/* harmony import */ var ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_theme_github__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var ace_builds_src_noconflict_ext_searchbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ace-builds/src-noconflict/ext-searchbox */ "./node_modules/ace-builds/src-noconflict/ext-searchbox.js");
+/* harmony import */ var ace_builds_src_noconflict_ext_searchbox__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(ace_builds_src_noconflict_ext_searchbox__WEBPACK_IMPORTED_MODULE_4__);
+// eslint-disable-next-line no-unused-vars
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({
+  value,
+  onChange
+}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_ace__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  name: "default-code-editor",
+  mode: "text",
+  theme: "github",
+  value: value,
+  onChange: onChange
+}));
 
 /***/ }),
 
-/***/ "./client/utils/useModeler.js":
+/***/ "./client/components/Modal.js":
 /*!************************************!*\
-  !*** ./client/utils/useModeler.js ***!
+  !*** ./client/components/Modal.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
+/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/components */ "./node_modules/camunda-modeler-plugin-helpers/components.js");
+// eslint-disable-next-line no-unused-vars
+
+
+const Title = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Modal.Title || (({
+  children
+}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, children));
+const Body = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Modal.Body || (({
+  children
+}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, children));
+const Footer = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Modal.Footer || (({
+  children
+}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, children));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({
+  title,
+  children,
+  onClose
+}) => /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
+  onClose: onClose
+}, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Title, null, title, " "), /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Body, null, " ", children, " "), /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Footer, null, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+  onClick: onClose
+}, "Close"))));
+
+/***/ }),
+
+/***/ "./client/hooks/useModeler.js":
+/*!************************************!*\
+  !*** ./client/hooks/useModeler.js ***!
   \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -666,6 +651,24 @@ __webpack_require__.r(__webpack_exports__);
   }, []);
   return [activeModeler];
 });
+
+/***/ }),
+
+/***/ "./client/utils/events.js":
+/*!********************************!*\
+  !*** ./client/utils/events.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CLOSE_CODE_EDITOR: () => (/* binding */ CLOSE_CODE_EDITOR),
+/* harmony export */   OPEN_CODE_EDITOR: () => (/* binding */ OPEN_CODE_EDITOR)
+/* harmony export */ });
+const codePrefix = 'code-editor';
+const OPEN_CODE_EDITOR = codePrefix + '.open';
+const CLOSE_CODE_EDITOR = codePrefix + '.close';
 
 /***/ }),
 

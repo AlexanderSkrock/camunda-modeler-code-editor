@@ -38,7 +38,7 @@ function decorateConditionGroup(group, element) {
 
   const businessObject = getBusinessObject(element);
   const scriptLanguage = getScriptLanguage(businessObject);
-  if (SUPPORTED_LANGUAGES.includes(scriptLanguage)) {
+  if (isScriptFormatSupported(scriptLanguage)) {
     const script = group.entries.find(entry => entry.id === 'conditionScriptValue');
     decorateConditionalScript(script);
   }
@@ -83,7 +83,7 @@ function decorateConditionalScript(script) {
 }
 
 function isScriptFormatSupported(format) {
-    return true;
+  return true;
 }
 
 CodePropertiesProvider.$inject = [ 'propertiesPanel' ];
