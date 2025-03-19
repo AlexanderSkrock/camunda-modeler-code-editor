@@ -1,10 +1,11 @@
 // eslint-disable-next-line no-unused-vars
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { Fragment, useCallback, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import DefaultCodeEditor from './components/DefaultCodeEditor';
 import Modal from './components/Modal';
 import useModeler from './hooks/useModeler';
-import { OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR } from './utils/events';
+import useService from './hooks/useService';
+import useCodeEditorEvents from './hooks/useCodeEditorEvents';
 
 /**
  * The component props include everything the Application offers plugins,
@@ -20,38 +21,34 @@ export default ({ subscribe }) => {
   const [ codeText, setCodeText ] = useState('');
 
   const [ modeler ] = useModeler({ subscribe });
-  const eventBus = useMemo(() => {
-    if (!modeler) {
-      return null;
-    }
-    return modeler.get ? modeler.get('eventBus') : modeler._eventBus;
-  }, [ modeler ]);
+  const [ eventBus ] = useService({ modeler, service: 'eventBus' });
 
-  useEffect(() => {
-    if (eventBus) {
-      eventBus.on(OPEN_CODE_EDITOR, 1, (evt) => {
-        setCodeText(evt.value);
-        setCodeEditorOpen(true);
-      });
-    }
-  }, [ eventBus, setCodeEditorOpen ]);
+  const handleCodeEditorOpen = useCallback((evt) => {
+    setCodeText(evt.value);
+    setCodeEditorOpen(true);
+  }, [ setCodeText, setCodeEditorOpen ]);
 
-  const handleEditorChange = useCallback(({ value }) => {
-    setCodeText(value);
-  }, [ setCodeText ]);
-
-  const handleClose = useCallback(() => {
+  const handleCodeEditorClose = useCallback(() => {
     setCodeEditorOpen(false);
-    eventBus.fire(CLOSE_CODE_EDITOR, {
-      value: codeText,
-    });
-  }, [ eventBus, codeText ]);
+    setCodeText('');
+  }, [ codeText, setCodeEditorOpen ]);
+
+  const [ , closeEditor ] = useCodeEditorEvents({
+    eventBus,
+    priority: 1,
+    onOpen: handleCodeEditorOpen,
+    onClose: handleCodeEditorClose
+  });
+
+  const handleModalClose = useCallback(() => {
+    closeEditor({ value: codeText });
+  }, [ codeText, closeEditor ]);
 
   return <Fragment>
     {
       isCodeEditorOpen && (
-        <Modal title="Code Editor" onClose={ handleClose }>
-          <DefaultCodeEditor value={ codeText } onChange={ handleEditorChange } />
+        <Modal title="Code Editor" onClose={ handleModalClose }>
+          <DefaultCodeEditor value={ codeText } onChange={ setCodeText } />
         </Modal>
       )
     }
