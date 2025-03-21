@@ -1,8 +1,14 @@
-import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
+import { getBusinessObject, is, getDi } from 'bpmn-js/lib/util/ModelUtil';
+import { useCallback, useEffect } from '@bpmn-io/properties-panel/preact/hooks';
 import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
-import { OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR } from '../../utils/events';
 import { TextFieldEntry } from '@bpmn-io/properties-panel';
 import { useService } from 'bpmn-js-properties-panel';
+
+import useCodeEditorEvents from '../../hooks/useCodeEditorEvents';
+
+function isSameElement(elementA, elementB) {
+  return getDi(elementA).id === getDi(elementB).id;
+}
 
 export function ConditionalScript(props) {
   const {
@@ -28,19 +34,22 @@ export function ConditionalScript(props) {
     });
   };
 
+  const [ openEditor ] = useCodeEditorEvents({
+    eventBus,
+    priority: 10000,
+    filter: ({ element: evtElement }) => isSameElement(element, evtElement),
+    onClose: ({ value }) => setValue(value),
+    useCallback,
+    useEffect,
+  });
+
   return jsxs('div', {
     onClick: () => {
-
-      eventBus.once(CLOSE_CODE_EDITOR, 10000, event => {
-        const { value } = event;
-        setValue(value);
-      });
-
-      eventBus.fire(OPEN_CODE_EDITOR, {
-        value: getValue(),
+      openEditor({
+        element,
         language: getScriptLanguage(element),
+        value: getValue(),
       });
-
     },
     children: [
       TextFieldEntry({

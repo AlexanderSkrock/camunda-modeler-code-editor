@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { Fragment, useCallback, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { Fragment, useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import DefaultCodeEditor from './components/DefaultCodeEditor';
 import Modal from './components/Modal';
@@ -37,7 +37,9 @@ export default ({ subscribe }) => {
     eventBus,
     priority: 1,
     onOpen: handleCodeEditorOpen,
-    onClose: handleCodeEditorClose
+    onClose: handleCodeEditorClose,
+    useCallback,
+    useEffect,
   });
 
   const handleModalClose = useCallback(() => {

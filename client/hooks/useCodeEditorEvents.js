@@ -1,5 +1,3 @@
-import { useCallback, useEffect } from 'camunda-modeler-plugin-helpers/react';
-
 import { CLOSE_CODE_EDITOR, OPEN_CODE_EDITOR } from '../utils/events';
 
 const DEFAULT_PRIORITY = 1000;
@@ -8,7 +6,7 @@ const ALL_FILTER = () => true;
 
 const NO_OP = () => {};
 
-export default ({ eventBus, priority = DEFAULT_PRIORITY, filter = ALL_FILTER, onOpen = NO_OP, onClose = NO_OP }) => {
+export default ({ eventBus, priority = DEFAULT_PRIORITY, filter = ALL_FILTER, onOpen = NO_OP, onClose = NO_OP, useCallback, useEffect }) => {
   const handleOpen = useCallback((evt) => {
     if (!filter || filter(evt)) {
       eventBus.once(CLOSE_CODE_EDITOR, 10000, onClose);
@@ -23,15 +21,15 @@ export default ({ eventBus, priority = DEFAULT_PRIORITY, filter = ALL_FILTER, on
     }
   }, [ eventBus, handleOpen ]);
 
-  const openCodeEditor = useCallback(({ language, value }) => {
+  const openCodeEditor = useCallback(({ element, language, value }) => {
     if (eventBus) {
-      eventBus.fire(OPEN_CODE_EDITOR, { language, value });
+      eventBus.fire(OPEN_CODE_EDITOR, { element, language, value });
     }
   }, [ eventBus ]);
 
-  const closeCodeEditor = useCallback(({ value }) => {
+  const closeCodeEditor = useCallback(({ element, language, value }) => {
     if (eventBus) {
-      eventBus.fire(CLOSE_CODE_EDITOR, { value });
+      eventBus.fire(CLOSE_CODE_EDITOR, { element, language, value });
     }
   }, [ eventBus ]);
 
