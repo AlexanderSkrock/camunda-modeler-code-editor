@@ -47,6 +47,7 @@ You need to listen to the `code-editor.open` which has the following structure:
 
 ```json
 {
+  "element": {},
   "language": "",
   "value": ""
 }
@@ -57,10 +58,13 @@ When the user finished editing the code you'll need to fire the `code-editor.clo
 
 ```json
 {
+  "element": {},
   "language": "",
   "value": ""
 }
 ```
+
+To simplify event consumption, have a look on [useCodeEditorEvents](./client/hooks/useCodeEditorEvents.js) and its usage within [CodeEditorExtension](./client/CodeEditorExtension.js).
 
 ## Licence
 

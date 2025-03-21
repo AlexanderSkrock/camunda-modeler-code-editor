@@ -6,6 +6,7 @@ import Modal from './components/Modal';
 import useModeler from './hooks/useModeler';
 import useService from './hooks/useService';
 import useCodeEditorEvents from './hooks/useCodeEditorEvents';
+import { isSameElement } from './utils/bpmn';
 
 /**
  * The component props include everything the Application offers plugins,
@@ -18,18 +19,29 @@ import useCodeEditorEvents from './hooks/useCodeEditorEvents';
  */
 export default ({ subscribe }) => {
   const [ isCodeEditorOpen, setCodeEditorOpen ] = useState(false);
+
+  const [ currentElement, setCurrentElement ] = useState(null);
+  const [ currentLanguage, setCurrentLanguage ] = useState('');
   const [ codeText, setCodeText ] = useState('');
 
   const [ modeler ] = useModeler({ subscribe });
   const [ eventBus ] = useService({ modeler, service: 'eventBus' });
 
-  const handleCodeEditorOpen = useCallback((evt) => {
-    setCodeText(evt.value);
+  const handleCodeEditorOpen = useCallback(({ element, language, value }) => {
+    setCurrentLanguage(language);
+    setCurrentElement(element);
+    setCodeText(value);
     setCodeEditorOpen(true);
   }, [ setCodeText, setCodeEditorOpen ]);
 
+  const closeFilter = useCallback(({ element }) => {
+    return isSameElement(element, currentElement);
+  }, [ currentElement ]);
+
   const handleCodeEditorClose = useCallback(() => {
     setCodeEditorOpen(false);
+    setCurrentElement(null);
+    setCurrentLanguage('');
     setCodeText('');
   }, [ codeText, setCodeEditorOpen ]);
 
@@ -37,14 +49,19 @@ export default ({ subscribe }) => {
     eventBus,
     priority: 1,
     onOpen: handleCodeEditorOpen,
+    closeFilter,
     onClose: handleCodeEditorClose,
     useCallback,
     useEffect,
   });
 
   const handleModalClose = useCallback(() => {
-    closeEditor({ value: codeText });
-  }, [ codeText, closeEditor ]);
+    closeEditor({
+      element: currentElement,
+      language: currentLanguage,
+      value: codeText,
+    });
+  }, [ currentElement, codeText, closeEditor ]);
 
   return <Fragment>
     {

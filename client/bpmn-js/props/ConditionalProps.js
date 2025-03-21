@@ -1,14 +1,11 @@
-import { getBusinessObject, is, getDi } from 'bpmn-js/lib/util/ModelUtil';
+import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 import { useCallback, useEffect } from '@bpmn-io/properties-panel/preact/hooks';
 import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
 import { TextFieldEntry } from '@bpmn-io/properties-panel';
 import { useService } from 'bpmn-js-properties-panel';
 
 import useCodeEditorEvents from '../../hooks/useCodeEditorEvents';
-
-function isSameElement(elementA, elementB) {
-  return getDi(elementA).id === getDi(elementB).id;
-}
+import { isSameElement } from '../../utils/bpmn';
 
 export function ConditionalScript(props) {
   const {
@@ -37,7 +34,7 @@ export function ConditionalScript(props) {
   const [ openEditor ] = useCodeEditorEvents({
     eventBus,
     priority: 10000,
-    filter: ({ element: evtElement }) => isSameElement(element, evtElement),
+    closeFilter: ({ element: evtElement }) => isSameElement(element, evtElement),
     onClose: ({ value }) => setValue(value),
     useCallback,
     useEffect,

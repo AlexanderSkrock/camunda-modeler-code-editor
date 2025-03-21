@@ -2,14 +2,11 @@ import { useService } from 'bpmn-js-properties-panel';
 import { useCallback, useEffect } from '@bpmn-io/properties-panel/preact/hooks';
 import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
 
-import { getBusinessObject, getDi, is } from 'bpmn-js/lib/util/ModelUtil';
+import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 import { TextFieldEntry } from '@bpmn-io/properties-panel';
 
 import useCodeEditorEvents from '../../hooks/useCodeEditorEvents';
-
-function isSameElement(elementA, elementB) {
-  return getDi(elementA).id === getDi(elementB).id;
-}
+import { isSameElement } from '../../utils/bpmn';
 
 export function Script(props) {
   const { element, idPrefix, script } = props;
@@ -38,7 +35,7 @@ export function Script(props) {
   const [ openEditor ] = useCodeEditorEvents({
     eventBus,
     priority: 10000,
-    filter: ({ element: evtElement }) => isSameElement(element, evtElement),
+    closeFilter: ({ element: evtElement }) => isSameElement(element, evtElement),
     onClose: ({ value }) => setValue(value),
     useCallback,
     useEffect,
