@@ -16,6 +16,16 @@ const config = {
   ],
 };
 
+const libConfig = {
+  ...config,
+  name: 'lib',
+  entry: './lib/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'lib.js',
+  },
+};
+
 const clientConfig = {
   ...config,
   name: 'client',
@@ -26,4 +36,7 @@ const clientConfig = {
   },
 };
 
-module.exports = clientConfig;
+module.exports = [
+  libConfig,
+  clientConfig,
+];

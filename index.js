@@ -2,5 +2,5 @@
 
 module.exports = {
   name: 'Code Editor Plugin',
-  script: './dist/client.js'
+  script: './dist/client.js',
 };

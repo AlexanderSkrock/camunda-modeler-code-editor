@@ -1,12 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-import React, { Fragment, useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
+
+import { Modal, useCodeEditorEvents, useModeler, useService } from '../lib';
 
 import DefaultCodeEditor from './components/DefaultCodeEditor';
-import Modal from './components/Modal';
-import useModeler from './hooks/useModeler';
-import useService from './hooks/useService';
-import useCodeEditorEvents from './hooks/useCodeEditorEvents';
-import { isSameElement } from './utils/bpmn';
+import { isSameElement } from './utils/elements';
 
 /**
  * The component props include everything the Application offers plugins,
@@ -24,8 +22,8 @@ export default ({ subscribe }) => {
   const [ currentLanguage, setCurrentLanguage ] = useState('');
   const [ codeText, setCodeText ] = useState('');
 
-  const [ modeler ] = useModeler({ subscribe });
-  const [ eventBus ] = useService({ modeler, service: 'eventBus' });
+  const [ modeler ] = useModeler({ subscribe, useCallback, useEffect, useState });
+  const [ eventBus ] = useService({ modeler, services: [ 'eventBus' ], useMemo });
 
   const handleCodeEditorOpen = useCallback(({ element, language, value }) => {
     setCurrentLanguage(language);

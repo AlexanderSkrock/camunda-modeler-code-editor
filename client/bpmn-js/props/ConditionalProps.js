@@ -4,8 +4,9 @@ import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
 import { TextFieldEntry } from '@bpmn-io/properties-panel';
 import { useService } from 'bpmn-js-properties-panel';
 
-import useCodeEditorEvents from '../../hooks/useCodeEditorEvents';
-import { isSameElement } from '../../utils/bpmn';
+import { useCodeEditorEvents } from '../../../lib';
+
+import { isSameElement } from '../../utils/elements';
 
 export function ConditionalScript(props) {
   const {

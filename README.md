@@ -64,7 +64,7 @@ When the user finished editing the code you'll need to fire the `code-editor.clo
 }
 ```
 
-To simplify event consumption, have a look on [useCodeEditorEvents](./client/hooks/useCodeEditorEvents.js) and its usage within [CodeEditorExtension](./client/CodeEditorExtension.js).
+To simplify event consumption, have a look on [useCodeEditorEvents](./lib/hooks/useCodeEditorEvents.js) and its usage within [CodeEditorExtension](./client/CodeEditorExtension.js).
 
 ## Licence
 

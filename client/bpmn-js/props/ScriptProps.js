@@ -5,8 +5,9 @@ import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
 import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 import { TextFieldEntry } from '@bpmn-io/properties-panel';
 
-import useCodeEditorEvents from '../../hooks/useCodeEditorEvents';
-import { isSameElement } from '../../utils/bpmn';
+import { useCodeEditorEvents } from '../../../lib';
+
+import { isSameElement } from '../../utils/elements';
 
 export function Script(props) {
   const { element, idPrefix, script } = props;

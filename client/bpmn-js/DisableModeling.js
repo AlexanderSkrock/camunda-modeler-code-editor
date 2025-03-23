@@ -1,5 +1,6 @@
 import { query, classes } from 'min-dom';
-import { OPEN_CODE_EDITOR, CLOSE_CODE_EDITOR } from '../utils/events';
+
+import { events } from '../../lib';
 
 const HIGH_PRIORITY = 10005;
 
@@ -31,13 +32,13 @@ export default function DisableModeling(eventBus, canvas, contextPad, dragging, 
     self.palette = query('.djs-palette', self._canvas.getContainer());
   });
 
-  eventBus.on(OPEN_CODE_EDITOR, HIGH_PRIORITY, function() {
+  eventBus.on(events.OPEN_CODE_EDITOR, HIGH_PRIORITY, function() {
     self.modelingDisabled = true;
     disable();
     palette._update();
   });
 
-  eventBus.on(CLOSE_CODE_EDITOR, HIGH_PRIORITY, function() {
+  eventBus.on(events.CLOSE_CODE_EDITOR, HIGH_PRIORITY, function() {
     self.modelingDisabled = false;
     enable();
     palette._update();
