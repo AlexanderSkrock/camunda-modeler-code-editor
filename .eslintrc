@@ -1,4 +1,10 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 2023
+  },
+  "env": {
+    "es2020": true
+  },
   "extends": [
     "plugin:bpmn-io/jsx",
     "plugin:bpmn-io/node",

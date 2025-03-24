@@ -1,10 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
-import { Modal, useCodeEditorEvents, useModeler, useService } from '../lib';
+import { getEditor } from '../lib';
 
-import DefaultCodeEditor from './components/DefaultCodeEditor';
-import { isSameElement } from './utils/elements';
+import { Modal } from './components';
+import { useModeler, useService } from './hooks';
+import { CLOSE_EDITOR, OPEN_SCRIPT, UPDATE_SCRIPT } from './utils/events';
 
 /**
  * The component props include everything the Application offers plugins,
@@ -18,54 +19,73 @@ import { isSameElement } from './utils/elements';
 export default ({ subscribe }) => {
   const [ isCodeEditorOpen, setCodeEditorOpen ] = useState(false);
 
-  const [ currentElement, setCurrentElement ] = useState(null);
-  const [ currentLanguage, setCurrentLanguage ] = useState('');
-  const [ codeText, setCodeText ] = useState('');
+  const [ editorDocuments, setEditorDocuments ] = useState([]);
 
   const [ modeler ] = useModeler({ subscribe, useCallback, useEffect, useState });
   const [ eventBus ] = useService({ modeler, services: [ 'eventBus' ], useMemo });
 
-  const handleCodeEditorOpen = useCallback(({ element, language, value }) => {
-    setCurrentLanguage(language);
-    setCurrentElement(element);
-    setCodeText(value);
+  const handleOpenScript = useCallback(({ element, moddleElement, language, value }) => {
+    setEditorDocuments(documents => {
+      if (documents.some(e => e.moddleElement === moddleElement)) {
+        return documents;
+      }
+      return [
+        ...documents,
+        {
+          element,
+          moddleElement,
+          language,
+          value
+        }
+      ];
+    });
     setCodeEditorOpen(true);
-  }, [ setCodeText, setCodeEditorOpen ]);
-
-  const closeFilter = useCallback(({ element }) => {
-    return isSameElement(element, currentElement);
-  }, [ currentElement ]);
-
-  const handleCodeEditorClose = useCallback(() => {
-    setCodeEditorOpen(false);
-    setCurrentElement(null);
-    setCurrentLanguage('');
-    setCodeText('');
-  }, [ codeText, setCodeEditorOpen ]);
-
-  const [ , closeEditor ] = useCodeEditorEvents({
-    eventBus,
-    priority: 1,
-    onOpen: handleCodeEditorOpen,
-    closeFilter,
-    onClose: handleCodeEditorClose,
-    useCallback,
-    useEffect,
-  });
+  }, [ setCodeEditorOpen, setEditorDocuments ]);
 
   const handleModalClose = useCallback(() => {
-    closeEditor({
-      element: currentElement,
-      language: currentLanguage,
-      value: codeText,
-    });
-  }, [ currentElement, codeText, closeEditor ]);
+    if (eventBus) {
+      editorDocuments.forEach(({ element, moddleElement, value }) => {
+        eventBus.fire(UPDATE_SCRIPT, {
+          element,
+          moddleElement,
+          value,
+        });
+      });
+      eventBus.fire(CLOSE_EDITOR);
+    }
+    setCodeEditorOpen(false);
+    setEditorDocuments([]);
+  }, [ eventBus, editorDocuments, setEditorDocuments, setCodeEditorOpen ]);
+
+  useEffect(() => {
+    if (eventBus) {
+      eventBus.on(OPEN_SCRIPT, handleOpenScript);
+      return () => eventBus.off(handleOpenScript);
+    }
+  }, [ eventBus, handleOpenScript ]);
 
   return <Fragment>
     {
       isCodeEditorOpen && (
         <Modal title="Code Editor" onClose={ handleModalClose }>
-          <DefaultCodeEditor value={ codeText } onChange={ setCodeText } />
+          {
+            editorDocuments.map(currentDocument => {
+              const onChange = newValue => setEditorDocuments(documents => {
+                const currentIndex = documents.findIndex(e => e === currentDocument);
+                if (currentIndex < 0) {
+                  return documents;
+                } else {
+                  const copyDocuments = [ ...documents ];
+                  copyDocuments.splice(currentIndex, 1, { ...currentDocument, value: newValue });
+                  return copyDocuments;
+                }
+              });
+
+              const { element, moddleElement, language, value } = currentDocument;
+              const Editor = getEditor(language);
+              return <Editor element={ element } moddleElement={ moddleElement } value={ value } onChange={ onChange } />;
+            })
+          }
         </Modal>
       )
     }
