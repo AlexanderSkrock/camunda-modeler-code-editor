@@ -939,24 +939,6 @@ const CLOSE_EDITOR = PREFIX + '.close-editor';
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getEditor: () => (/* reexport safe */ _registrations__WEBPACK_IMPORTED_MODULE_0__.getEditor),
-/* harmony export */   registerDefaultEditor: () => (/* reexport safe */ _registrations__WEBPACK_IMPORTED_MODULE_0__.registerDefaultEditor),
-/* harmony export */   registerEditor: () => (/* reexport safe */ _registrations__WEBPACK_IMPORTED_MODULE_0__.registerEditor)
-/* harmony export */ });
-/* harmony import */ var _registrations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./registrations */ "./lib/registrations.js");
-
-
-/***/ }),
-
-/***/ "./lib/registrations.js":
-/*!******************************!*\
-  !*** ./lib/registrations.js ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getEditor: () => (/* binding */ getEditor),
 /* harmony export */   registerDefaultEditor: () => (/* binding */ registerDefaultEditor),
 /* harmony export */   registerEditor: () => (/* binding */ registerEditor)
@@ -971,16 +953,16 @@ function ensureGlobal() {
   }
   return globalThis['code-editor'];
 }
-function getEditor(language) {
+const getEditor = language => {
   const config = ensureGlobal();
   return config.editors[language] || config.default;
-}
-function registerDefaultEditor(defaultEditor) {
+};
+const registerDefaultEditor = defaultEditor => {
   ensureGlobal().default = defaultEditor;
-}
-function registerEditor(language, editor) {
+};
+const registerEditor = (language, editor) => {
   ensureGlobal().editors[language] = editor;
-}
+};
 
 /***/ }),
 

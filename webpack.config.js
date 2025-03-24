@@ -23,6 +23,8 @@ const libConfig = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'lib.js',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
   },
 };
 
