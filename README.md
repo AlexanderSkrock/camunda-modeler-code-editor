@@ -41,30 +41,31 @@ npm run all
 
 ## Extending the plugin
 
-To provide a custom editor ui feel free to implement another plugin next to this one.
+To provide a custom editor ui feel free to implement another plugin next to this one!
 
-You need to listen to the `code-editor.open` which has the following structure:
+All you'll need to do is to add this plugin as a dependency and register your implementation via `registerEditor` or `registerDefaultEditor`.
 
-```json
-{
-  "element": {},
-  "language": "",
-  "value": ""
-}
-```
-It is important that, in case you decide to handle the event, that the stopPropagation function is called on the event, to prevent multiple code editor to pop up.
-
-When the user finished editing the code you'll need to fire the `code-editor.close` event with the following data:
-
-```json
-{
-  "element": {},
-  "language": "",
-  "value": ""
-}
+```js
+import { registerEditor } from 'camunda-modeler-code-editor/lib';
+registerEditor('JavaScript', JavaScriptEditor);
 ```
 
-To simplify event consumption, have a look on [useCodeEditorEvents](./lib/hooks/useCodeEditorEvents.js) and its usage within [CodeEditorExtension](./client/CodeEditorExtension.js).
+The editor implementation should be a `React` component which consumes the following properties:
+
+<ul>
+    <li><i>element</i>, the current bpmn element</li>
+    <li><i>moddleElement</i>, the current specific moddle element</li>
+    <li><i>language</i>, the current script language which is most likely only important for editors that support multiple</li>
+    <li><i>value</i>, the current script value</li>
+    <li><i>onChange</i>, function to call when the value was changed within the editor</li>
+</ul>
+
+For styling purposes also the requested `width` and `height` are passed. At the time of writing, this is always `100%` just to make sure the editor is using all the available space.
+
+For reference, have a look on the default editor implementation: [Default Code Editor](./client/components/DefaultCodeEditor.js)
+
+> [!IMPORTANT]
+> This library dependency does not include runtime code. This, you'll need to have this plugin nex to your custom implementation.
 
 ## Licence
 

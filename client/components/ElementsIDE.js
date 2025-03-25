@@ -52,7 +52,7 @@ export default ({ elements, onChange, onClose }) => {
             const EditorComponent = getEditor(language);
             return (
               <TabPanel key={ idx }>
-                <EditorComponent width="100%" heiht="100%" element={ element } moddleElement={ moddleElement } value={ value } onChange={ handleEditorChange } />
+                <EditorComponent width="100%" heiht="100%" element={ element } moddleElement={ moddleElement } language={ language } value={ value } onChange={ handleEditorChange } />
               </TabPanel>
             );
           })
