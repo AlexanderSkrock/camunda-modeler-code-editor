@@ -36,6 +36,21 @@ const clientConfig = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'client.js',
   },
+  resolve: {
+    alias: {
+
+      // TODO
+      'react/jsx-runtime': path.resolve(__dirname, 'node_modules', 'react', 'jsx-runtime'),
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [ 'style-loader', 'css-loader' ],
+      },
+    ],
+  },
 };
 
 module.exports = [
