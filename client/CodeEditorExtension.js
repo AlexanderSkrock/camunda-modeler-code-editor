@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
-import { ElementsIDE, Modal, withTheme } from './components';
+import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
 import { useModeler, useService } from './hooks';
 import { CLOSE_EDITOR, OPEN_SCRIPT, UPDATE_SCRIPT } from './utils/events';
 
@@ -92,13 +92,12 @@ const CodeEditorExtension = ({ subscribe }) => {
   }, [ eventBus, setEditorDocuments ]);
 
   return <Fragment>
-    {
-      isCodeEditorOpen && (
-        <Modal title="Code Editor" onClose={ handleModalClose }>
-          <ElementsIDE elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } />
-        </Modal>
-      )
-    }
+    <Modal open={ isCodeEditorOpen } onClose={ handleModalClose }>
+      <ModalHeader>Code Editor</ModalHeader>
+      <ModalBody>
+        <ElementsIDE elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } />
+      </ModalBody>
+    </Modal>
   </Fragment>;
 };
 

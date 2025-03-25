@@ -2,14 +2,16 @@
 import React from 'camunda-modeler-plugin-helpers/react';
 import { Modal } from 'camunda-modeler-plugin-helpers/components';
 
-const Title = Modal.Title || (({ children }) => <h2>{children}</h2>);
-const Body = Modal.Body || (({ children }) => <div>{children}</div>);
-const Footer = Modal.Footer || (({ children }) => <div>{children}</div>);
+import { ComposedModal, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
 
-export default ({ title, children, onClose, footer }) => (
-  <Modal onClose={ onClose }>
-    <Title>{ title } </Title>
-    <Body>{ children } </Body>
-    { footer ? <Footer>{ footer }</Footer> : null }
+export const Header = ModalHeader || Modal.Header || (({ children }) => <h2>{children}</h2>);
+export const Body = ModalBody || Modal.Body || (({ children }) => <div>{children}</div>);
+export const Footer = ModalFooter || Modal.Footer || (({ children }) => <div>{children}</div>);
+
+export default ({ children, open = false, onClose }) => open && (
+  <Modal>
+    <ComposedModal open={ open } onClose={ onClose } isFullWidth size="lg">
+      { children }
+    </ComposedModal>
   </Modal>
 );

@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@carbon/react';
+
 import { getEditor } from '../../lib';
 
 export default ({ elements, onChange, onClose }) => {
@@ -51,7 +52,7 @@ export default ({ elements, onChange, onClose }) => {
             const EditorComponent = getEditor(language);
             return (
               <TabPanel key={ idx }>
-                <EditorComponent element={ element } moddleElement={ moddleElement } value={ value } onChange={ handleEditorChange } />
+                <EditorComponent width="100%" heiht="100%" element={ element } moddleElement={ moddleElement } value={ value } onChange={ handleEditorChange } />
               </TabPanel>
             );
           })
