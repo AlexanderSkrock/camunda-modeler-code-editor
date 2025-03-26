@@ -12,10 +12,34 @@ return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./lib/registrations.js":
-/*!******************************!*\
-  !*** ./lib/registrations.js ***!
-  \******************************/
+/***/ "./lib/config.js":
+/*!***********************!*\
+  !*** ./lib/config.js ***!
+  \***********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ensureConfig: () => (/* binding */ ensureConfig)
+/* harmony export */ });
+const DEFAULT_CONFIG = {
+  defaultEditor: null,
+  editors: {},
+  types: {}
+};
+function ensureConfig() {
+  if (!globalThis['code-editor']) {
+    globalThis['code-editor'] = DEFAULT_CONFIG;
+  }
+  return globalThis['code-editor'];
+}
+
+/***/ }),
+
+/***/ "./lib/editors.js":
+/*!************************!*\
+  !*** ./lib/editors.js ***!
+  \************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -24,25 +48,71 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   registerDefaultEditor: () => (/* binding */ registerDefaultEditor),
 /* harmony export */   registerEditor: () => (/* binding */ registerEditor)
 /* harmony export */ });
-const DEFAULT_STATE = {
-  editors: {},
-  default: null
-};
-function ensureGlobal() {
-  if (!globalThis['code-editor']) {
-    globalThis['code-editor'] = DEFAULT_STATE;
-  }
-  return globalThis['code-editor'];
-}
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./lib/config.js");
+
 function getEditor(language) {
-  const config = ensureGlobal();
-  return config.editors[language] || config.default;
+  const config = (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)();
+  return config.editors[language] || config.defaultEditor;
 }
 function registerDefaultEditor(defaultEditor) {
-  ensureGlobal().default = defaultEditor;
+  (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().defaultEditor = defaultEditor;
 }
 function registerEditor(language, editor) {
-  ensureGlobal().editors[language] = editor;
+  (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().editors[language] = editor;
+}
+
+/***/ }),
+
+/***/ "./lib/types.js":
+/*!**********************!*\
+  !*** ./lib/types.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   registerEditableType: () => (/* binding */ registerEditableType)
+/* harmony export */ });
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./lib/config.js");
+
+function registerEditableType(type, {
+  // Options around the properties panel
+  properties: {
+    // Selector that retrieves all entry from the given groups that should be decorated
+    entrySelector,
+    // Decorator that can modify the ui component
+    // in most cases you'll overwrite the component or the isEdited properties
+    entryDecorator
+  },
+  // Options around the search implementation
+  search: {
+    // Determines all searchable moddle elements for a given element
+    toSearchables
+  },
+  accessors: {
+    // A function that takes the moddle element and retrieves the current language
+    getLanguage,
+    // A function that takes the moddle element and retrieves the current value
+    getValue,
+    // A function that takes the element, the specific moddle element and the new value.
+    // This function will handle updates to the underlying model.
+    setValue
+  }
+}) {
+  (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().types[type] = {
+    accessors: {
+      getLanguage,
+      getValue,
+      setValue
+    },
+    properties: {
+      entrySelector,
+      entryDecorator
+    },
+    search: {
+      toSearchables
+    }
+  };
 }
 
 /***/ })
@@ -111,11 +181,13 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getEditor: () => (/* reexport safe */ _registrations__WEBPACK_IMPORTED_MODULE_0__.getEditor),
-/* harmony export */   registerDefaultEditor: () => (/* reexport safe */ _registrations__WEBPACK_IMPORTED_MODULE_0__.registerDefaultEditor),
-/* harmony export */   registerEditor: () => (/* reexport safe */ _registrations__WEBPACK_IMPORTED_MODULE_0__.registerEditor)
+/* harmony export */   registerDefaultEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.registerDefaultEditor),
+/* harmony export */   registerEditableType: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_1__.registerEditableType),
+/* harmony export */   registerEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.registerEditor)
 /* harmony export */ });
-/* harmony import */ var _registrations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./registrations */ "./lib/registrations.js");
+/* harmony import */ var _editors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editors */ "./lib/editors.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./types */ "./lib/types.js");
+
 
 })();
 
