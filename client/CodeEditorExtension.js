@@ -1,9 +1,14 @@
 // eslint-disable-next-line no-unused-vars
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
+import search from 'diagram-js/lib/features/search/search';
+import { is, getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+
 import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
 import { useModeler, useService } from './hooks';
 import { CLOSE_EDITOR, OPEN_SCRIPT, UPDATE_SCRIPT } from './utils/events';
+import { getScriptFormat, getScriptType } from './bpmn-js/props/ScriptProps';
+import { getScriptProperty } from './bpmn-js/utils/scripts';
 
 /**
  * The component props include everything the Application offers plugins,
@@ -20,7 +25,7 @@ const CodeEditorExtension = ({ subscribe }) => {
   const [ editorDocuments, setEditorDocuments ] = useState([]);
 
   const [ modeler ] = useModeler({ subscribe, useCallback, useEffect, useState });
-  const [ eventBus ] = useService({ modeler, services: [ 'eventBus' ], useMemo });
+  const [ eventBus, elementRegistry ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry' ], useMemo });
 
   const handleOpenScript = useCallback(({ element, moddleElement, language, value }) => {
     setEditorDocuments(documents => {
@@ -91,11 +96,55 @@ const CodeEditorExtension = ({ subscribe }) => {
 
   }, [ eventBus, setEditorDocuments ]);
 
+  const handleSearch = useCallback((searchValue) => {
+
+    // TODO we should not access functions from our bpmn js sub directory
+    const searchableElements = elementRegistry
+
+      // for sake of simplicity we only filter for classic script tasks with inline scripts
+      // TODO later we should also include elements that have scripts e. g. in form of execution listeners or input output mappings
+      .filter(element => is(element, 'bpmn:ScriptTask') && getScriptType(element) === 'script')
+      .flatMap(element => {
+
+        // TODO we should return an array of sripts on this element, for now we only pick the script task itself
+        const moddleElement = getBusinessObject(element);
+        return [ {
+          element,
+          moddleElement,
+          language: getScriptFormat(moddleElement),
+          value: moddleElement.get(getScriptProperty(moddleElement)),
+        } ];
+      })
+      .map(item => ({
+        item,
+        id: item.moddleElement.id,
+        label: item.moddleElement.name,
+
+        // TODO consider to enable full text search trough code
+      }));
+
+    if (!searchValue) {
+      return searchableElements.map(({ item }) => item);
+    }
+
+    return search(searchableElements, searchValue, {
+      keys: [ 'label', 'id ' ],
+    }).map(({ item: { item } }) => item);
+
+    // TODO add flag for documents that are already open
+  });
+
+  const handleOpen = useCallback(({ element, moddleElement, language, value }) => {
+
+    // Oder die Werte aus hier aus dem moddleElement ermitteln?
+    handleOpenScript({ element, moddleElement, language, value });
+  });
+
   return <Fragment>
     <Modal open={ isCodeEditorOpen } onClose={ handleModalClose }>
       <ModalHeader>Code Editor</ModalHeader>
       <ModalBody>
-        <ElementsIDE elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } />
+        <ElementsIDE elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
       </ModalBody>
     </Modal>
   </Fragment>;

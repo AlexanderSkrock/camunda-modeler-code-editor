@@ -1,10 +1,48 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@carbon/react';
+import React, { Fragment, useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+
+import {
+  Button,
+  StructuredListBody, StructuredListCell, StructuredListHead, StructuredListRow,
+  StructuredListWrapper,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs
+} from '@carbon/react';
+import { Add } from '@carbon/icons-react';
 
 import { getEditor } from '../../lib';
 
-export default ({ elements, onChange, onClose }) => {
+import { SearchModal } from './';
+
+const SearchResultContainer = ({ children }) => {
+  return (
+    <StructuredListWrapper>
+      <StructuredListHead>
+        <StructuredListRow head>
+          <StructuredListCell head>
+            Element
+          </StructuredListCell>
+        </StructuredListRow>
+      </StructuredListHead>
+      <StructuredListBody>
+        { children }
+      </StructuredListBody>
+    </StructuredListWrapper>
+  );
+};
+
+const SearchResultItem = (onClick) => ({ item }) => (
+  <StructuredListRow>
+    <StructuredListCell onClick={ () => onClick(item) }>{ item.moddleElement.name || item.moddleElement.id }</StructuredListCell>
+  </StructuredListRow>
+);
+
+export default ({ elements, onChange, onOpen, onClose, onSearch }) => {
+  const [ searchOpen, setSearchOpen ] = useState(false);
+
   const [ selectedIndex, selectIndex ] = useState(0);
   useEffect(() => {
     if (selectedIndex < 0 || selectIndex >= elements.length) {
@@ -17,47 +55,63 @@ export default ({ elements, onChange, onClose }) => {
   }, [ selectIndex ]);
 
   const handleTabCloseRequested = useCallback(index => {
-    onClose({
-      index,
-    });
+    onClose({ index });
   }, [ onClose ]);
 
+  const handleOpen = useCallback(element => {
+    onOpen(element);
+    setSearchOpen(false);
+
+    // TODO it would be cool if we could automatically select the tab of the newly openend element
+  }, [ onOpen, setSearchOpen ]);
+
   return (
-    <Tabs selectedIndex={ selectedIndex } onChange={ handleTabChange } dismissable onTabCloseRequest={ handleTabCloseRequested }>
-      <TabList>
-        {
+    <>
+      <Tabs selectedIndex={ selectedIndex } onChange={ handleTabChange } dismissable onTabCloseRequest={ handleTabCloseRequested }>
+        <TabList>
+          {
 
-          // add static tab to open new files
-          elements.map((element, idx) => {
-            const identifier = element.moddleElement.id;
-            const displayName = element.moddleElement.name;
-            return (
+            // add static tab to open new files
+            elements.map((element, idx) => {
+              const identifier = element.moddleElement.id;
+              const displayName = element.moddleElement.name;
+              return (
 
-            // add dot on modified tabs
-              <Tab key={ idx }>
-                { displayName || identifier }
-              </Tab>
-            );
-          })
-        }
-      </TabList>
-      <TabPanels>
-        {
-          elements.map(({ element, moddleElement, language, value }, idx) => {
-            const handleEditorChange = value => onChange({
-              index: idx,
-              value,
-            });
+              // add dot on modified tabs
+                <Tab key={ idx }>
+                  { displayName || identifier }
+                </Tab>
+              );
+            })
+          }
+          <Button renderIcon={ Add } iconDescription="Open" hasIconOnly onClick={ () => setSearchOpen(true) } />
+          <SearchModal
+            title="Open"
+            open={ searchOpen }
+            onClose={ () => setSearchOpen(false) }
+            onSearch={ onSearch }
+            itemRenderer={ SearchResultItem(handleOpen) }
+            itemContainerRenderer={ SearchResultContainer } />
+        </TabList>
+        <TabPanels>
+          {
+            elements.map(({ element, moddleElement, language, value }, idx) => {
+              const handleEditorChange = value => onChange({
+                index: idx,
+                value,
+              });
 
-            const EditorComponent = getEditor(language);
-            return (
-              <TabPanel key={ idx }>
-                <EditorComponent width="100%" heiht="100%" element={ element } moddleElement={ moddleElement } language={ language } value={ value } onChange={ handleEditorChange } />
-              </TabPanel>
-            );
-          })
-        }
-      </TabPanels>
-    </Tabs>
+              const EditorComponent = getEditor(language);
+              return (
+                <TabPanel key={ idx }>
+                  <EditorComponent width="100%" heiht="100%" element={ element } moddleElement={ moddleElement } language={ language } value={ value } onChange={ handleEditorChange } />
+                </TabPanel>
+              );
+            })
+          }
+        </TabPanels>
+      </Tabs>
+
+    </>
   );
 };

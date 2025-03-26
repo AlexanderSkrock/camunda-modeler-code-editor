@@ -6,4 +6,5 @@ export {
   Body as ModalBody,
   Footer as ModalFooter,
 } from './Modal';
+export { default as SearchModal } from './SearchModal';
 export { default as withTheme } from './withTheme';
