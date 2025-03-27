@@ -21,7 +21,7 @@ export const entrySelector = (element, groups) => {
   return [ script ];
 };
 
-export const entryDecorator = entry => {
+export const entryDecorator = (element, entry) => {
   entry.component = Script;
   entry.isEdited = isTextFieldEntryEdited;
 };

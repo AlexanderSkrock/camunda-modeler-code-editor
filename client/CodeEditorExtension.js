@@ -56,18 +56,20 @@ const CodeEditorExtension = ({ subscribe }) => {
     }
   }, [ eventBus, handleOpenScript ]);
 
+  const modifyElement = useCallback((element, moddleElement, properties) => {
+    commandStack.execute('element.updateModdleProperties', {
+      element,
+      moddleElement,
+      properties,
+    });
+  }, [ commandStack ]);
+
   const handleModalClose = useCallback(() => {
     if (eventBus) {
       editorDocuments.forEach(({ element, moddleElement, value }) => {
-        const elementModifier = (properties) => {
-          commandStack.execute('element.updateModdleProperties', {
-            element,
-            moddleElement: moddleElement,
-            properties,
-          });
-        };
+
         const typeName = getBusinessObject(moddleElement).$descriptor.name;
-        getEditableType(typeName).accessors.setValue(elementModifier, value);
+        getEditableType(typeName).accessors.setValue(modifyElement, element, moddleElement, value);
       });
       eventBus.fire(CLOSE_EDITOR);
     }
@@ -92,15 +94,8 @@ const CodeEditorExtension = ({ subscribe }) => {
       const removedDocuments = copyDocuments.splice(index, 1);
       if (eventBus) {
         removedDocuments.forEach(({ element, moddleElement, value }) => {
-          const elementModifier = (properties) => {
-            commandStack.execute('element.updateModdleProperties', {
-              element,
-              moddleElement: moddleElement,
-              properties,
-            });
-          };
           const typeName = getBusinessObject(moddleElement).$descriptor.name;
-          getEditableType(typeName).accessors.setValue(elementModifier, value);
+          getEditableType(typeName).accessors.setValue(modifyElement, element, moddleElement, value);
         });
       }
       return copyDocuments;

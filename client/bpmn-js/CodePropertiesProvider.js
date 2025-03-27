@@ -12,7 +12,7 @@ export default class CodePropertiesProvider {
 
       typeProperties.forEach(({ entrySelector, entryDecorator }) => {
         const entries = entrySelector(element, groups);
-        entries.forEach(entryDecorator);
+        entries.forEach(entry => entryDecorator(element, entry));
       });
 
       return groups;

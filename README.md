@@ -41,9 +41,45 @@ npm run all
 
 ## Extending the plugin
 
-To provide a custom editor ui feel free to implement another plugin next to this one!
+To extend or modify the functionality and ui, feel free to implement another plugin next to this one!
 
-All you'll need to do is to add this plugin as a dependency and register your implementation via `registerEditor` or `registerDefaultEditor`.
+This package provides a js api to enhance the development process of extensions. Simply add this package as a dependency via your package manager to consume the api.
+
+```js
+import CodeEditorApi from 'camunda-modeler-code-editor/lib';
+```
+
+### Support additional fields
+
+To support additional fields to be editable using the editor interface, all you'll need to do is to register your implementation via `registerType`.
+
+```js
+import { registerType } from 'camunda-modeler-code-editor/lib';
+registerType('bpmn:ScriptTask', ScriptTask); 
+```
+
+The implementation should align to the following structure:
+
+```js
+{
+    properties: {
+        entrySelector,  // (element, groups) => array of entries
+        entryDecorator, // (element, entry) => void
+    },
+    search: {
+        toSearchables   // (element) => array of moddle elements
+    },
+    accessors: {
+        getLanguage,    // (moddle element) => string
+        getValue,       // (moddle element) => string
+        setValue,       // (modifyElement, element, moddle element, value) => void
+    },
+}
+```
+
+### Custom Editor
+
+To integrate a custom editor implementation, all you'll need to do is to register your implementation via `registerEditor` or `registerDefaultEditor`.
 
 ```js
 import { registerEditor } from 'camunda-modeler-code-editor/lib';
@@ -52,13 +88,15 @@ registerEditor('JavaScript', JavaScriptEditor);
 
 The editor implementation should be a `React` component which consumes the following properties:
 
-<ul>
-    <li><i>element</i>, the current bpmn element</li>
-    <li><i>moddleElement</i>, the current specific moddle element</li>
-    <li><i>language</i>, the current script language which is most likely only important for editors that support multiple</li>
-    <li><i>value</i>, the current script value</li>
-    <li><i>onChange</i>, function to call when the value was changed within the editor</li>
-</ul>
+```js
+{
+    element,        // the current bpmn element
+    moddleElement,  // the current specific moddle element
+    language,       // the current script language which is most likely only important for editors that support multiple
+    value,          // the current script value
+    onChange,       // function to call when the value was changed within the editor
+}
+```
 
 For styling purposes also the requested `width` and `height` are passed. At the time of writing, this is always `100%` just to make sure the editor is using all the available space.
 
