@@ -2,13 +2,15 @@
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import search from 'diagram-js/lib/features/search/search';
-import { is, getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 
 import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
 import { useModeler, useService } from './hooks';
-import { CLOSE_EDITOR, OPEN_SCRIPT, UPDATE_SCRIPT } from './utils/events';
-import { getScriptFormat, getScriptType } from './bpmn-js/props/ScriptProps';
-import { getScriptProperty } from './bpmn-js/utils/scripts';
+import { CLOSE_EDITOR, OPEN_SCRIPT } from './utils/events';
+import { isLabel } from 'diagram-js/lib/util/ModelUtil';
+import { getEditableType, getEditableTypes } from '../lib';
+import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
+import {getType} from "diagram-js/lib/util/Elements";
 
 /**
  * The component props include everything the Application offers plugins,
@@ -25,7 +27,7 @@ const CodeEditorExtension = ({ subscribe }) => {
   const [ editorDocuments, setEditorDocuments ] = useState([]);
 
   const [ modeler ] = useModeler({ subscribe, useCallback, useEffect, useState });
-  const [ eventBus, elementRegistry ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry' ], useMemo });
+  const [ eventBus, elementRegistry, commandStack ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry', 'commandStack' ], useMemo });
 
   const handleOpenScript = useCallback(({ element, moddleElement, language, value }) => {
     setEditorDocuments(documents => {
@@ -55,11 +57,15 @@ const CodeEditorExtension = ({ subscribe }) => {
   const handleModalClose = useCallback(() => {
     if (eventBus) {
       editorDocuments.forEach(({ element, moddleElement, value }) => {
-        eventBus.fire(UPDATE_SCRIPT, {
-          element,
-          moddleElement,
-          value,
-        });
+        const elementModifier = (properties) => {
+          commandStack.execute('element.updateModdleProperties', {
+            element,
+            moddleElement: moddleElement,
+            properties,
+          });
+        };
+        const typeName = getBusinessObject(moddleElement).$descriptor.name;
+        getEditableType(typeName).accessors.setValue(elementModifier, value);
       });
       eventBus.fire(CLOSE_EDITOR);
     }
@@ -84,11 +90,15 @@ const CodeEditorExtension = ({ subscribe }) => {
       const removedDocuments = copyDocuments.splice(index, 1);
       if (eventBus) {
         removedDocuments.forEach(({ element, moddleElement, value }) => {
-          eventBus.fire(UPDATE_SCRIPT, {
-            element,
-            moddleElement,
-            value,
-          });
+          const elementModifier = (properties) => {
+            commandStack.execute('element.updateModdleProperties', {
+              element,
+              moddleElement: moddleElement,
+              properties,
+            });
+          };
+          const typeName = getBusinessObject(moddleElement).$descriptor.name;
+          getEditableType(typeName).accessors.setValue(elementModifier, value);
         });
       }
       return copyDocuments;
@@ -98,40 +108,37 @@ const CodeEditorExtension = ({ subscribe }) => {
 
   const handleSearch = useCallback((searchValue) => {
 
-    // TODO we should not access functions from our bpmn js sub directory
     const searchableElements = elementRegistry
+      .filter(e => !isLabel(e))
+      .flatMap(e => {
+        return Object.values(getEditableTypes()).flatMap(typeDefinition => {
+          return typeDefinition.search.toSearchables(e).map(s => ({
+            element: e,
+            moddleElement: s,
+            id: getBusinessObject(e).id,
+            label: getLabel(e),
+          }));
+        });
+      });
 
-      // for sake of simplicity we only filter for classic script tasks with inline scripts
-      // TODO later we should also include elements that have scripts e. g. in form of execution listeners or input output mappings
-      .filter(element => is(element, 'bpmn:ScriptTask') && getScriptType(element) === 'script')
-      .flatMap(element => {
+    const filteredElements = searchValue
+      ? search(searchableElements, searchValue, {
+        keys: [ 'label', 'id ' ],
+      }).map(({ item }) => item)
+      : searchableElements;
 
-        // TODO we should return an array of sripts on this element, for now we only pick the script task itself
-        const moddleElement = getBusinessObject(element);
-        return [ {
-          element,
-          moddleElement,
-          language: getScriptFormat(moddleElement),
-          value: moddleElement.get(getScriptProperty(moddleElement)),
-        } ];
-      })
-      .map(item => ({
-        item,
-        id: item.moddleElement.id,
-        label: item.moddleElement.name,
+    return filteredElements.map(({ element, moddleElement }) => {
+      const typeName = getBusinessObject(moddleElement).$descriptor.name;
+      const typeAccessors = getEditableType(typeName).accessors;
+      return ({
+        element,
+        moddleElement,
+        language: typeAccessors.getLanguage(moddleElement),
+        value: typeAccessors.getValue(moddleElement),
 
-        // TODO consider to enable full text search trough code
-      }));
-
-    if (!searchValue) {
-      return searchableElements.map(({ item }) => item);
-    }
-
-    return search(searchableElements, searchValue, {
-      keys: [ 'label', 'id ' ],
-    }).map(({ item: { item } }) => item);
-
-    // TODO add flag for documents that are already open
+        // TODO add flag for documents that are already open
+      });
+    });
   });
 
   const handleOpen = useCallback(({ element, moddleElement, language, value }) => {
