@@ -71,10 +71,18 @@ function registerEditor(language, editor) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getEditableType: () => (/* binding */ getEditableType),
+/* harmony export */   getEditableTypes: () => (/* binding */ getEditableTypes),
 /* harmony export */   registerEditableType: () => (/* binding */ registerEditableType)
 /* harmony export */ });
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./lib/config.js");
 
+function getEditableTypes() {
+  return (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().types;
+}
+function getEditableType(typeName) {
+  return (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().types[typeName];
+}
 function registerEditableType(type, {
   // Options around the properties panel
   properties: {
@@ -181,6 +189,9 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getEditableType: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_1__.getEditableType),
+/* harmony export */   getEditableTypes: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_1__.getEditableTypes),
+/* harmony export */   getEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.getEditor),
 /* harmony export */   registerDefaultEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.registerDefaultEditor),
 /* harmony export */   registerEditableType: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_1__.registerEditableType),
 /* harmony export */   registerEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.registerEditor)
