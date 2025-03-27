@@ -6,7 +6,7 @@ import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 
 import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
 import { useModeler, useService } from './hooks';
-import { CLOSE_EDITOR, OPEN_SCRIPT } from './utils/events';
+import { CLOSE_EDITOR, OPEN_ELEMENT } from './utils/events';
 import { isLabel } from 'diagram-js/lib/util/ModelUtil';
 import { getEditableType, getEditableTypes } from '../lib';
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
@@ -51,7 +51,7 @@ const CodeEditorExtension = ({ subscribe }) => {
 
   useEffect(() => {
     if (eventBus) {
-      eventBus.on(OPEN_SCRIPT, handleOpenScript);
+      eventBus.on(OPEN_ELEMENT, handleOpenScript);
       return () => eventBus.off(handleOpenScript);
     }
   }, [ eventBus, handleOpenScript ]);
@@ -140,10 +140,9 @@ const CodeEditorExtension = ({ subscribe }) => {
   });
 
   const handleOpen = useCallback(({ element, moddleElement }) => {
-    eventBus.fire(OPEN_SCRIPT, {
-      element,
-      moddleElement,
-    });
+    if (eventBus) {
+      eventBus.fire(OPEN_ELEMENT, { element, moddleElement });
+    }
   });
 
   return <Fragment>

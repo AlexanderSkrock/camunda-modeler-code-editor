@@ -10,13 +10,8 @@ export const getValue = (element) => {
   return businessObject.get('script');
 };
 
-export const setValue = (commandStack, element, moddleElement, value) => {
-  commandStack.execute('element.updateModdleProperties', {
-    element,
-    moddleElement: moddleElement,
-    properties,
-  });
-  elementModifier({
+export const setValue = (elementModifier, element, moddleElement, value) => {
+  elementModifier(element, moddleElement, {
     script: value || ''
   });
 };

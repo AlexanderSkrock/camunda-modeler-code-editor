@@ -5,7 +5,6 @@ import { isTextFieldEntryEdited, TextFieldEntry } from '@bpmn-io/properties-pane
 
 import { getValue } from './accessors';
 import { entryIdSelector, groupIdSelector } from '../utils';
-import { OPEN_SCRIPT } from '../../utils/events';
 
 export const entrySelector = (element, groups) => {
   const businessObject = getBusinessObject(element);
@@ -21,28 +20,18 @@ export const entrySelector = (element, groups) => {
   return [ script ];
 };
 
-export const entryDecorator = (element, entry) => {
+export const entryDecorator = (element, entry, openElement) => {
   entry.component = Script;
   entry.isEdited = isTextFieldEntryEdited;
+  entry.openElement = openElement;
 };
 
-function Script({ element, idPrefix }) {
-  const eventBus = useService('eventBus');
+function Script({ element, idPrefix, openElement }) {
   const translate = useService('translate');
-
   const businessObject = getBusinessObject(element);
 
-  const onClick = () => {
-
-    // we need to have open script available in the api surface
-    eventBus.fire(OPEN_SCRIPT, {
-      element,
-      moddleElement: businessObject,
-    });
-  };
-
   return jsxs('div', {
-    onClick,
+    onClick: () => openElement(element, businessObject),
     children: [
       TextFieldEntry({
         element,

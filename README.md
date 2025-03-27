@@ -64,7 +64,7 @@ The implementation should align to the following structure:
 {
     properties: {
         entrySelector,  // (element, groups) => array of entries
-        entryDecorator, // (element, entry) => void
+        entryDecorator, // (element, entry, openElement) => void
     },
     search: {
         toSearchables   // (element) => array of moddle elements

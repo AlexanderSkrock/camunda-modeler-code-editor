@@ -1,8 +1,11 @@
 import { getEditableTypes } from '../../lib';
 
+import { OPEN_ELEMENT } from '../utils/events';
+
 export default class CodePropertiesProvider {
 
-  constructor(propertiesPanel) {
+  constructor(propertiesPanel, eventBus) {
+    this._eventBus = eventBus;
     propertiesPanel.registerProvider(200, this);
   }
 
@@ -10,9 +13,11 @@ export default class CodePropertiesProvider {
     return groups => {
       const typeProperties = Object.values(getEditableTypes()).map(type => type.properties).filter(p => !!p);
 
+      const openElement = (element, moddleElement) => this._eventBus.fire(OPEN_ELEMENT, { element, moddleElement });
+
       typeProperties.forEach(({ entrySelector, entryDecorator }) => {
         const entries = entrySelector(element, groups);
-        entries.forEach(entry => entryDecorator(element, entry));
+        entries.forEach(entry => entryDecorator(element, entry, openElement));
       });
 
       return groups;
@@ -20,4 +25,4 @@ export default class CodePropertiesProvider {
   }
 }
 
-CodePropertiesProvider.$inject = [ 'propertiesPanel' ];
+CodePropertiesProvider.$inject = [ 'propertiesPanel', 'eventBus' ];
