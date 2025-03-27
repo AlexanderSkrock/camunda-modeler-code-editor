@@ -133,12 +133,13 @@ const CodeEditorExtension = ({ subscribe }) => {
       const typeName = getBusinessObject(moddleElement).$descriptor.name;
       const typeAccessors = getEditableType(typeName).accessors;
       return ({
-        element,
-        moddleElement,
-        language: typeAccessors.getLanguage(moddleElement),
-        value: typeAccessors.getValue(moddleElement),
-
-        // TODO add flag for documents that are already open
+        item: {
+          element,
+          moddleElement,
+          language: typeAccessors.getLanguage(moddleElement),
+          value: typeAccessors.getValue(moddleElement),
+        },
+        disabled: editorDocuments.some(doc => doc.moddleElement === moddleElement)
       });
     });
   });

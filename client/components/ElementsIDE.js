@@ -25,6 +25,8 @@ const SearchResultContainer = ({ children }) => {
           <StructuredListCell head>
             Element
           </StructuredListCell>
+          <StructuredListCell head>
+          </StructuredListCell>
         </StructuredListRow>
       </StructuredListHead>
       <StructuredListBody>
@@ -34,9 +36,14 @@ const SearchResultContainer = ({ children }) => {
   );
 };
 
-const SearchResultItem = (onClick) => ({ item }) => (
+const SearchResultItem = (onClick) => ({ item, disabled }) => (
   <StructuredListRow>
-    <StructuredListCell onClick={ () => onClick(item) }>{ item.moddleElement.name || item.moddleElement.id }</StructuredListCell>
+    <StructuredListCell>
+      { item.moddleElement.name || item.moddleElement.id }
+    </StructuredListCell>
+    <StructuredListCell>
+      <Button renderIcon={ Add } hasIconOnly disabled={ disabled } onClick={ () => onClick(item) } />
+    </StructuredListCell>
   </StructuredListRow>
 );
 

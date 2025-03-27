@@ -51,7 +51,7 @@ export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, itemR
         <Search id={ searchFieldId } labelText="Search" value={ currentSearchValue } onKeyDown={ handleKeyDown } onChange={ handleSearchValuedChange } onClear={ handleClearSearch } />
         {
           itemContainerRenderer({
-            children: currentResultPage.map(item => (itemRenderer({ item })))
+            children: currentResultPage.map(item => (itemRenderer({ ...item }))),
           })
         }
         <PaginationNav page={ currentPage } totalItems={ numberOfPages } onChange={ setCurrentPage } />
