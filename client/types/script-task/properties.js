@@ -3,7 +3,7 @@ import { useService } from 'bpmn-js-properties-panel';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { isTextFieldEntryEdited, TextFieldEntry } from '@bpmn-io/properties-panel';
 
-import { getLanguage, getValue } from './accessors';
+import { getValue } from './accessors';
 import { entryIdSelector, groupIdSelector } from '../utils';
 import { OPEN_SCRIPT } from '../../utils/events';
 
@@ -38,8 +38,6 @@ function Script({ element, idPrefix }) {
     eventBus.fire(OPEN_SCRIPT, {
       element,
       moddleElement: businessObject,
-      language: getLanguage,
-      value: getValue(businessObject),
     });
   };
 

@@ -28,7 +28,10 @@ const CodeEditorExtension = ({ subscribe }) => {
   const [ modeler ] = useModeler({ subscribe, useCallback, useEffect, useState });
   const [ eventBus, elementRegistry, commandStack ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry', 'commandStack' ], useMemo });
 
-  const handleOpenScript = useCallback(({ element, moddleElement, language, value }) => {
+  const handleOpenScript = useCallback(({ element, moddleElement }) => {
+    const typeName = getBusinessObject(moddleElement).$descriptor.name;
+    const typeAccessors = getEditableType(typeName).accessors;
+
     setEditorDocuments(documents => {
       if (documents.some(e => e.moddleElement === moddleElement)) {
         return documents;
@@ -38,8 +41,8 @@ const CodeEditorExtension = ({ subscribe }) => {
         {
           element,
           moddleElement,
-          language,
-          value
+          language: typeAccessors.getLanguage(moddleElement),
+          value: typeAccessors.getValue(moddleElement),
         }
       ];
     });
@@ -140,10 +143,11 @@ const CodeEditorExtension = ({ subscribe }) => {
     });
   });
 
-  const handleOpen = useCallback(({ element, moddleElement, language, value }) => {
-
-    // Oder die Werte aus hier aus dem moddleElement ermitteln?
-    handleOpenScript({ element, moddleElement, language, value });
+  const handleOpen = useCallback(({ element, moddleElement }) => {
+    eventBus.fire(OPEN_SCRIPT, {
+      element,
+      moddleElement,
+    });
   });
 
   return <Fragment>
