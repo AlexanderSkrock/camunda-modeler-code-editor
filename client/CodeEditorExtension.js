@@ -10,7 +10,6 @@ import { CLOSE_EDITOR, OPEN_SCRIPT } from './utils/events';
 import { isLabel } from 'diagram-js/lib/util/ModelUtil';
 import { getEditableType, getEditableTypes } from '../lib';
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
-import {getType} from "diagram-js/lib/util/Elements";
 
 /**
  * The component props include everything the Application offers plugins,

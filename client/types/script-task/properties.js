@@ -1,8 +1,11 @@
+import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
+import { useService } from 'bpmn-js-properties-panel';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
-import { isTextFieldEntryEdited } from '@bpmn-io/properties-panel';
+import { isTextFieldEntryEdited, TextFieldEntry } from '@bpmn-io/properties-panel';
 
-import { Script } from '../../bpmn-js/props/ScriptProps';
-import { entryIdSelector, groupIdSelector } from '../utils/properties';
+import { getLanguage, getValue } from './accessors';
+import { entryIdSelector, groupIdSelector } from '../utils';
+import { OPEN_SCRIPT } from '../../utils/events';
 
 export const entrySelector = (element, groups) => {
   const businessObject = getBusinessObject(element);
@@ -22,3 +25,38 @@ export const entryDecorator = entry => {
   entry.component = Script;
   entry.isEdited = isTextFieldEntryEdited;
 };
+
+function Script({ element, idPrefix }) {
+  const eventBus = useService('eventBus');
+  const translate = useService('translate');
+
+  const businessObject = getBusinessObject(element);
+
+  const onClick = () => {
+
+    // we need to have open script available in the api surface
+    eventBus.fire(OPEN_SCRIPT, {
+      element,
+      moddleElement: businessObject,
+      language: getLanguage,
+      value: getValue(businessObject),
+    });
+  };
+
+  return jsxs('div', {
+    onClick,
+    children: [
+      TextFieldEntry({
+        element,
+        id: idPrefix + 'scriptValue',
+        label: translate('Script'),
+        disabled: true,
+        getValue: () => getValue(businessObject),
+        setValue: () => {},
+        debounce: func => func,
+        description: translate('Click to edit')
+      })
+    ]
+  });
+
+}
