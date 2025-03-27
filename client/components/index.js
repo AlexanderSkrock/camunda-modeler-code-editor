@@ -1,4 +1,3 @@
-export { default as DefaultCodeEditor } from './DefaultCodeEditor';
 export { default as ElementsIDE } from './ElementsIDE';
 export {
   default as Modal,

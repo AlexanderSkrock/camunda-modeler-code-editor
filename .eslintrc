@@ -5,6 +5,28 @@
   "env": {
     "es2020": true
   },
+  "rules": {
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": "./lib",
+            "from": [ "default-implementation", "client" ],
+            "message": "library functionality should be self-contained"
+          },
+          {
+            "target": "./default-implementation",
+            "from": [ "client" ],
+            "message": "type implementations should only depend on the library"
+          }
+        ]
+      }
+    ]
+  },
+  "plugins": [
+    "eslint-plugin-import"
+  ],
   "extends": [
     "plugin:bpmn-io/jsx",
     "plugin:bpmn-io/node",

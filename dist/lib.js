@@ -73,7 +73,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   getEditableType: () => (/* binding */ getEditableType),
 /* harmony export */   getEditableTypes: () => (/* binding */ getEditableTypes),
-/* harmony export */   registerEditableType: () => (/* binding */ registerEditableType)
+/* harmony export */   registerEditableType: () => (/* binding */ registerEditableType),
+/* harmony export */   registerEditableTypes: () => (/* binding */ registerEditableTypes)
 /* harmony export */ });
 /* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./lib/config.js");
 
@@ -85,6 +86,11 @@ function getEditableType(typeName) {
 }
 function registerEditableType(type, typeImplementation) {
   (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().types[type] = typeImplementation;
+}
+function registerEditableTypes(typeToImplementation) {
+  Object.entries(typeToImplementation).forEach(([typeName, implementation]) => {
+    registerEditableType(typeName, implementation);
+  });
 }
 
 /***/ })
