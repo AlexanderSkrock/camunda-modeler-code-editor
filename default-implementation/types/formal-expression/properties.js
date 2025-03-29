@@ -7,35 +7,36 @@ import { getValue } from './accessors';
 import { entryIdSelector, groupIdSelector } from '../utils';
 
 export const entrySelector = (element, groups) => {
-    if (is(element, 'bpmn:SequenceFlow')) {
-        const businessObject = getBusinessObject(element);
-        const conditionExpression = businessObject.get('conditionExpression');
+  if (getSequenceFlowConditonExpression(element)) {
+    const group = groupIdSelector('CamundaPlatform__Condition')(groups);
+    const entry = entryIdSelector('conditionScriptValue')(group.entries);
+    return [ entry ];
+  }
 
-        if (conditionExpression) {
-          const resource = conditionExpression.get('camunda:resource');
-          if (typeof resource === 'undefined') {
+  if (getConditionalEventCondition(element)) {
+    const group = groupIdSelector('CamundaPlatform__Condition')(groups);
+    const entry = entryIdSelector('conditionScriptValue')(group.entries);
+    return [ entry ];
+  }
 
-            // no inline script but a resource
-            const group = groupIdSelector('CamundaPlatform__Condition')(groups);
-            const entry = entryIdSelector('conditionScriptValue')(group.entries);
-            return [ entry ];
-          }
-        }
-    }
-
-    return [];
+  return [];
 };
 
 export const entryDecorator = (element, entry, openElement) => {
-    entry.component = FormalExpression;
+  if (getSequenceFlowConditonExpression(element)) {
+    entry.component = SequenceFlowConditionExpression;
     entry.isEdited = isTextFieldEntryEdited;
     entry.openElement = openElement;
+  } else if (getConditionalEventCondition(element)) {
+    entry.component = ConditionalEventCondition;
+    entry.isEdited = isTextFieldEntryEdited;
+    entry.openElement = openElement;
+  }
 };
 
-function FormalExpression({ element, openElement }) {
+function SequenceFlowConditionExpression({ element, openElement }) {
   const translate = useService('translate');
-  const businessObject = getBusinessObject(element)
-  const conditionExpression = businessObject.get('conditionExpression');;
+  const conditionExpression = getSequenceFlowConditonExpression(element);
 
   return jsxs('div', {
     onClick: () => openElement(element, conditionExpression),
@@ -52,5 +53,56 @@ function FormalExpression({ element, openElement }) {
       })
     ]
   });
+}
 
+function ConditionalEventCondition({ element, openElement }) {
+  const translate = useService('translate');
+  const condition = getConditionalEventCondition(element);
+
+  return jsxs('div', {
+    onClick: () => openElement(element, condition),
+    children: [
+      TextFieldEntry({
+        element,
+        id: 'conditionScriptValue',
+        label: translate('Script'),
+        disabled: true,
+        getValue: () => getValue(condition),
+        setValue: () => {},
+        debounce: func => func,
+        description: translate('Click to edit')
+      })
+    ]
+  });
+}
+
+function getSequenceFlowConditonExpression(element) {
+  if (is(element, 'bpmn:SequenceFlow')) {
+    const businessObject = getBusinessObject(element);
+    const conditionExpression = businessObject.get('conditionExpression');
+
+    if (conditionExpression) {
+      const resource = conditionExpression.get('camunda:resource');
+      if (typeof resource === 'undefined') {
+        return conditionExpression;
+      }
+    }
+  }
+  return null;
+}
+
+function getConditionalEventCondition(element) {
+  if (is(element, 'bpmn:Event')) {
+    const businessObject = getBusinessObject(element);
+    const eventDefinitions = businessObject.get('eventDefinitions') || [];
+    const conditionalEventDefinition = eventDefinitions.find(definition => is(definition, 'bpmn:ConditionalEventDefinition'));
+    if (conditionalEventDefinition) {
+      const condition = conditionalEventDefinition.get('condition');
+      const resource = condition.get('camunda:resource');
+      if (typeof resource === 'undefined') {
+        return condition;
+      }
+    }
+  }
+  return null;
 }
