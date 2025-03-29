@@ -1,5 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-import React, { Fragment, useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+
+import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
+
+import { getEditableType } from '../../lib';
 
 import {
   Button,
@@ -16,6 +20,7 @@ import { Add } from '@carbon/icons-react';
 import { getEditor } from '../../lib';
 
 import { SearchModal } from './';
+import { getType } from '../utils/elements';
 
 const SearchResultContainer = ({ children }) => {
   return (
@@ -24,6 +29,12 @@ const SearchResultContainer = ({ children }) => {
         <StructuredListRow head>
           <StructuredListCell head>
             Element
+          </StructuredListCell>
+          <StructuredListCell head>
+            Type
+          </StructuredListCell>
+          <StructuredListCell head>
+            Language
           </StructuredListCell>
           <StructuredListCell head>
           </StructuredListCell>
@@ -39,7 +50,13 @@ const SearchResultContainer = ({ children }) => {
 const SearchResultItem = (onClick) => ({ item, disabled }) => (
   <StructuredListRow>
     <StructuredListCell>
-      { item.moddleElement.name || item.moddleElement.id }
+      { getLabel(item.element) || item.element.id }
+    </StructuredListCell>
+    <StructuredListCell>
+      { getType(item.moddleElement) }
+    </StructuredListCell>
+    <StructuredListCell>
+      { getEditableType(getType(item.moddleElement)).accessors.getLanguage(item.moddleElement) }
     </StructuredListCell>
     <StructuredListCell>
       <Button renderIcon={ Add } hasIconOnly disabled={ disabled } onClick={ () => onClick(item) } />

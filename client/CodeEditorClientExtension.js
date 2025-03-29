@@ -6,6 +6,7 @@ import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 
 import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
 import { useModeler, useService } from './hooks';
+import { getType } from './utils/elements';
 import { CLOSE_EDITOR, OPEN_ELEMENT } from './utils/events';
 import { isLabel } from 'diagram-js/lib/util/ModelUtil';
 import { getEditableType, getEditableTypes } from '../lib';
@@ -29,7 +30,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
   const [ eventBus, elementRegistry, commandStack ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry', 'commandStack' ], useMemo });
 
   const handleOpenScript = useCallback(({ element, moddleElement }) => {
-    const typeName = getBusinessObject(moddleElement).$descriptor.name;
+    const typeName = getType(moddleElement);
     const typeAccessors = getEditableType(typeName).accessors;
 
     setEditorDocuments(documents => {
@@ -68,7 +69,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
     if (eventBus) {
       editorDocuments.forEach(({ element, moddleElement, value }) => {
 
-        const typeName = getBusinessObject(moddleElement).$descriptor.name;
+        const typeName = getType(moddleElement);
         getEditableType(typeName).accessors.setValue(modifyElement, element, moddleElement, value);
       });
       eventBus.fire(CLOSE_EDITOR);
@@ -94,7 +95,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
       const removedDocuments = copyDocuments.splice(index, 1);
       if (eventBus) {
         removedDocuments.forEach(({ element, moddleElement, value }) => {
-          const typeName = getBusinessObject(moddleElement).$descriptor.name;
+          const typeName = getType(moddleElement);
           getEditableType(typeName).accessors.setValue(modifyElement, element, moddleElement, value);
         });
       }
@@ -125,7 +126,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
       : searchableElements;
 
     return filteredElements.map(({ element, moddleElement }) => {
-      const typeName = getBusinessObject(moddleElement).$descriptor.name;
+      const typeName = getType(moddleElement);
       const typeAccessors = getEditableType(typeName).accessors;
       return ({
         item: {
