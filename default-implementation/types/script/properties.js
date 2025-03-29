@@ -2,20 +2,32 @@ import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
 import { useService } from 'bpmn-js-properties-panel';
 import { isTextFieldEntryEdited, TextFieldEntry } from '@bpmn-io/properties-panel';
 
-import { getScripts } from './utils';
+import { getExecutionListenerScripts, getTaskListenerScripts } from './utils';
 import { getValue } from './accessors';
 import { groupIdSelector, entryIdSuffixSelector } from '../utils';
 
 export const entrySelector = (element, groups) => {
-  const scripts = getScripts(element);
-  if (scripts && scripts.length > 0) {
-    const group = groupIdSelector('CamundaPlatform__ExecutionListener')(groups);
+  const entries = [];
 
-    return group.items.flatMap(item => {
+  const executionListenerScripts = getExecutionListenerScripts(element);
+  if (executionListenerScripts && executionListenerScripts.length > 0) {
+    const group = groupIdSelector('CamundaPlatform__ExecutionListener')(groups);
+    const scriptEntries = group.items.flatMap(item => {
       return entryIdSuffixSelector('scriptValue')(item.entries);
     });
+    entries.push(...scriptEntries);
   }
-  return [];
+
+  const taskListenerScripts = getTaskListenerScripts(element);
+  if (taskListenerScripts && taskListenerScripts.length > 0) {
+    const group = groupIdSelector('CamundaPlatform__TaskListener')(groups);
+    const scriptEntries = group.items.flatMap(item => {
+      return entryIdSuffixSelector('scriptValue')(item.entries);
+    });
+    entries.push(...scriptEntries);
+  }
+
+  return entries;
 };
 
 export const entryDecorator = (element, entry, openElementInEditor) => {

@@ -12,6 +12,6 @@ export const entryIdSelector = (entryId) => {
 
 export const entryIdSuffixSelector = (suffix) => {
   return (entries) => {
-    return entries.find(entry => entry.id.endsWith(suffix));
+    return entries.filter(entry => entry.id.endsWith(suffix));
   };
 };

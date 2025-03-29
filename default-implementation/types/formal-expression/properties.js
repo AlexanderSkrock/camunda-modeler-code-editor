@@ -22,24 +22,24 @@ export const entrySelector = (element, groups) => {
   return [];
 };
 
-export const entryDecorator = (element, entry, openElement) => {
+export const entryDecorator = (element, entry, openElementInEditor) => {
   if (getSequenceFlowConditonExpression(element)) {
     entry.component = SequenceFlowConditionExpression;
     entry.isEdited = isTextFieldEntryEdited;
-    entry.openElement = openElement;
+    entry.openElementInEditor = openElementInEditor;
   } else if (getConditionalEventCondition(element)) {
     entry.component = ConditionalEventCondition;
     entry.isEdited = isTextFieldEntryEdited;
-    entry.openElement = openElement;
+    entry.openElementInEditor = openElementInEditor;
   }
 };
 
-function SequenceFlowConditionExpression({ element, openElement }) {
+function SequenceFlowConditionExpression({ element, openElementInEditor }) {
   const translate = useService('translate');
   const conditionExpression = getSequenceFlowConditonExpression(element);
 
   return jsxs('div', {
-    onClick: () => openElement(element, conditionExpression),
+    onClick: () => openElementInEditor(element, conditionExpression),
     children: [
       TextFieldEntry({
         element,

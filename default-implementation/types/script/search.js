@@ -1,9 +1,17 @@
-import { getScripts } from './utils';
+import { getExecutionListenerScripts, getTaskListenerScripts } from './utils';
 
 export const toSearchables = (element) => {
-  const scripts = getScripts(element);
-  if (scripts && scripts.length > 0) {
-    return scripts;
+  const scripts = [];
+ 
+  const executionListenerScripts = getExecutionListenerScripts(element);
+  if (executionListenerScripts && executionListenerScripts.length > 0) {
+    scripts.push(...executionListenerScripts);
   }
-  return [];
+
+  const taskListenerScripts = getTaskListenerScripts(element);
+  if (taskListenerScripts && taskListenerScripts.length > 0) {
+    scripts.push(...taskListenerScripts);
+  }
+
+  return scripts;
 };
