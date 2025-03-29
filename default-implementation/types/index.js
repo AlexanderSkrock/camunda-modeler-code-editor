@@ -1,5 +1,7 @@
-import ScriptTask from './script-task';
+import ScriptTask, { type as scriptTaskType } from './script-task';
+import FormalExpression, { type as formalExpressionType } from './formal-expression';
 
 export default {
-  'bpmn:ScriptTask': ScriptTask,
+  [scriptTaskType]: ScriptTask,
+  [formalExpressionType]: FormalExpression,
 };
