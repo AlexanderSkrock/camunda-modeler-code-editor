@@ -10,8 +10,12 @@ import { getScript } from './utils';
 export const entrySelector = (element, groups) => {
   if (getScript(element)) {
     const group = groupIdSelector('CamundaPlatform__Script')(groups);
-    const script = entryIdSelector('scriptValue')(group.entries);
-    return [ script ];
+    if (group) {
+      const entry = entryIdSelector('scriptValue')(group.entries);
+      if (entry) {
+        return [ entry ];
+      }
+    }
   }
   return [];
 };

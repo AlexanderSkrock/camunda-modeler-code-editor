@@ -9,14 +9,22 @@ import { entryIdSelector, groupIdSelector } from '../utils';
 export const entrySelector = (element, groups) => {
   if (getSequenceFlowConditonExpression(element)) {
     const group = groupIdSelector('CamundaPlatform__Condition')(groups);
-    const entry = entryIdSelector('conditionScriptValue')(group.entries);
-    return [ entry ];
+    if (group) {
+      const entry = entryIdSelector('conditionScriptValue')(group.entries);
+      if (entry) {
+        return [ entry ];
+      }
+    }
   }
 
   if (getConditionalEventCondition(element)) {
     const group = groupIdSelector('CamundaPlatform__Condition')(groups);
-    const entry = entryIdSelector('conditionScriptValue')(group.entries);
-    return [ entry ];
+    if (group) {
+      const entry = entryIdSelector('conditionScriptValue')(group.entries);
+      if (entry) {
+        return [ entry ];
+      }
+    }
   }
 
   return [];

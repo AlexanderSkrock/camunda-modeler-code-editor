@@ -6,9 +6,12 @@ export function getSequenceFlowConditonExpression(element) {
     const conditionExpression = businessObject.get('conditionExpression');
 
     if (conditionExpression) {
-      const resource = conditionExpression.get('camunda:resource');
-      if (typeof resource === 'undefined') {
-        return conditionExpression;
+      const language = conditionExpression.get('language');
+      if (typeof language !== 'undefined') {
+        const resource = conditionExpression.get('camunda:resource');
+        if (typeof resource === 'undefined') {
+          return conditionExpression;
+        }
       }
     }
   }
