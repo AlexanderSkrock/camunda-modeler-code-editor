@@ -3,7 +3,6 @@ import { useService } from 'bpmn-js-properties-panel';
 import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 import { isTextFieldEntryEdited, TextFieldEntry } from '@bpmn-io/properties-panel';
 
-import { type } from './';
 import { getValue } from './accessors';
 import { entryIdSelector, groupIdSelector } from '../utils';
 
