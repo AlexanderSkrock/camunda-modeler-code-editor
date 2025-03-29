@@ -1,17 +1,16 @@
-import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
+import { getConditionalEventCondition, getSequenceFlowConditonExpression } from './utils';
 
 export const toSearchables = (element) => {
-  if (is(element, 'bpmn:SequenceFlow')) {
-    const businessObject = getBusinessObject(element);
-    const conditionExpression = businessObject.get('conditionExpression');
-    if (conditionExpression) {
-      const resource = conditionExpression.get('camunda:resource');
-      if (typeof resource === 'undefined') {
+  const searchable = [];
 
-        // inline script
-        return [ conditionExpression ];
-      }
-    }
+  const sequenceFlowConditionExpression = getSequenceFlowConditonExpression(element);
+  if (sequenceFlowConditionExpression) {
+    searchable.push(sequenceFlowConditionExpression);
   }
-  return [];
+
+  const conditionalEventCondition = getConditionalEventCondition(element);
+  if (conditionalEventCondition) {
+    searchable.push(conditionalEventCondition);
+  }
+  return searchable;
 };

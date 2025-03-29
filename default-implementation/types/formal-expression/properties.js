@@ -1,9 +1,9 @@
 import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
 import { useService } from 'bpmn-js-properties-panel';
-import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 import { isTextFieldEntryEdited, TextFieldEntry } from '@bpmn-io/properties-panel';
 
 import { getValue } from './accessors';
+import { getConditionalEventCondition, getSequenceFlowConditonExpression } from './utils';
 import { entryIdSelector, groupIdSelector } from '../utils';
 
 export const entrySelector = (element, groups) => {
@@ -74,35 +74,4 @@ function ConditionalEventCondition({ element, openElement }) {
       })
     ]
   });
-}
-
-function getSequenceFlowConditonExpression(element) {
-  if (is(element, 'bpmn:SequenceFlow')) {
-    const businessObject = getBusinessObject(element);
-    const conditionExpression = businessObject.get('conditionExpression');
-
-    if (conditionExpression) {
-      const resource = conditionExpression.get('camunda:resource');
-      if (typeof resource === 'undefined') {
-        return conditionExpression;
-      }
-    }
-  }
-  return null;
-}
-
-function getConditionalEventCondition(element) {
-  if (is(element, 'bpmn:Event')) {
-    const businessObject = getBusinessObject(element);
-    const eventDefinitions = businessObject.get('eventDefinitions') || [];
-    const conditionalEventDefinition = eventDefinitions.find(definition => is(definition, 'bpmn:ConditionalEventDefinition'));
-    if (conditionalEventDefinition) {
-      const condition = conditionalEventDefinition.get('condition');
-      const resource = condition.get('camunda:resource');
-      if (typeof resource === 'undefined') {
-        return condition;
-      }
-    }
-  }
-  return null;
 }
