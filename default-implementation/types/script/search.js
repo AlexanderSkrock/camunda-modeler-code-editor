@@ -1,4 +1,4 @@
-import { getExecutionListenerScripts, getInputScripts, getTaskListenerScripts } from './utils';
+import { getExecutionListenerScripts, getInputScripts, getOutputScripts, getTaskListenerScripts } from './utils';
 
 export const toSearchables = (element) => {
   const scripts = [];
@@ -16,6 +16,11 @@ export const toSearchables = (element) => {
   const inputScripts = getInputScripts(element);
   if (inputScripts && inputScripts.length > 0) {
     scripts.push(...inputScripts);
+  }
+
+  const outputScripts = getOutputScripts(element);
+  if (outputScripts && outputScripts.length > 0) {
+    scripts.push(...outputScripts);
   }
 
   return scripts;

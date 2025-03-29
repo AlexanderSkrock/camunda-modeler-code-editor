@@ -2,7 +2,7 @@ import { jsxs } from '@bpmn-io/properties-panel/preact/jsx-runtime';
 import { useService } from 'bpmn-js-properties-panel';
 import { isTextFieldEntryEdited, TextFieldEntry } from '@bpmn-io/properties-panel';
 
-import { getExecutionListenerScripts, getInputScripts, getTaskListenerScripts } from './utils';
+import { getExecutionListenerScripts, getInputScripts, getOutputScripts, getTaskListenerScripts } from './utils';
 import { getValue } from './accessors';
 import { groupIdSelector, entryIdSuffixSelector } from '../utils';
 
@@ -34,6 +34,17 @@ export const entrySelector = (element, groups) => {
   const inputScripts = getInputScripts(element);
   if (inputScripts && inputScripts.length > 0) {
     const group = groupIdSelector('CamundaPlatform__Input')(groups);
+    if (group) {
+      const scriptEntries = group.items.flatMap(item => {
+        return entryIdSuffixSelector('scriptValue')(item.entries);
+      });
+      entries.push(...scriptEntries);
+    }
+  }
+
+  const outputScripts = getOutputScripts(element);
+  if (outputScripts && outputScripts.length > 0) {
+    const group = groupIdSelector('CamundaPlatform__Output')(groups);
     if (group) {
       const scriptEntries = group.items.flatMap(item => {
         return entryIdSuffixSelector('scriptValue')(item.entries);

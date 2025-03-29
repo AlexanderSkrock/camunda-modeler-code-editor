@@ -25,6 +25,15 @@ export function getInputScripts(element) {
     .filter(script => typeof script.get('camunda:resource') === 'undefined');
 }
 
+export function getOutputScripts(element) {
+  return getExtensionElements(element)
+    .filter(e => is(e, 'camunda:InputOutput'))
+    .flatMap(inputOutput => inputOutput.get('outputParameters') || [])
+    .map(input => input.get('definition'))
+    .filter(inputDefinition => is(inputDefinition, 'camunda:Script'))
+    .filter(script => typeof script.get('camunda:resource') === 'undefined');
+}
+
 function getExtensionElements(element) {
   const businessObject = getBusinessObject(element);
   const extensionElements = businessObject.get('extensionElements');
