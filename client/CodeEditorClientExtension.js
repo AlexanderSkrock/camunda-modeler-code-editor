@@ -2,15 +2,15 @@
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import search from 'diagram-js/lib/features/search/search';
-import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
+import { isLabel } from 'diagram-js/lib/util/ModelUtil';
+import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
+
+import { getEditableType, getEditableTypes } from '../lib';
 
 import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
 import { useModeler, useService } from './hooks';
 import { getType } from './utils/elements';
 import { CLOSE_EDITOR, OPEN_ELEMENT } from './utils/events';
-import { isLabel } from 'diagram-js/lib/util/ModelUtil';
-import { getEditableType, getEditableTypes } from '../lib';
-import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
 /**
  * The component props include everything the Application offers plugins,
@@ -113,7 +113,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
           return typeDefinition.search.toSearchables(e).map(s => ({
             element: e,
             moddleElement: s,
-            id: getBusinessObject(e).id,
+            id: e.id,
             label: getLabel(e),
           }));
         });

@@ -94,18 +94,11 @@ export default ({ elements, onChange, onOpen, onClose, onSearch }) => {
       <Tabs selectedIndex={ selectedIndex } onChange={ handleTabChange } dismissable onTabCloseRequest={ handleTabCloseRequested }>
         <TabList>
           {
-
-            // add static tab to open new files
             elements.map((element, idx) => {
-              const identifier = element.moddleElement.id;
-              const displayName = element.moddleElement.name;
-              return (
+              const elementName = getLabel(element.element) || element.element.id;
 
-              // add dot on modified tabs
-                <Tab key={ idx }>
-                  { displayName || identifier }
-                </Tab>
-              );
+              // TODO add dot on modified tabs
+              return <Tab key={ idx }>{ elementName }</Tab>;
             })
           }
           <Button renderIcon={ Add } iconDescription="Open" hasIconOnly onClick={ () => setSearchOpen(true) } />
