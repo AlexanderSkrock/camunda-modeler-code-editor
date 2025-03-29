@@ -1,4 +1,8 @@
 export default ({ subscribe, useCallback, useEffect, useState }) => {
+  const [ , setBpmnModelerCreatedSubscribtion ] = useState();
+  const [ , setDmnModelerCreatedSubscribtion ] = useState();
+  const [ , setActiveTabChangedSubscription ] = useState();
+
   const [ activeModeler, setActiveModeler ] = useState();
   const [ tabModelers, setTabModelers ] = useState([]);
 
@@ -8,25 +12,47 @@ export default ({ subscribe, useCallback, useEffect, useState }) => {
       ...prevTabModeler,
       [tab.id]: modeler,
     }));
-  }, []);
+  }, [ setActiveModeler, setTabModelers ]);
 
-  useEffect(() => {
-    subscribe('bpmn.modeler.created', ({ modeler, tab }) => {
-      initModeler({ modeler, tab });
-    });
+  const handleTabChanged = useCallback((tab) => {
+    const activeTabId = tab.activeTab.id;
 
-    subscribe('dmn.modeler.created', ({ modeler, tab }) => {
-      initModeler({ modeler, tab });
-    });
-
-    subscribe('app.activeTabChanged', tab => {
-      const activeTabId = tab.activeTab.id;
+    setTabModelers(prevTabModeler => {
       const activeTabModeler = tabModelers[activeTabId];
       if (activeTabModeler) {
         setActiveModeler(activeTabModeler);
       }
+      return prevTabModeler;
     });
-  }, []);
+  }, [ tabModelers, setTabModelers, setActiveModeler ]);
+
+  useEffect(() => {
+    setBpmnModelerCreatedSubscribtion(prevSubscription => {
+      if (prevSubscription) {
+        prevSubscription.cancel();
+      }
+      return subscribe('bpmn.modeler.created', ({ modeler, tab }) => initModeler({ modeler, tab }));
+    });
+  }, [ initModeler ]);
+
+  useEffect(() => {
+    setDmnModelerCreatedSubscribtion(prevSubscription => {
+      if (prevSubscription) {
+        prevSubscription.cancel();
+      }
+      return subscribe('dmn.modeler.created', ({ modeler, tab }) => initModeler({ modeler, tab }));
+    });
+
+  }, [ initModeler ]);
+
+  useEffect(() => {
+    setActiveTabChangedSubscription(prevSubscription => {
+      if (prevSubscription) {
+        prevSubscription.cancel();
+      }
+      return subscribe('app.activeTabChanged', handleTabChanged);
+    });
+  }, [ handleTabChanged ]);
 
   return [ activeModeler ];
 };
