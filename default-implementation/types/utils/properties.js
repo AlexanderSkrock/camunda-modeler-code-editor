@@ -9,3 +9,9 @@ export const entryIdSelector = (entryId) => {
     return entries.find(entry => entry.id === entryId);
   };
 };
+
+export const entryIdSuffixSelector = (suffix) => {
+  return (entries) => {
+    return entries.find(entry => entry.id.endsWith(suffix));
+  };
+};

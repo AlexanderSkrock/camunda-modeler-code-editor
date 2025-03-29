@@ -5,7 +5,7 @@ export function getScript(element) {
     const businessObject = getBusinessObject(element);
     const scriptValue = businessObject.get('script');
     if (typeof scriptValue !== 'undefined') {
-      return scriptValue;
+      return businessObject;
     }
   }
   return null;
