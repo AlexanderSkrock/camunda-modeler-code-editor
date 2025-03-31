@@ -9,8 +9,10 @@ import { getEditableType, getEditableTypes } from '../lib';
 
 import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
 import { useModeler, useService } from './hooks';
-import { getType } from './utils/elements';
+import {getRootElement, getScope, getType} from './utils/elements';
 import { CLOSE_EDITOR, OPEN_ELEMENT } from './utils/events';
+import { getVariablesForScope } from "@bpmn-io/extract-process-variables";
+import { getBusinessObject } from "bpmn-js/lib/util/ModelUtil";
 
 /**
  * The component props include everything the Application offers plugins,
@@ -146,11 +148,25 @@ const CodeEditorClientExtension = ({ subscribe }) => {
     }
   });
 
+  const getElementScope = useCallback(async (element) => {
+
+    // implementation reference: https://github.com/bpmn-io/bpmn-js-properties-panel/blob/main/src/provider/camunda-platform/properties/ProcessVariablesProps.js
+    const businessObject = getBusinessObject(element);
+    const rootElement = getRootElement(businessObject);
+    const scope = getScope(element);
+
+    const variables = await getVariablesForScope(scope, rootElement);
+
+    return {
+      variables: variables.map(variable => variable.name),
+    };
+  }, []);
+
   return <Fragment>
     <Modal open={ isCodeEditorOpen } onClose={ handleModalClose }>
       <ModalHeader>Code Editor</ModalHeader>
       <ModalBody>
-        <ElementsIDE elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
+        <ElementsIDE elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } getScope={ getElementScope } />
       </ModalBody>
     </Modal>
   </Fragment>;

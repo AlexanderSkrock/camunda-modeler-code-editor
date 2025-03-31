@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
@@ -64,7 +64,7 @@ const SearchResultItem = (onClick) => ({ item, disabled }) => (
   </StructuredListRow>
 );
 
-export default ({ elements, onChange, onOpen, onClose, onSearch }) => {
+export default ({ elements, onChange, onOpen, onClose, onSearch, getScope }) => {
   const [ searchOpen, setSearchOpen ] = useState(false);
 
   const [ selectedIndex, selectIndex ] = useState(0);
@@ -73,6 +73,16 @@ export default ({ elements, onChange, onOpen, onClose, onSearch }) => {
       selectIndex(0);
     }
   }, [ elements, selectIndex ]);
+
+  const [ elementScope, setElementScope ] = useState({});
+  useEffect(async () => {
+    const currentElement = elements[selectedIndex];
+    if (!currentElement) {
+      return setElementScope({});
+    }
+    const scope = await getScope(currentElement.element);
+    setElementScope(scope);
+  }, [ elements, selectedIndex, getScope ]);
 
   const handleTabChange = useCallback(({ selectedIndex }) => {
     selectIndex(selectedIndex);
@@ -121,7 +131,15 @@ export default ({ elements, onChange, onOpen, onClose, onSearch }) => {
               const EditorComponent = getEditor(language);
               return (
                 <TabPanel key={ idx }>
-                  <EditorComponent width="100%" heiht="100%" element={ element } moddleElement={ moddleElement } language={ language } value={ value } onChange={ handleEditorChange } />
+                  <EditorComponent
+                    width="100%"
+                    heiht="100%"
+                    element={ element }
+                    moddleElement={ moddleElement }
+                    language={ language }
+                    value={ value }
+                    onChange={ handleEditorChange }
+                    scope={ elementScope } />
                 </TabPanel>
               );
             })
