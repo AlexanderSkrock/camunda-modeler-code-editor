@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modele
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
-import { getEditableType } from '../../lib';
+import {getEditableType, getScopeProvider} from '../../lib';
 
 import {
   Button,
@@ -80,7 +80,8 @@ export default ({ elements, onChange, onOpen, onClose, onSearch, getScope }) => 
     if (!currentElement) {
       return setElementScope({});
     }
-    const scope = await getScope(currentElement.element);
+    const scopeProvider = getScopeProvider();
+    const scope = await scopeProvider(currentElement.element);
     setElementScope(scope);
   }, [ elements, selectedIndex, getScope ]);
 

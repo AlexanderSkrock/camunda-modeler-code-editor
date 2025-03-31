@@ -25,7 +25,8 @@ __webpack_require__.r(__webpack_exports__);
 const DEFAULT_CONFIG = {
   defaultEditor: null,
   editors: {},
-  types: {}
+  types: {},
+  scopeProvider: null
 };
 function ensureConfig() {
   if (!globalThis['code-editor']) {
@@ -59,6 +60,28 @@ function registerDefaultEditor(defaultEditor) {
 }
 function registerEditor(language, editor) {
   (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().editors[language] = editor;
+}
+
+/***/ }),
+
+/***/ "./lib/scope.js":
+/*!**********************!*\
+  !*** ./lib/scope.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getScopeProvider: () => (/* binding */ getScopeProvider),
+/* harmony export */   registerScopeProvider: () => (/* binding */ registerScopeProvider)
+/* harmony export */ });
+/* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./config */ "./lib/config.js");
+
+function getScopeProvider() {
+  return (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().scopeProvider;
+}
+function registerScopeProvider(provider) {
+  (0,_config__WEBPACK_IMPORTED_MODULE_0__.ensureConfig)().scopeProvider = provider;
 }
 
 /***/ }),
@@ -159,15 +182,20 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   getEditableType: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_1__.getEditableType),
-/* harmony export */   getEditableTypes: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_1__.getEditableTypes),
+/* harmony export */   getEditableType: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.getEditableType),
+/* harmony export */   getEditableTypes: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.getEditableTypes),
 /* harmony export */   getEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.getEditor),
+/* harmony export */   getScopeProvider: () => (/* reexport safe */ _scope__WEBPACK_IMPORTED_MODULE_1__.getScopeProvider),
 /* harmony export */   registerDefaultEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.registerDefaultEditor),
-/* harmony export */   registerEditableType: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_1__.registerEditableType),
-/* harmony export */   registerEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.registerEditor)
+/* harmony export */   registerEditableType: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.registerEditableType),
+/* harmony export */   registerEditableTypes: () => (/* reexport safe */ _types__WEBPACK_IMPORTED_MODULE_2__.registerEditableTypes),
+/* harmony export */   registerEditor: () => (/* reexport safe */ _editors__WEBPACK_IMPORTED_MODULE_0__.registerEditor),
+/* harmony export */   registerScopeProvider: () => (/* reexport safe */ _scope__WEBPACK_IMPORTED_MODULE_1__.registerScopeProvider)
 /* harmony export */ });
 /* harmony import */ var _editors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editors */ "./lib/editors.js");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./types */ "./lib/types.js");
+/* harmony import */ var _scope__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./scope */ "./lib/scope.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "./lib/types.js");
+
 
 
 })();
