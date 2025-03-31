@@ -75,14 +75,13 @@ export default ({ elements, onChange, onOpen, onClose, onSearch, getScope }) => 
   }, [ elements, selectIndex ]);
 
   const [ elementScope, setElementScope ] = useState({});
-  useEffect(async () => {
+  useEffect(() => {
     const currentElement = elements[selectedIndex];
     if (!currentElement) {
       return setElementScope({});
     }
     const scopeProvider = getScopeProvider();
-    const scope = await scopeProvider(currentElement.element);
-    setElementScope(scope);
+    scopeProvider(currentElement.element).then(setElementScope);
   }, [ elements, selectedIndex, getScope ]);
 
   const handleTabChange = useCallback(({ selectedIndex }) => {
