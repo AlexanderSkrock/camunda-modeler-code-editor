@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
-import {getEditableType, getScopeProvider} from '../../lib';
+import { getEditableType, getScopeProvider } from '../../lib';
 
 import {
   Button,
