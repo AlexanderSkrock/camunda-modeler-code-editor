@@ -3,11 +3,14 @@ import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
-import { getEditableType, getScopeProvider } from '../../lib';
+import { getEditableType, getEditor, getScopeProvider } from '../../lib';
 
 import {
-  Button,
-  StructuredListBody, StructuredListCell, StructuredListHead, StructuredListRow,
+  Button, Column, Grid,
+  StructuredListBody,
+  StructuredListCell,
+  StructuredListHead,
+  StructuredListRow,
   StructuredListWrapper,
   Tab,
   TabList,
@@ -17,9 +20,7 @@ import {
 } from '@carbon/react';
 import { Add } from '@carbon/icons-react';
 
-import { getEditor } from '../../lib';
-
-import { SearchModal } from './';
+import { ElementEditor, SearchModal } from './';
 import { getType } from '../utils/elements';
 
 const SearchResultContainer = ({ children }) => {
@@ -64,7 +65,7 @@ const SearchResultItem = (onClick) => ({ item, disabled }) => (
   </StructuredListRow>
 );
 
-export default ({ elements, onChange, onOpen, onClose, onSearch, getScope }) => {
+export default ({ width, height, elements, onChange, onOpen, onClose, onSearch, getScope }) => {
   const [ searchOpen, setSearchOpen ] = useState(false);
 
   const [ selectedIndex, selectIndex ] = useState(0);
@@ -100,7 +101,7 @@ export default ({ elements, onChange, onOpen, onClose, onSearch, getScope }) => 
   }, [ onOpen, setSearchOpen ]);
 
   return (
-    <>
+    <div style={ { width, height, display: 'flex', flexDirection: 'column' } }>
       <Tabs selectedIndex={ selectedIndex } onChange={ handleTabChange } dismissable onTabCloseRequest={ handleTabCloseRequested }>
         <TabList>
           {
@@ -128,25 +129,22 @@ export default ({ elements, onChange, onOpen, onClose, onSearch, getScope }) => 
                 value,
               });
 
-              const EditorComponent = getEditor(language);
               return (
-                <TabPanel key={ idx }>
-                  <EditorComponent
-                    width="100%"
-                    heiht="100%"
+                <TabPanel key={ idx } style={ { flexGrow: 1 } }>
+                  <ElementEditor
                     element={ element }
                     moddleElement={ moddleElement }
                     language={ language }
+                    scope={ elementScope }
                     value={ value }
                     onChange={ handleEditorChange }
-                    scope={ elementScope } />
+                  />
                 </TabPanel>
               );
             })
           }
         </TabPanels>
       </Tabs>
-
-    </>
+    </div>
   );
 };

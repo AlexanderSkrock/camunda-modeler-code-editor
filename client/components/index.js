@@ -1,3 +1,4 @@
+export { default as ElementEditor } from './ElementEditor';
 export { default as ElementsIDE } from './ElementsIDE';
 export {
   default as Modal,

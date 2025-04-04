@@ -58,47 +58,53 @@ const CodeEditorClientExtension = ({ subscribe }) => {
   }, [ eventBus, handleOpenScript ]);
 
   const modifyElement = useCallback((element, moddleElement, properties) => {
-    commandStack.execute('element.updateModdleProperties', {
-      element,
-      moddleElement,
-      properties,
-    });
+    if (commandStack) {
+      commandStack.execute('element.updateModdleProperties', {
+        element,
+        moddleElement,
+        properties,
+      });
+    }
   }, [ commandStack ]);
 
   const handleModalClose = useCallback(() => {
-    if (eventBus) {
-      editorDocuments.forEach(({ element, moddleElement, value }) => {
 
-        const typeName = getType(moddleElement);
-        getEditableType(typeName).accessors.setValue(modifyElement, element, moddleElement, value);
-      });
+    // TODO ensure value propagation
+    // when we reintroduce debouncing, then we need to make sure the value was
+    // propagated when we attempt to close it.
+    if (eventBus) {
       eventBus.fire(CLOSE_EDITOR);
     }
     setCodeEditorOpen(false);
     setEditorDocuments([]);
   }, [ eventBus, editorDocuments, setEditorDocuments, setCodeEditorOpen ]);
 
-  const onDocumentChange = useCallback(({ index, value }) => setEditorDocuments(documents => {
+  const onDocumentChange = useCallback(({ index, value: newValue }) => setEditorDocuments(documents => {
     const documentAtIndex = documents[index];
     if (documentAtIndex) {
-      const copyDocuments = [ ...documents ];
-      copyDocuments.splice(index, 1, { ...documentAtIndex, value });
-      return copyDocuments;
-    } else {
-      return documents;
+      const { element, moddleElement, value } = documentAtIndex;
+      if (value !== newValue) {
+        const typeName = getType(moddleElement);
+        const accessors = getEditableType(typeName).accessors;
+        accessors.setValue(modifyElement, element, moddleElement, newValue);
+
+        const copyDocuments = [ ...documents ];
+        copyDocuments.splice(index, 1, { ...documentAtIndex, value: newValue });
+        return copyDocuments;
+      }
     }
+    return documents;
   }), [ setEditorDocuments ]);
 
   const handleDocumentClose = useCallback(({ index }) => {
     setEditorDocuments(documents => {
       const copyDocuments = [ ...documents ];
+      // eslint-disable-next-line no-unused-vars
       const removedDocuments = copyDocuments.splice(index, 1);
-      if (eventBus) {
-        removedDocuments.forEach(({ element, moddleElement, value }) => {
-          const typeName = getType(moddleElement);
-          getEditableType(typeName).accessors.setValue(modifyElement, element, moddleElement, value);
-        });
-      }
+
+      // TODO ensure value propagation
+      // when we reintroduce debouncing, then we need to make sure the value was
+      // propagated when we attempt to close it.
       return copyDocuments;
     });
 
@@ -149,8 +155,8 @@ const CodeEditorClientExtension = ({ subscribe }) => {
   return <Fragment>
     <Modal open={ isCodeEditorOpen } onClose={ handleModalClose }>
       <ModalHeader>Code Editor</ModalHeader>
-      <ModalBody>
-        <ElementsIDE elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
+      <ModalBody hasScrollingContent={ false }>
+        <ElementsIDE width="80vw" height="80vh" elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
       </ModalBody>
     </Modal>
   </Fragment>;

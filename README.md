@@ -98,8 +98,6 @@ The editor implementation should be a `React` component which consumes the follo
 }
 ```
 
-For styling purposes also the requested `width` and `height` are passed. At the time of writing, this is always `100%` just to make sure the editor is using all the available space.
-
 For reference, have a look on the default editor implementation: [Default Code Editor](./client/components/DefaultCodeEditor.js)
 
 > [!IMPORTANT]

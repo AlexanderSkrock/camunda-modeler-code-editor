@@ -7,13 +7,13 @@ import 'ace-builds/src-noconflict/mode-text';
 import 'ace-builds/src-noconflict/theme-github';
 import 'ace-builds/src-noconflict/ext-searchbox';
 
-export default ({ width, height, value, onChange }) => (
+export default ({ value, onChange }) => (
   <AceEditor
     name="default-code-editor"
     mode="text"
     theme="github"
-    width={ width }
-    height={ height }
+    width="100%"
+    height="100%"
     value={ value }
     onChange={ onChange }
   />
