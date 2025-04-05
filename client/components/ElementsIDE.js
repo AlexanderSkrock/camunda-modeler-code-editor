@@ -3,10 +3,10 @@ import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
-import { getEditableType, getEditor, getScopeProvider } from '../../lib';
+import { getEditableType } from '../../lib';
 
 import {
-  Button, Column, Grid,
+  Button,
   StructuredListBody,
   StructuredListCell,
   StructuredListHead,
@@ -65,7 +65,7 @@ const SearchResultItem = (onClick) => ({ item, disabled }) => (
   </StructuredListRow>
 );
 
-export default ({ width, height, elements, onChange, onOpen, onClose, onSearch, getScope }) => {
+export default ({ width, height, elements, onChange, onOpen, onClose, onSearch, commandStack }) => {
   const [ searchOpen, setSearchOpen ] = useState(false);
 
   const [ selectedIndex, selectIndex ] = useState(0);
@@ -74,16 +74,6 @@ export default ({ width, height, elements, onChange, onOpen, onClose, onSearch, 
       selectIndex(0);
     }
   }, [ elements, selectIndex ]);
-
-  const [ elementScope, setElementScope ] = useState({});
-  useEffect(() => {
-    const currentElement = elements[selectedIndex];
-    if (!currentElement) {
-      return setElementScope({});
-    }
-    const scopeProvider = getScopeProvider();
-    scopeProvider(currentElement.element).then(setElementScope);
-  }, [ elements, selectedIndex, getScope ]);
 
   const handleTabChange = useCallback(({ selectedIndex }) => {
     selectIndex(selectedIndex);
@@ -123,21 +113,13 @@ export default ({ width, height, elements, onChange, onOpen, onClose, onSearch, 
         </TabList>
         <TabPanels>
           {
-            elements.map(({ element, moddleElement, language, value }, idx) => {
-              const handleEditorChange = value => onChange({
-                index: idx,
-                value,
-              });
-
+            elements.map(({ element, moddleElement }, idx) => {
               return (
                 <TabPanel key={ idx } style={ { flexGrow: 1 } }>
                   <ElementEditor
                     element={ element }
                     moddleElement={ moddleElement }
-                    language={ language }
-                    scope={ elementScope }
-                    value={ value }
-                    onChange={ handleEditorChange }
+                    commandStack={ commandStack }
                   />
                 </TabPanel>
               );

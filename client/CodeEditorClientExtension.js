@@ -5,11 +5,10 @@ import search from 'diagram-js/lib/features/search/search';
 import { isLabel } from 'diagram-js/lib/util/ModelUtil';
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
-import { getEditableType, getEditableTypes } from '../lib';
+import { getEditableTypes } from '../lib';
 
 import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
 import { useModeler, useService } from './hooks';
-import { getType } from './utils/elements';
 import { CLOSE_EDITOR, OPEN_ELEMENT } from './utils/events';
 
 /**
@@ -30,9 +29,6 @@ const CodeEditorClientExtension = ({ subscribe }) => {
   const [ eventBus, elementRegistry, commandStack ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry', 'commandStack' ], useMemo });
 
   const handleOpenScript = useCallback(({ element, moddleElement }) => {
-    const typeName = getType(moddleElement);
-    const typeAccessors = getEditableType(typeName).accessors;
-
     setEditorDocuments(documents => {
       if (documents.some(e => e.moddleElement === moddleElement)) {
         return documents;
@@ -42,8 +38,6 @@ const CodeEditorClientExtension = ({ subscribe }) => {
         {
           element,
           moddleElement,
-          language: typeAccessors.getLanguage(moddleElement),
-          value: typeAccessors.getValue(moddleElement),
         }
       ];
     });
@@ -57,21 +51,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
     }
   }, [ eventBus, handleOpenScript ]);
 
-  const modifyElement = useCallback((element, moddleElement, properties) => {
-    if (commandStack) {
-      commandStack.execute('element.updateModdleProperties', {
-        element,
-        moddleElement,
-        properties,
-      });
-    }
-  }, [ commandStack ]);
-
   const handleModalClose = useCallback(() => {
-
-    // TODO ensure value propagation
-    // when we reintroduce debouncing, then we need to make sure the value was
-    // propagated when we attempt to close it.
     if (eventBus) {
       eventBus.fire(CLOSE_EDITOR);
     }
@@ -79,32 +59,10 @@ const CodeEditorClientExtension = ({ subscribe }) => {
     setEditorDocuments([]);
   }, [ eventBus, editorDocuments, setEditorDocuments, setCodeEditorOpen ]);
 
-  const onDocumentChange = useCallback(({ index, value: newValue }) => setEditorDocuments(documents => {
-    const documentAtIndex = documents[index];
-    if (documentAtIndex) {
-      const { element, moddleElement, value } = documentAtIndex;
-      if (value !== newValue) {
-        const typeName = getType(moddleElement);
-        const accessors = getEditableType(typeName).accessors;
-        accessors.setValue(modifyElement, element, moddleElement, newValue);
-
-        const copyDocuments = [ ...documents ];
-        copyDocuments.splice(index, 1, { ...documentAtIndex, value: newValue });
-        return copyDocuments;
-      }
-    }
-    return documents;
-  }), [ setEditorDocuments ]);
-
   const handleDocumentClose = useCallback(({ index }) => {
     setEditorDocuments(documents => {
       const copyDocuments = [ ...documents ];
-      // eslint-disable-next-line no-unused-vars
-      const removedDocuments = copyDocuments.splice(index, 1);
-
-      // TODO ensure value propagation
-      // when we reintroduce debouncing, then we need to make sure the value was
-      // propagated when we attempt to close it.
+      copyDocuments.splice(index, 1);
       return copyDocuments;
     });
 
@@ -132,14 +90,10 @@ const CodeEditorClientExtension = ({ subscribe }) => {
       : searchableElements;
 
     return filteredElements.map(({ element, moddleElement }) => {
-      const typeName = getType(moddleElement);
-      const typeAccessors = getEditableType(typeName).accessors;
       return ({
         item: {
           element,
           moddleElement,
-          language: typeAccessors.getLanguage(moddleElement),
-          value: typeAccessors.getValue(moddleElement),
         },
         disabled: editorDocuments.some(doc => doc.moddleElement === moddleElement)
       });
@@ -156,7 +110,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
     <Modal open={ isCodeEditorOpen } onClose={ handleModalClose }>
       <ModalHeader>Code Editor</ModalHeader>
       <ModalBody hasScrollingContent={ false }>
-        <ElementsIDE width="80vw" height="80vh" elements={ editorDocuments } onChange={ onDocumentChange } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
+        <ElementsIDE width="80vw" height="80vh" elements={ editorDocuments } commandStack={ commandStack } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
       </ModalBody>
     </Modal>
   </Fragment>;
