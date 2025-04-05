@@ -1,5 +1,7 @@
 export { default as ElementEditor } from './ElementEditor';
 export { default as ElementsIDE } from './ElementsIDE';
+export { default as ElementSearchResultContainer } from './ElementSearchResultContainer';
+export { default as ElementSearchResultItem } from './ElementSearchResultItem';
 export {
   default as Modal,
   Header as ModalHeader,

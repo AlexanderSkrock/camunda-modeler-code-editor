@@ -9,7 +9,7 @@ import { selectId } from '../utils/css';
 
 const DefaultContainer = ({ children }) => <div>{ children }</div>;
 
-export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, itemRenderer, itemContainerRenderer = DefaultContainer }) => {
+export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, ItemRenderer, ItemContainerRenderer = DefaultContainer }) => {
   const [ searchFieldId ] = useState(`search-input-${Math.floor(Math.random() * 1000)}`);
 
   const [ currentSearchValue, setCurrentSearchValue ] = useState('');
@@ -49,11 +49,11 @@ export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, itemR
       </ModalHeader>
       <ModalBody>
         <Search id={ searchFieldId } labelText="Search" value={ currentSearchValue } onKeyDown={ handleKeyDown } onChange={ handleSearchValuedChange } onClear={ handleClearSearch } />
-        {
-          itemContainerRenderer({
-            children: currentResultPage.map(item => (itemRenderer({ ...item }))),
-          })
-        }
+        <ItemContainerRenderer>
+          {
+            currentResultPage.map(item => <ItemRenderer { ...item } onSelect={ () => onSelect(item) } />)
+          }
+        </ItemContainerRenderer>
         <PaginationNav page={ currentPage } totalItems={ numberOfPages } onChange={ setCurrentPage } />
       </ModalBody>
     </Modal>

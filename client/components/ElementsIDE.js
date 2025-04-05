@@ -3,15 +3,8 @@ import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
-import { getEditableType } from '../../lib';
-
 import {
   Button,
-  StructuredListBody,
-  StructuredListCell,
-  StructuredListHead,
-  StructuredListRow,
-  StructuredListWrapper,
   Tab,
   TabList,
   TabPanel,
@@ -20,52 +13,9 @@ import {
 } from '@carbon/react';
 import { Add } from '@carbon/icons-react';
 
-import { ElementEditor, SearchModal } from './';
-import { getType } from '../utils/elements';
+import { ElementEditor, ElementSearchResultContainer, ElementSearchResultItem, SearchModal } from './';
 
-const SearchResultContainer = ({ children }) => {
-  return (
-    <StructuredListWrapper>
-      <StructuredListHead>
-        <StructuredListRow head>
-          <StructuredListCell head>
-            Element
-          </StructuredListCell>
-          <StructuredListCell head>
-            Type
-          </StructuredListCell>
-          <StructuredListCell head>
-            Language
-          </StructuredListCell>
-          <StructuredListCell head>
-          </StructuredListCell>
-        </StructuredListRow>
-      </StructuredListHead>
-      <StructuredListBody>
-        { children }
-      </StructuredListBody>
-    </StructuredListWrapper>
-  );
-};
-
-const SearchResultItem = (onClick) => ({ item, disabled }) => (
-  <StructuredListRow>
-    <StructuredListCell>
-      { getLabel(item.element) || item.element.id }
-    </StructuredListCell>
-    <StructuredListCell>
-      { getType(item.moddleElement) }
-    </StructuredListCell>
-    <StructuredListCell>
-      { getEditableType(getType(item.moddleElement)).accessors.getLanguage(item.moddleElement) }
-    </StructuredListCell>
-    <StructuredListCell>
-      <Button renderIcon={ Add } hasIconOnly disabled={ disabled } onClick={ () => onClick(item) } />
-    </StructuredListCell>
-  </StructuredListRow>
-);
-
-export default ({ width, height, elements, onChange, onOpen, onClose, onSearch, commandStack }) => {
+export default ({ width, height, elements, onOpen, onClose, onSearch, commandStack }) => {
   const [ searchOpen, setSearchOpen ] = useState(false);
 
   const [ selectedIndex, selectIndex ] = useState(0);
@@ -108,8 +58,9 @@ export default ({ width, height, elements, onChange, onOpen, onClose, onSearch, 
             open={ searchOpen }
             onClose={ () => setSearchOpen(false) }
             onSearch={ onSearch }
-            itemRenderer={ SearchResultItem(handleOpen) }
-            itemContainerRenderer={ SearchResultContainer } />
+            onSelect={ handleOpen }
+            ItemRenderer={ ElementSearchResultItem }
+            ItemContainerRenderer={ ElementSearchResultContainer } />
         </TabList>
         <TabPanels>
           {
