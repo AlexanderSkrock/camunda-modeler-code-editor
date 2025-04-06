@@ -3,9 +3,9 @@ import React from 'camunda-modeler-plugin-helpers/react';
 
 import AceEditor from 'react-ace';
 
-import 'ace-builds/src-min-noconflict/mode-text';
-import 'ace-builds/src-min-noconflict/theme-github';
-import 'ace-builds/src-min-noconflict/ext-searchbox';
+import 'ace-builds/src-noconflict/mode-text';
+import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/ext-searchbox';
 
 export default ({ value, onChange }) => (
   <AceEditor

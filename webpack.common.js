@@ -2,20 +2,7 @@ const path = require('path');
 
 const CamundaModelerWebpackPlugin = require('camunda-modeler-webpack-plugin');
 
-const config = {
-  resolve: {
-    fallback: {
-      'assert': false,
-      'util': false,
-    },
-  },
-  plugins: [
-    new CamundaModelerWebpackPlugin(),
-  ],
-};
-
 const libConfig = {
-  ...config,
   name: 'lib',
   entry: './lib/index.js',
   output: {
@@ -27,7 +14,6 @@ const libConfig = {
 };
 
 const clientConfig = {
-  ...config,
   name: 'client',
   entry: './client/index.js',
   output: {
@@ -41,6 +27,9 @@ const clientConfig = {
       'react/jsx-runtime': path.resolve(__dirname, 'node_modules', 'react', 'jsx-runtime'),
     },
   },
+  plugins: [
+    new CamundaModelerWebpackPlugin(),
+  ],
   module: {
     rules: [
       {
