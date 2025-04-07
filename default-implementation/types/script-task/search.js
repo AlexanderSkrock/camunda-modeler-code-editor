@@ -1,9 +1,6 @@
 import { getScript } from './utils';
 
-export const toSearchables = (element) => {
+export default (element, search) => {
   const script = getScript(element);
-  if (script) {
-    return [ script ];
-  }
-  return [];
+  return script ? search(element, [ script ]) : [];
 };

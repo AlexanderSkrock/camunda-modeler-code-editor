@@ -14,6 +14,7 @@ import {
 import { Add } from '@carbon/icons-react';
 
 import { ElementEditor, ElementSearchResultContainer, ElementSearchResultItem, SearchModal } from './';
+import {getEditableType} from "../../lib";
 
 export default ({ width, height, elements, onOpen, onClose, onSearch, commandStack }) => {
   const [ searchOpen, setSearchOpen ] = useState(false);
@@ -47,9 +48,11 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
           {
             elements.map((element, idx) => {
               const elementName = getLabel(element.element) || element.element.id;
+              const typeName = getEditableType(element.type).name;
+              const tabName = `${elementName} (${typeName})`;
 
               // TODO add dot on modified tabs
-              return <Tab key={ idx }>{ elementName }</Tab>;
+              return <Tab key={ idx }>{ tabName }</Tab>;
             })
           }
           <Button renderIcon={ Add } iconDescription="Open" hasIconOnly onClick={ () => setSearchOpen(true) } />

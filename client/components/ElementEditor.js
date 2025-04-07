@@ -2,9 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 import { useDebouncedCallback } from 'use-debounce';
 
-import { getEditableType, getEditor, getScopeProvider } from '../../lib';
-
-import { getType } from '../utils/elements';
+import { getAccessor, getEditor, getScopeProviders } from '../../lib';
 
 const elementModifier = commandStack => (element, moddleElement, properties) => {
   if (commandStack) {
@@ -17,20 +15,21 @@ const elementModifier = commandStack => (element, moddleElement, properties) => 
 };
 
 export default ({ element, moddleElement, commandStack }) => {
-  const typeDefinition = useMemo(() => getEditableType(getType(moddleElement)), [ moddleElement ]);
-
-  const language = useMemo(() => typeDefinition.accessors.getLanguage(moddleElement), [ typeDefinition, moddleElement ]);
-  const value = useMemo(() => typeDefinition.accessors.getValue(moddleElement), [ typeDefinition, moddleElement ]);
+  const language = useMemo(() => getAccessor(moddleElement).getLanguage(moddleElement), [ moddleElement ]);
+  const value = useMemo(() => getAccessor(moddleElement).getValue(moddleElement), [ moddleElement ]);
 
   const [ elementScope, setElementScope ] = useState({});
   useEffect(() => {
-    const scopeProvider = getScopeProvider();
-    scopeProvider(element).then(setElementScope);
-  }, [ element, getScopeProvider() ]);
+    const scopeProviders = getScopeProviders();
+    Promise.all(scopeProviders.map(provider => provider(element))).then(results => {
+      const mergedResult = results.reduce((prev, cur) => ({ ...cur, ...prev }), {});
+      setElementScope(mergedResult);
+    });
+  }, [ element ]);
 
   const handleChange = useCallback((newValue) => {
     const modifier = elementModifier(commandStack);
-    typeDefinition.accessors.setValue(modifier, element, moddleElement, newValue);
+    getAccessor(moddleElement).setValue(modifier, element, moddleElement, newValue);
   }, [ commandStack, element, moddleElement ]);
 
   const debouncedHandleChange = useDebouncedCallback(handleChange, 500);

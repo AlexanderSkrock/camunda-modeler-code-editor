@@ -1,14 +1,10 @@
 import { registerBpmnJSPlugin, registerClientExtension } from 'camunda-modeler-plugin-helpers';
 
-import { registerDefaultEditor, registerEditableTypes, registerScopeProvider } from '../lib';
-
-import { defaultEditor, defaultScopeProvider, defaultTypes } from '../default-implementation';
 import CodeEditorExtension from './CodeEditorClientExtension';
 import CodeEditorBpmnJsPlugin from './CodeEditorBpmnJsPlugin';
+import configureDefaultImplementation from './configureDefaultImplementation';
 
-registerDefaultEditor(defaultEditor);
-registerEditableTypes(defaultTypes);
-registerScopeProvider(defaultScopeProvider);
+configureDefaultImplementation();
 
 registerBpmnJSPlugin(CodeEditorBpmnJsPlugin);
 registerClientExtension(CodeEditorExtension);

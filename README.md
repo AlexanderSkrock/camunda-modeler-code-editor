@@ -49,34 +49,6 @@ This package provides a js api to enhance the development process of extensions.
 import CodeEditorApi from 'camunda-modeler-code-editor/lib';
 ```
 
-### Support additional fields
-
-To support additional fields to be editable using the editor interface, all you'll need to do is to register your implementation via `registerType`.
-
-```js
-import { registerType } from 'camunda-modeler-code-editor/lib';
-registerType('bpmn:ScriptTask', ScriptTask); 
-```
-
-The implementation should align to the following structure:
-
-```js
-{
-    properties: {
-        entrySelector,  // (element, groups) => array of entries
-        entryDecorator, // (element, entry, openElement) => void
-    },
-    search: {
-        toSearchables   // (element) => array of moddle elements
-    },
-    accessors: {
-        getLanguage,    // (moddle element) => string
-        getValue,       // (moddle element) => string
-        setValue,       // (modifyElement, element, moddle element, value) => void
-    },
-}
-```
-
 ### Custom Editor
 
 To integrate a custom editor implementation, all you'll need to do is to register your implementation via `registerEditor` or `registerDefaultEditor`.

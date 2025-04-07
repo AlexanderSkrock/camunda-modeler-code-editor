@@ -3,27 +3,28 @@ import { useService } from 'bpmn-js-properties-panel';
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil';
 import { isTextFieldEntryEdited, TextFieldEntry } from '@bpmn-io/properties-panel';
 
-import { getValue } from './accessors';
+import { getAccessor } from '../../../lib';
+
 import { entryIdSelector, groupIdSelector } from '../utils';
 import { getScript } from './utils';
 
-export const entrySelector = (element, groups) => {
-  if (getScript(element)) {
+export default (element, openElementInEditor) => {
+  if (!getScript(element)) {
+    return groups => groups;
+  }
+
+  return groups => {
     const group = groupIdSelector('CamundaPlatform__Script')(groups);
     if (group) {
       const entry = entryIdSelector('scriptValue')(group.entries);
       if (entry) {
-        return [ entry ];
+        entry.component = Script;
+        entry.isEdited = isTextFieldEntryEdited;
+        entry.openElementInEditor = openElementInEditor;
       }
     }
-  }
-  return [];
-};
-
-export const entryDecorator = (element, entry, openElementInEditor) => {
-  entry.component = Script;
-  entry.isEdited = isTextFieldEntryEdited;
-  entry.openElementInEditor = openElementInEditor;
+    return groups;
+  };
 };
 
 function Script({ element, idPrefix, openElementInEditor }) {
@@ -38,7 +39,7 @@ function Script({ element, idPrefix, openElementInEditor }) {
         id: idPrefix + 'scriptValue',
         label: translate('Script'),
         disabled: true,
-        getValue: () => getValue(businessObject),
+        getValue: () => getAccessor(businessObject).getValue(businessObject),
         setValue: () => {},
         debounce: func => func,
         description: translate('Click to edit')

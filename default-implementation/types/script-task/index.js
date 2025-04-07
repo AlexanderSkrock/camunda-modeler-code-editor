@@ -1,11 +1,9 @@
-import * as accessors from './accessors';
-import * as properties from './properties';
-import * as search from './search';
-
-export const type = 'bpmn:ScriptTask';
+import properties from './properties';
+import search from './search';
 
 export default {
-  accessors,
+  id: 'bpmn:scriptTask',
+  name: 'Script Task',
   properties,
   search,
 };

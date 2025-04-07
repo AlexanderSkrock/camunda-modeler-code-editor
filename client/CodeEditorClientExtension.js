@@ -28,7 +28,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
   const [ modeler ] = useModeler({ subscribe, useCallback, useEffect, useState });
   const [ eventBus, elementRegistry, commandStack ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry', 'commandStack' ], useMemo });
 
-  const handleOpenScript = useCallback(({ element, moddleElement }) => {
+  const handleOpenScript = useCallback(({ element, moddleElement, elementType }) => {
     setEditorDocuments(documents => {
       if (documents.some(e => e.moddleElement === moddleElement)) {
         return documents;
@@ -38,6 +38,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
         {
           element,
           moddleElement,
+          type: elementType,
         }
       ];
     });
@@ -69,40 +70,38 @@ const CodeEditorClientExtension = ({ subscribe }) => {
   }, [ eventBus, setEditorDocuments ]);
 
   const handleSearch = useCallback((searchValue) => {
-
-    const searchableElements = elementRegistry
-      .filter(e => !isLabel(e))
-      .flatMap(e => {
-        return Object.values(getEditableTypes()).flatMap(typeDefinition => {
-          return typeDefinition.search.toSearchables(e).map(s => ({
-            element: e,
-            moddleElement: s,
-            id: e.id,
-            label: getLabel(e),
-          }));
-        });
-      });
-
-    const filteredElements = searchValue
-      ? search(searchableElements, searchValue, {
+    if (!searchValue) {
+      return [];
+    }
+    const searchFunction = (element, moddleElements) => {
+      const searchables = moddleElements.map(moddleElement => ({
+        element,
+        moddleElement,
+        id: element.id,
+        label: getLabel(element),
+      }));
+      return search(searchables, searchValue, {
         keys: [ 'label', 'id ' ],
-      }).map(({ item }) => item)
-      : searchableElements;
+      });
+    };
 
-    return filteredElements.map(({ element, moddleElement }) => {
-      return ({
-        item: {
-          element,
-          moddleElement,
-        },
-        disabled: editorDocuments.some(doc => doc.moddleElement === moddleElement)
+    return elementRegistry.filter(element => !isLabel(element)).flatMap(element => {
+      return getEditableTypes().flatMap(type => {
+        return type.search(element, searchFunction).map(({ item: { element, moddleElement } }) => ({
+          item: {
+            element,
+            moddleElement,
+            type: type.id,
+          },
+          disabled: editorDocuments.some(doc => doc.moddleElement === moddleElement)
+        }));
       });
     });
   });
 
-  const handleOpen = useCallback(({ element, moddleElement }) => {
+  const handleOpen = useCallback(({ element, moddleElement, type }) => {
     if (eventBus) {
-      eventBus.fire(OPEN_ELEMENT, { element, moddleElement });
+      eventBus.fire(OPEN_ELEMENT, { element, moddleElement, elementType: type });
     }
   });
 

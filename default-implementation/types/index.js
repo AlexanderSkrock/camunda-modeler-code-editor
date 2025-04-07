@@ -1,9 +1,17 @@
-import Script, { type as scriptType } from './script';
-import ScriptTask, { type as scriptTaskType } from './script-task';
-import FormalExpression, { type as formalExpressionType } from './formal-expression';
+import ConditionalEvent from './conditional-event';
+import ExecutionListener from './execution-listener';
+import InputParameter from './input-parameter';
+import OutputParameter from './output-parameter';
+import ScriptTask from './script-task';
+import SequenceFlow from './sequence-flow';
+import TaskListener from './task-listener';
 
-export default {
-  [scriptType]: Script,
-  [scriptTaskType]: ScriptTask,
-  [formalExpressionType]: FormalExpression,
-};
+export default [
+  ConditionalEvent,
+  ExecutionListener,
+  InputParameter,
+  OutputParameter,
+  ScriptTask,
+  SequenceFlow,
+  TaskListener,
+];

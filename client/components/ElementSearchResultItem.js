@@ -10,17 +10,12 @@ import {
 } from '@carbon/react';
 import { Add } from '@carbon/icons-react';
 
-import { getEditableType } from '../../lib';
+import {getAccessor, getEditableType} from '../../lib';
 
-import { getType } from '../utils/elements';
-
-export default ({ item: { element, moddleElement }, onSelect, disabled }) => {
+export default ({ item: { element, moddleElement, type }, onSelect, disabled }) => {
   const label = useMemo(() => getLabel(element) || element.id, [ element ]);
-  const typeName = useMemo(() => getType(moddleElement), [ moddleElement ]);
-  const language = useMemo(() => {
-    const type = getEditableType(typeName);
-    return type.accessors.getLanguage(moddleElement);
-  }, [ typeName, moddleElement ]);
+  const language = useMemo(() => getAccessor(moddleElement).getLanguage(moddleElement), [ moddleElement ]);
+  const typeName = useMemo(() => getEditableType(type).name, [ type ]);
   return (
     <StructuredListRow>
       <StructuredListCell>

@@ -10,18 +10,16 @@ export default class CodePropertiesProvider {
   }
 
   getGroups(element) {
-    return groups => {
-      const typeProperties = Object.values(getEditableTypes()).map(type => type.properties).filter(p => !!p);
+    const openElement = (element, moddleElement, type) => this._eventBus.fire(OPEN_ELEMENT, { element, moddleElement, elementType: type });
 
-      const openElement = (element, moddleElement) => this._eventBus.fire(OPEN_ELEMENT, { element, moddleElement });
-
-      typeProperties.forEach(({ entrySelector, entryDecorator }) => {
-        const entries = entrySelector(element, groups);
-        entries.forEach(entry => entryDecorator(element, entry, openElement));
+    const contextBoundProviders = Object.values(getEditableTypes())
+      .filter(type => type.properties)
+      .map(type => {
+        const openTypeElement = (element, moddleElement) => openElement(element, moddleElement, type.id);
+        return type.properties(element, openTypeElement);
       });
 
-      return groups;
-    };
+    return groups => contextBoundProviders.reduce((groups, provider) => provider(groups), groups);
   }
 }
 
