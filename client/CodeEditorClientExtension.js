@@ -89,6 +89,9 @@ const CodeEditorClientExtension = ({ subscribe }) => {
 
     return elementRegistry.filter(element => !isLabel(element)).flatMap(element => {
       return getEditableTypes().flatMap(type => {
+        if (!type.search) {
+          return [];
+        }
         return type.search(element, searchFunction).map(({ item: { element, moddleElement } }) => ({
           item: {
             element,
