@@ -23,7 +23,7 @@ const clientConfig = {
   resolve: {
     alias: {
 
-      // TODO
+      // FIXME can be potentially be removed when carbon is provided via camunda-modeler-plugin-helpers
       'react/jsx-runtime': path.resolve(__dirname, 'node_modules', 'react', 'jsx-runtime'),
     },
   },
