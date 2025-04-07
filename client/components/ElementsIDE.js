@@ -3,18 +3,12 @@ import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
-import {
-  Button,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs
-} from '@carbon/react';
-import { Add } from '@carbon/icons-react';
+import { Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '../../vendor/@carbon/react';
+import { Add } from '../../vendor/@carbon/icons-react';
+
+import { getEditableType } from '../../lib';
 
 import { ElementEditor, ElementSearchResultContainer, ElementSearchResultItem, SearchModal } from './';
-import {getEditableType} from "../../lib";
 
 export default ({ width, height, elements, onOpen, onClose, onSearch, commandStack }) => {
   const [ searchOpen, setSearchOpen ] = useState(false);

@@ -11,6 +11,8 @@ import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './compone
 import { useModeler, useService } from './hooks';
 import { CLOSE_EDITOR, OPEN_ELEMENT } from './utils/events';
 
+import * as styles from './CodeEditorClientExtension.module.scss';
+
 /**
  * The component props include everything the Application offers plugins,
  * which includes:
@@ -106,10 +108,10 @@ const CodeEditorClientExtension = ({ subscribe }) => {
   });
 
   return <Fragment>
-    <Modal open={ isCodeEditorOpen } onClose={ handleModalClose }>
-      <ModalHeader>Code Editor</ModalHeader>
-      <ModalBody hasScrollingContent={ false }>
-        <ElementsIDE width="80vw" height="80vh" elements={ editorDocuments } commandStack={ commandStack } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
+    <Modal open={ isCodeEditorOpen } onClose={ handleModalClose } containerClassName={ styles.ideDialog }>
+      <ModalHeader className={ styles.ideDialogHeader }>Code Editor</ModalHeader>
+      <ModalBody>
+        <ElementsIDE width="100%" height="100%" elements={ editorDocuments } commandStack={ commandStack } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
       </ModalBody>
     </Modal>
   </Fragment>;

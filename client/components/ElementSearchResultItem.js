@@ -3,14 +3,10 @@ import React, { useMemo } from 'camunda-modeler-plugin-helpers/react';
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
-import {
-  Button,
-  StructuredListCell,
-  StructuredListRow,
-} from '@carbon/react';
-import { Add } from '@carbon/icons-react';
+import { Button, StructuredListCell, StructuredListRow } from '../../vendor/@carbon/react';
+import { Add } from '../../vendor/@carbon/icons-react';
 
-import {getAccessor, getEditableType} from '../../lib';
+import { getAccessor, getEditableType } from '../../lib';
 
 export default ({ item: { element, moddleElement, type }, onSelect, disabled }) => {
   const label = useMemo(() => getLabel(element) || element.id, [ element ]);

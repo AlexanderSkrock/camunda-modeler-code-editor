@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
-import { ModalHeader, PaginationNav, Search } from '@carbon/react';
+import { ModalHeader, PaginationNav, Search } from '../../vendor/@carbon/react';
 import { useDebounce } from 'use-debounce';
 
 import { Modal, ModalBody } from './';
