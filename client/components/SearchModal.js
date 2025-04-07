@@ -13,7 +13,7 @@ export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, ItemR
   const [ searchFieldId ] = useState(`search-input-${Math.floor(Math.random() * 1000)}`);
 
   const [ currentSearchValue, setCurrentSearchValue ] = useState('');
-  const [ searchResults, setSearchResult ] = useState([]);
+  const [ searchResults, setSearchResults ] = useState([]);
   const [ currentPage, setCurrentPage ] = useState(0);
 
   const [ debouncedSearchValue ] = useDebounce(currentSearchValue, 1000);
@@ -24,19 +24,23 @@ export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, ItemR
     return searchResults.slice(pageStart, pageStart + pageSize);
   }, [ searchResults, currentPage, pageSize ]);
 
-  const handleKeyDown = useCallback(evt => {
-    if (evt.key === 'Escape' && !currentSearchValue) {
-      onClose();
-    }
-  }, [ currentSearchValue, onClose ]);
-
   useEffect(() => {
     setCurrentPage(0);
   }, [ searchResults ]);
 
   useEffect(() => {
-    onSearch(debouncedSearchValue).then(result => setSearchResult(result || []));
+    onSearch(debouncedSearchValue).then(result => setSearchResults(result || []));
   }, [ debouncedSearchValue, onSearch ]);
+
+  useEffect(() => {
+    setCurrentSearchValue('');
+  }, [ open ]);
+
+  const handleKeyDown = useCallback(evt => {
+    if (evt.key === 'Escape' && !currentSearchValue) {
+      onClose();
+    }
+  }, [ currentSearchValue, onClose ]);
 
   const handleSearchValuedChange = useCallback(evt => setCurrentSearchValue(evt.target.value), [ setCurrentSearchValue ]);
   const handleClearSearch = useCallback(() => setCurrentSearchValue(''), [ setCurrentSearchValue ]);
