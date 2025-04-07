@@ -1,0 +1,10 @@
+.ideDialog {
+  width: 80vw !important;
+  height: 90vh !important;
+
+  .ideDialogHeader {
+
+    // otherwise, the header and the body will overlap
+    padding-bottom: 12px;
+  }
+}

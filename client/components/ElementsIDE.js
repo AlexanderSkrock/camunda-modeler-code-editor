@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useCallback, useEffect, useRef, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
@@ -10,6 +10,8 @@ import { getEditableType } from '../../lib';
 
 import { ElementEditor, ElementSearchResultContainer, ElementSearchResultItem, SearchModal } from './';
 
+import * as styles from './ElementsIDE.module.scss';
+
 export default ({ width, height, elements, onOpen, onClose, onSearch, commandStack }) => {
   const [ searchOpen, setSearchOpen ] = useState(false);
 
@@ -19,6 +21,14 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
       selectIndex(0);
     }
   }, [ elements, selectIndex ]);
+
+  const containerRef = useRef();
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.style.setProperty('--code-editor-ide-width', width);
+      containerRef.current.style.setProperty('--code-editor-ide-height', height);
+    }
+  }, [ width, height, containerRef.current ]);
 
   const handleTabChange = useCallback(({ selectedIndex }) => {
     selectIndex(selectedIndex);
@@ -36,7 +46,7 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
   }, [ onOpen, setSearchOpen ]);
 
   return (
-    <div style={ { width, height, display: 'flex', flexDirection: 'column' } }>
+    <div ref={ containerRef } className={ styles.ide }>
       <Tabs selectedIndex={ selectedIndex } onChange={ handleTabChange } dismissable onTabCloseRequest={ handleTabCloseRequested }>
         <TabList>
           {
@@ -63,7 +73,7 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
           {
             elements.map(({ element, moddleElement }, idx) => {
               return (
-                <TabPanel key={ idx } style={ { flexGrow: 1 } }>
+                <TabPanel key={ idx } className={ styles.editor }>
                   <ElementEditor
                     element={ element }
                     moddleElement={ moddleElement }

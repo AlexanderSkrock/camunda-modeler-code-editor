@@ -8,9 +8,9 @@ import { selectClass } from '../utils/css';
 
 import * as styles from './Modal.module.scss';
 
-export const Header = ModalHeader || Modal.Header || (({ children }) => <h2>{children}</h2>);
-export const Body = ModalBody || Modal.Body || (({ children }) => <div>{children}</div>);
-export const Footer = ModalFooter || Modal.Footer || (({ children }) => <div>{children}</div>);
+export const Header = ModalHeader;
+export const Body = ModalBody;
+export const Footer = ModalFooter;
 
 export default ({ children, open = false, onClose, selectorPrimaryFocus, containerClassName }) => open && (
   <Modal className={ styles.modal }>

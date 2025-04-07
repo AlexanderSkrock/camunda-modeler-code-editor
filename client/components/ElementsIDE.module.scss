@@ -1,0 +1,11 @@
+.ide {
+  width: var(--code-editor-ide-width) !important;
+  height: var(--code-editor-ide-height) !important;
+
+  display: flex !important;;
+  flex-direction: column !important;;
+
+  .editor {
+    flex-grow: 1 !important;;
+  }
+}
