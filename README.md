@@ -64,6 +64,7 @@ The editor implementation should be a `React` component which consumes the follo
 {
     element,        // the current bpmn element
     moddleElement,  // the current specific moddle element
+    type,           // the type this moddle element belongs to, e. g. for scripts it can be an execution listener or a task listener
     language,       // the current script language which is most likely only important for editors that support multiple
     value,          // the current script value
     onChange,       // function to call when the value was changed within the editor

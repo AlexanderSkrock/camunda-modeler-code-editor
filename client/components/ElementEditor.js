@@ -14,14 +14,14 @@ const elementModifier = commandStack => (element, moddleElement, properties) => 
   }
 };
 
-export default ({ element, moddleElement, commandStack }) => {
+export default ({ element, moddleElement, type, commandStack }) => {
   const language = useMemo(() => getAccessor(moddleElement).getLanguage(moddleElement), [ moddleElement ]);
   const value = useMemo(() => getAccessor(moddleElement).getValue(moddleElement), [ moddleElement ]);
 
   const [ elementScope, setElementScope ] = useState({});
   useEffect(() => {
     const scopeProviders = getScopeProviders();
-    Promise.all(scopeProviders.map(provider => provider(element))).then(results => {
+    Promise.all(scopeProviders.map(provider => provider(element, moddleElement, type))).then(results => {
       const mergedResult = results.reduce((prev, cur) => ({ ...cur, ...prev }), {});
       setElementScope(mergedResult);
     });
@@ -46,6 +46,7 @@ export default ({ element, moddleElement, commandStack }) => {
     <EditorComponent
       element={ element }
       moddleElement={ moddleElement }
+      type={ type }
       language={ language }
       scope={ elementScope }
       value={ value }

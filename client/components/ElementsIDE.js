@@ -50,9 +50,9 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
       <Tabs selectedIndex={ selectedIndex } onChange={ handleTabChange } dismissable onTabCloseRequest={ handleTabCloseRequested }>
         <TabList>
           {
-            elements.map((element, idx) => {
-              const elementName = getLabel(element.element) || element.element.id;
-              const typeName = getEditableType(element.type).name;
+            elements.map(({ element, type }, idx) => {
+              const elementName = getLabel(element) || element.id;
+              const typeName = getEditableType(type).name;
               const tabName = `${elementName} (${typeName})`;
 
               // TODO add dot on modified tabs
@@ -71,12 +71,13 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
         </TabList>
         <TabPanels>
           {
-            elements.map(({ element, moddleElement }, idx) => {
+            elements.map(({ element, moddleElement, type }, idx) => {
               return (
                 <TabPanel key={ idx } className={ styles.editor }>
                   <ElementEditor
                     element={ element }
                     moddleElement={ moddleElement }
+                    type={ type }
                     commandStack={ commandStack }
                   />
                 </TabPanel>
