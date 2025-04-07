@@ -1,5 +1,5 @@
-import DefaultScopeProvider from './DefaultScopeProvider';
+import VariablesScopeProvider from './VariablesScopeProvider';
 
 export default {
-  'scope-variables': DefaultScopeProvider
+  'scope-variables': VariablesScopeProvider
 };

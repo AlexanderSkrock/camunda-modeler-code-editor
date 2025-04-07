@@ -49,7 +49,10 @@ This package provides a js api to enhance the development process of extensions.
 import CodeEditorApi from 'camunda-modeler-code-editor/lib';
 ```
 
-### Custom Editor
+> [!IMPORTANT]
+> This library dependency does not include runtime code. Thus, you'll need to have this plugin nex to your custom implementation.
+
+### Custom editors
 
 To integrate a custom editor implementation, all you'll need to do is to register your implementation via `registerEditor` or `registerDefaultEditor`.
 
@@ -73,8 +76,49 @@ The editor implementation should be a `React` component which consumes the follo
 
 For reference, have a look on the default editor implementation: [Default Code Editor](./client/components/DefaultCodeEditor.js)
 
-> [!IMPORTANT]
-> This library dependency does not include runtime code. This, you'll need to have this plugin nex to your custom implementation.
+### Additional types
+
+When you feel that another property or moddle element should be editable within the code editor, you are welcome to raise an issue or implement it for yourself.
+
+To achieve this, you can call the following library method:
+
+```js
+import { registerEditableType } from 'camunda-modeler-code-editor/lib';
+registerEditableType(InputParameter);
+```
+
+A so-called editable type needs to provide two properties:
+
+```js
+{
+    properties,     // the properties provider function to integrate with the properties panel
+    search,         // the search implementation for integration in the open dialog
+}
+```
+
+In addition, you may need to implement an accessor. An Accessor tells this plugin how it can read and modify properties. For a couple moddle element types, there already exists such an implementation.
+
+```js
+import { registerAccessor } from 'camunda-modeler-code-editor/lib';
+registerAccessor(ScriptAccessor);
+```
+
+You'll have to align with following structure:
+
+```js
+{
+    getLanguage,    // function to retrieve the language for a given moddle element
+    getValue,       // function to retrieve the value for a given moddle element
+    setValue,       // function to modify the value for this moddle element
+}
+```
+
+### Extend provided scope
+
+```js
+import { registerScopeProvider } from 'camunda-modeler-code-editor/lib';
+registerScopeProvider('scope-variables', VariablesScopeProvider);
+```
 
 ## Licence
 
