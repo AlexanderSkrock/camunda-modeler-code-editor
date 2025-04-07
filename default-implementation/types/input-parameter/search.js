@@ -1,6 +1,11 @@
 import { getInputScripts } from './utils';
 
-export default (element, search) => {
-  const inputScripts = getInputScripts(element) || [];
-  return search(element, inputScripts);
+export default (elements, search) => {
+  return new Promise((resolve) => {
+    const searchables = elements.flatMap(element => {
+      const inputScripts = getInputScripts(element) || [];
+      return inputScripts.map(script => ({ element, moddleElement: script }));
+    });
+    resolve(search(searchables));
+  });
 };

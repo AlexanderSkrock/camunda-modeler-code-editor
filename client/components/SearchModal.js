@@ -35,8 +35,7 @@ export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, ItemR
   }, [ searchResults ]);
 
   useEffect(() => {
-    const result = onSearch(debouncedSearchValue);
-    setSearchResult(result || []);
+    onSearch(debouncedSearchValue).then(result => setSearchResult(result || []));
   }, [ debouncedSearchValue, onSearch ]);
 
   const handleSearchValuedChange = useCallback(evt => setCurrentSearchValue(evt.target.value), [ setCurrentSearchValue ]);

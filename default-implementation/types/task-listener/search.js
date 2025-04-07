@@ -1,6 +1,11 @@
 import { getTaskListenerScripts } from './utils';
 
-export default (element, search) => {
-  const taskListenerScripts = getTaskListenerScripts(element) || [];
-  return taskListenerScripts.flatMap(script => search(element, [ script ]));
+export default (elements, search) => {
+  return new Promise((resolve) => {
+    const searchables = elements.flatMap(element => {
+      const taskListenerScripts = getTaskListenerScripts(element) || [];
+      return taskListenerScripts.map(script => ({ element, moddleElement: script }));
+    });
+    resolve(search(searchables));
+  });
 };

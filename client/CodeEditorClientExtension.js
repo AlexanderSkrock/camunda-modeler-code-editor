@@ -72,37 +72,40 @@ const CodeEditorClientExtension = ({ subscribe }) => {
   }, [ eventBus, setEditorDocuments ]);
 
   const handleSearch = useCallback((searchValue) => {
-    if (!searchValue) {
-      return [];
-    }
-    const searchFunction = (element, moddleElements) => {
-      const searchables = moddleElements.map(moddleElement => ({
-        element,
-        moddleElement,
-        id: element.id,
-        label: getLabel(element),
-      }));
-      return search(searchables, searchValue, {
-        keys: [ 'label', 'id ' ],
-      });
-    };
-
-    return elementRegistry.filter(element => !isLabel(element)).flatMap(element => {
-      return getEditableTypes().flatMap(type => {
-        if (!type.search) {
-          return [];
-        }
-        return type.search(element, searchFunction).map(({ item: { element, moddleElement } }) => ({
-          item: {
-            element,
-            moddleElement,
-            type: type.id,
-          },
-          disabled: editorDocuments.some(doc => doc.moddleElement === moddleElement)
+    const searchFunction = searchValue
+      ? (elements) => {
+        const searchables = elements.map(({ element, moddleElement }) => ({
+          element,
+          moddleElement,
+          id: element.id,
+          label: getLabel(element),
         }));
-      });
+        return search(searchables, searchValue, {
+          keys: [ 'label', 'id' ],
+        });
+      }
+
+      // the fallback for "show all" misses the "tokens" field next to "items"
+      // for now it does not matter, but in case we use it later, we need to be aware.
+      : elements => elements.map(element => ({ item: element }));
+
+    const searchableElements = elementRegistry.filter(element => !isLabel(element));
+
+    const subSearchPromises = getEditableTypes().flatMap(type => {
+      if (!type.search) {
+        return Promise.resolve([]);
+      }
+      return type.search(searchableElements, searchFunction).then(subResults => subResults.map(({ item: { element, moddleElement } }) => ({
+        item: {
+          element,
+          moddleElement,
+          type: type.id,
+        },
+        disabled: editorDocuments.some(doc => doc.moddleElement === moddleElement)
+      })));
     });
-  });
+    return Promise.all(subSearchPromises).then(subResults => subResults.flat());
+  }, [ elementRegistry, editorDocuments ]);
 
   const handleOpen = useCallback(({ element, moddleElement, type }) => {
     if (eventBus) {
