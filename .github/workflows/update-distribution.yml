@@ -1,4 +1,4 @@
-name: Verify pull requests
+name: Update distribution
 
 on:
   push:
@@ -7,6 +7,10 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: "update-distribution"
+  cancel-in-progress: true
 
 jobs:
   verify-lint:
