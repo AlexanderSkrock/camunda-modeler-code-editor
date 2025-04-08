@@ -40,9 +40,17 @@ jobs:
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
 
-      - run: |
+      - name: Add distribution to version control
+        run: |
           git add -f dist
           git commit -m "chore(package): updated distribution to reflect $GITHUB_SHA"
           git push -u origin main
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push distribution to version control
+        if: steps.commit.conclusion == 'success'
+        run: git push -u origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
