@@ -1,0 +1,51 @@
+name: Create a release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+jobs:
+  verify-build:
+    uses: ./.github/workflows/build-package.yml
+
+  create-release-artifact:
+    needs: verify-build
+    runs-on: ubuntu-latest
+    outputs:
+      pluginArtifactId: ${{ steps.upload-artifact.outputs.artifact-id }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm pack --dry-run --json >> npm-pack.json
+
+      - id: upload-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "camunda-modeler-code-editor"
+          path: $(node -p "require('./npm-pack.json').files.map(file => file.path).join('\n')")
+
+  release:
+    needs: create-release-artifact
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${PLUGIN_ARTIFACT_ID}
+        env:
+          PLUGIN_ARTIFACT_ID: ${{ needs.create-release-artifact.outputs.pluginArtifactId }}
+
+      - run: zip -r "camunda-modeler-code-editor.zip" .
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "camunda-modeler-code-editor.zip"
+
