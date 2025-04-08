@@ -26,12 +26,12 @@ export default (element, openElementInEditor) => {
   };
 };
 
-function ConditionalEventCondition({ element, openElement }) {
+function ConditionalEventCondition({ element, openElementInEditor }) {
   const translate = useService('translate');
   const condition = getConditionalEventCondition(element);
 
   return jsxs('div', {
-    onClick: () => openElement(element, condition),
+    onClick: () => openElementInEditor(element, condition),
     children: [
       TextFieldEntry({
         element,
