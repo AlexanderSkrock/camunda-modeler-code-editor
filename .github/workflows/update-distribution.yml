@@ -1,0 +1,42 @@
+name: Verify pull requests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-lint:
+    uses: ./.github/workflows/lint-package.yml
+
+  verify-build:
+    uses: ./.github/workflows/build-package.yml
+
+  update-distribution:
+    needs:
+      - verify-lint
+      - verify-build
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: repository
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Set GitHub Actions as Commit Author
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+
+      - run: |
+          cd ./repository
+          git add -f dist
+          git commit -m "chore(package): updated distribution to reflect $GITHUB_SHA"
+          git push -u origin main

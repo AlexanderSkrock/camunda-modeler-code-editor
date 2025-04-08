@@ -12,7 +12,6 @@
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack -w --config webpack.dev.js",
     "lint": "eslint .",
-    "test": "run-s lint",
     "provision": "npx camunda-modeler-provisioner install --overwrite",
     "start": "npx camunda-modeler-provisioner launch"
   },

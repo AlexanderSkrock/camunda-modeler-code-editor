@@ -4,3 +4,5 @@
 /.camunda-modeler
 
 /node_modules
+
+/dist
