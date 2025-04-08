@@ -1,11 +1,13 @@
 import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 import { getVariablesForScope } from '@bpmn-io/extract-process-variables';
 
-export default async (element) => {
+export default (element) => async (scope) => {
   const variables = await getScopeVariables(element);
+  const mergedVariables = scope.variables ? [ ...variables, ...scope.variables ] : variables;
 
   return {
-    variables,
+    ...scope,
+    variables: unique(mergedVariables),
   };
 };
 
@@ -48,4 +50,8 @@ function getScope(element) {
   }
 
   return bo.id;
+}
+
+function unique(array) {
+  return [ ...new Set(array) ];
 }

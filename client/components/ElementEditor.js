@@ -20,11 +20,12 @@ export default ({ element, moddleElement, type, commandStack }) => {
 
   const [ elementScope, setElementScope ] = useState({});
   useEffect(() => {
-    const scopeProviders = getScopeProviders();
-    Promise.all(scopeProviders.map(provider => provider(element, moddleElement, type))).then(results => {
-      const mergedResult = results.reduce((prev, cur) => ({ ...cur, ...prev }), {});
-      setElementScope(mergedResult);
-    });
+    const boundProviders = getScopeProviders().map(provider => provider(element, moddleElement, type));
+    const scopeResult = boundProviders.reduce((prevPromise, provider) => {
+      return prevPromise.then(prevResult => provider(prevResult));
+    }, Promise.resolve({}));
+
+    scopeResult.then(result => setElementScope(result));
   }, [ element ]);
 
   const handleChange = useCallback((newValue) => {
