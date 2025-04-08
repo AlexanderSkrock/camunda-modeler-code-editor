@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   verify-lint:
     uses: ./.github/workflows/lint-package.yml
@@ -37,3 +40,5 @@ jobs:
           git add -f dist
           git commit -m "chore(package): updated distribution to reflect $GITHUB_SHA"
           git push -u origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
