@@ -14,7 +14,7 @@ export default ({ key, value, onValueChange }) => (
     theme="github"
     width="100%"
     height="100%"
-    value={ value }
+    defaultValue={ value }
     onChange={ onValueChange }
   />
 );
