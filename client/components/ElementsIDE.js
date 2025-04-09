@@ -39,10 +39,14 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
   }, [ onClose ]);
 
   const handleOpen = useCallback(element => {
-    onOpen(element);
-    setSearchOpen(false);
 
-    // TODO it would be cool if we could automatically select the tab of the newly openend element
+    // not the nicest way to select the newly opened tab
+    // this only works as long as onOpen synchronously adds elements
+    const nextIndex = elements.length;
+    onOpen(element);
+    selectIndex(nextIndex);
+
+    setSearchOpen(false);
   }, [ onOpen, setSearchOpen ]);
 
   return (
