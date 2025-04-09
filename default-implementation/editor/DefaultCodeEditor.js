@@ -7,9 +7,9 @@ import 'ace-builds/src-noconflict/mode-text';
 import 'ace-builds/src-noconflict/theme-github';
 import 'ace-builds/src-noconflict/ext-searchbox';
 
-export default ({ value, onChange }) => (
+export default ({ key, value, onChange }) => (
   <AceEditor
-    name="default-code-editor"
+    name={ `default-code-editor-${key}` }
     mode="text"
     theme="github"
     width="100%"

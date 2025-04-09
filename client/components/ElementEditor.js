@@ -14,7 +14,7 @@ const elementModifier = commandStack => (element, moddleElement, properties) => 
   }
 };
 
-export default ({ element, moddleElement, type, commandStack }) => {
+export default ({ key, element, moddleElement, type, commandStack }) => {
   const language = useMemo(() => getAccessor(moddleElement).getLanguage(moddleElement), [ moddleElement ]);
   const value = useMemo(() => getAccessor(moddleElement).getValue(moddleElement), [ moddleElement ]);
 
@@ -26,7 +26,7 @@ export default ({ element, moddleElement, type, commandStack }) => {
     }, Promise.resolve({}));
 
     scopeResult.then(result => setElementScope(result));
-  }, [ element ]);
+  }, [ element, moddleElement, type ]);
 
   const handleChange = useCallback((newValue) => {
     const modifier = elementModifier(commandStack);
@@ -45,6 +45,7 @@ export default ({ element, moddleElement, type, commandStack }) => {
 
   return (
     <EditorComponent
+      key={ key }
       element={ element }
       moddleElement={ moddleElement }
       type={ type }

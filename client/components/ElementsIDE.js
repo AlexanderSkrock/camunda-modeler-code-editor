@@ -75,6 +75,7 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
               return (
                 <TabPanel key={ idx } className={ styles.editor }>
                   <ElementEditor
+                    key={ idx }
                     element={ element }
                     moddleElement={ moddleElement }
                     type={ type }

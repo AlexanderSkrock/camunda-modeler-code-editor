@@ -65,6 +65,7 @@ The editor implementation should be a `React` component which consumes the follo
 
 ```js
 {
+    key,            // a key attribute that is different for all editor instances, e. g. for ace editors you'll need to provide unique names
     element,        // the current bpmn element
     moddleElement,  // the current specific moddle element
     type,           // the type this moddle element belongs to, e. g. for scripts it can be an execution listener or a task listener
