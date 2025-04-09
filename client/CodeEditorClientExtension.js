@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import search from 'diagram-js/lib/features/search/search';
