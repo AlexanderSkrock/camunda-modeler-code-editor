@@ -15,8 +15,13 @@ const elementModifier = commandStack => (element, moddleElement, properties) => 
 };
 
 export default ({ key, element, moddleElement, type, commandStack }) => {
-  const language = useMemo(() => getAccessor(moddleElement).getLanguage(moddleElement), [ moddleElement ]);
-  const value = useMemo(() => getAccessor(moddleElement).getValue(moddleElement), [ moddleElement ]);
+  const language = getAccessor(moddleElement).getLanguage(moddleElement);
+
+  const elementValue = getAccessor(moddleElement).getValue(moddleElement);
+  const [ value, setValue ] = useState(elementValue);
+  useEffect(() => {
+    setValue(elementValue);
+  }, [ elementValue ]);
 
   const [ elementScope, setElementScope ] = useState({});
   useEffect(() => {
@@ -28,18 +33,21 @@ export default ({ key, element, moddleElement, type, commandStack }) => {
     scopeResult.then(result => setElementScope(result));
   }, [ element, moddleElement, type ]);
 
-  const handleChange = useCallback((newValue) => {
+  const debouncedPropagateValue = useDebouncedCallback(newValue => {
     const modifier = elementModifier(commandStack);
     getAccessor(moddleElement).setValue(modifier, element, moddleElement, newValue);
-  }, [ commandStack, element, moddleElement ]);
-
-  const debouncedHandleChange = useDebouncedCallback(handleChange, 500);
+  }, 500);
 
   useEffect(() => {
 
     // on unmount we need to flush all pending changes
-    return () => debouncedHandleChange.flush();
-  }, [ debouncedHandleChange ]);
+    return () => debouncedPropagateValue.flush();
+  }, [ debouncedPropagateValue ]);
+
+  const handleChange = useCallback((newValue) => {
+    setValue(newValue);
+    debouncedPropagateValue(newValue);
+  }, [ debouncedPropagateValue, setValue ]);
 
   const EditorComponent = useMemo(() => getEditor(language), language);
 
@@ -52,7 +60,7 @@ export default ({ key, element, moddleElement, type, commandStack }) => {
       language={ language }
       scope={ elementScope }
       value={ value }
-      onChange={ debouncedHandleChange }
+      onChange={ handleChange }
     />
   );
 };
