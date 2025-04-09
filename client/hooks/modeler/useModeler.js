@@ -1,4 +1,6 @@
-export default ({ subscribe, useCallback, useEffect, useState }) => {
+import { useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+
+export default ({ subscribe }) => {
   const [ , setBpmnModelerCreatedSubscribtion ] = useState();
   const [ , setDmnModelerCreatedSubscribtion ] = useState();
   const [ , setActiveTabChangedSubscription ] = useState();

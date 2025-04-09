@@ -8,7 +8,7 @@ import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 import { getEditableTypes } from '../lib';
 
 import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
-import { useModeler, useService } from './hooks';
+import { useModeler, useService } from './hooks/modeler';
 import { CLOSE_EDITOR, OPEN_ELEMENT } from './utils/events';
 
 import * as styles from './CodeEditorClientExtension.module.scss';

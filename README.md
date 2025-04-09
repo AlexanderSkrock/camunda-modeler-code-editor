@@ -72,7 +72,7 @@ The editor implementation should be a `React` component which consumes the follo
     scope,          // contextual information provided by scope providers implementation, could contain available variables for example
     language,       // the current script language which is most likely only important for editors that support multiple
     value,          // the current script value
-    onChange,       // function to call when the value was changed within the editor
+    onValueChange,  // function to call when the value was changed within the editor
 }
 ```
 

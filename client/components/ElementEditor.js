@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
-import { useDebouncedCallback } from 'use-debounce';
 
 import { getAccessor, getEditor, getScopeProviders } from '../../lib';
+import { useChangingValue } from '../hooks/modeler';
 
 const elementModifier = commandStack => (element, moddleElement, properties) => {
   if (commandStack) {
@@ -15,14 +15,6 @@ const elementModifier = commandStack => (element, moddleElement, properties) => 
 };
 
 export default ({ key, element, moddleElement, type, commandStack }) => {
-  const language = getAccessor(moddleElement).getLanguage(moddleElement);
-
-  const elementValue = getAccessor(moddleElement).getValue(moddleElement);
-  const [ value, setValue ] = useState(elementValue);
-  useEffect(() => {
-    setValue(elementValue);
-  }, [ elementValue ]);
-
   const [ elementScope, setElementScope ] = useState({});
   useEffect(() => {
     const boundProviders = getScopeProviders().map(provider => provider(element, moddleElement, type));
@@ -33,21 +25,17 @@ export default ({ key, element, moddleElement, type, commandStack }) => {
     scopeResult.then(result => setElementScope(result));
   }, [ element, moddleElement, type ]);
 
-  const debouncedPropagateValue = useDebouncedCallback(newValue => {
+  const language = getAccessor(moddleElement).getLanguage(moddleElement);
+
+  const propagateValue = useCallback(newValue => {
     const modifier = elementModifier(commandStack);
     getAccessor(moddleElement).setValue(modifier, element, moddleElement, newValue);
-  }, 500);
+  }, [ commandStack, element, moddleElement ]);
 
-  useEffect(() => {
-
-    // on unmount we need to flush all pending changes
-    return () => debouncedPropagateValue.flush();
-  }, [ debouncedPropagateValue ]);
-
-  const handleChange = useCallback((newValue) => {
-    setValue(newValue);
-    debouncedPropagateValue(newValue);
-  }, [ debouncedPropagateValue, setValue ]);
+  const [ value, handleValueChange ] = useChangingValue({
+    initialValue: getAccessor(moddleElement).getValue(moddleElement),
+    onChange: propagateValue,
+  });
 
   const EditorComponent = useMemo(() => getEditor(language), language);
 
@@ -57,10 +45,10 @@ export default ({ key, element, moddleElement, type, commandStack }) => {
       element={ element }
       moddleElement={ moddleElement }
       type={ type }
-      language={ language }
       scope={ elementScope }
+      language={ language }
       value={ value }
-      onChange={ handleChange }
+      onValueChange={ handleValueChange }
     />
   );
 };
