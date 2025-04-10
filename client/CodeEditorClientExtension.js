@@ -1,5 +1,4 @@
-
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { Fragment, useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import search from 'diagram-js/lib/features/search/search';
 import { isLabel } from 'diagram-js/lib/util/ModelUtil';
@@ -7,7 +6,7 @@ import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
 import { getEditableTypes } from '../lib';
 
-import { ElementsIDE, Modal, ModalHeader, ModalBody, withTheme } from './components';
+import { ElementsIDE, Modal, ModalHeader, ModalBody, Theme } from './components';
 import { useModeler, useService } from './hooks/modeler';
 import { CLOSE_EDITOR, OPEN_ELEMENT } from './utils/events';
 
@@ -23,12 +22,13 @@ import * as styles from './CodeEditorClientExtension.module.scss';
  * - displayNotification: show notifications inside the application
  */
 const CodeEditorClientExtension = ({ subscribe }) => {
+
   const [ isCodeEditorOpen, setCodeEditorOpen ] = useState(false);
 
   const [ editorDocuments, setEditorDocuments ] = useState([]);
 
-  const [ modeler ] = useModeler({ subscribe, useCallback, useEffect, useState });
-  const [ eventBus, elementRegistry, commandStack ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry', 'commandStack' ], useMemo });
+  const [ modeler ] = useModeler({ subscribe });
+  const [ eventBus, elementRegistry, commandStack ] = useService({ modeler, services: [ 'eventBus', 'elementRegistry', 'commandStack' ] });
 
   const handleOpenScript = useCallback(({ element, moddleElement, elementType }) => {
     setEditorDocuments(documents => {
@@ -69,7 +69,7 @@ const CodeEditorClientExtension = ({ subscribe }) => {
       return copyDocuments;
     });
 
-  }, [ eventBus, setEditorDocuments ]);
+  }, [ setEditorDocuments ]);
 
   const handleSearch = useCallback((searchValue) => {
     const searchFunction = searchValue
@@ -113,14 +113,18 @@ const CodeEditorClientExtension = ({ subscribe }) => {
     }
   });
 
-  return <Fragment>
-    <Modal open={ isCodeEditorOpen } onClose={ handleModalClose } containerClassName={ styles.ideDialog }>
-      <ModalHeader className={ styles.ideDialogHeader }>Code Editor</ModalHeader>
-      <ModalBody>
-        <ElementsIDE width="100%" height="100%" elements={ editorDocuments } commandStack={ commandStack } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
-      </ModalBody>
-    </Modal>
-  </Fragment>;
+  return (
+    <Fragment>
+      <Theme>
+        <Modal open={ isCodeEditorOpen } onClose={ handleModalClose } containerClassName={ styles.ideDialog }>
+          <ModalHeader className={ styles.ideDialogHeader }>Code Editor</ModalHeader>
+          <ModalBody>
+            <ElementsIDE width="100%" height="100%" elements={ editorDocuments } commandStack={ commandStack } onClose={ handleDocumentClose } onSearch={ handleSearch } onOpen={ handleOpen } />
+          </ModalBody>
+        </Modal>
+      </Theme>
+    </Fragment>
+  );
 };
 
-export default withTheme(CodeEditorClientExtension, React);
+export default CodeEditorClientExtension;

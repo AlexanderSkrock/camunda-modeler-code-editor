@@ -1,21 +1,15 @@
-const { defineConfig, globalIgnores } = require('eslint/config');
-const { fixupPluginRules } = require('@eslint/compat');
-const { FlatCompat } = require('@eslint/eslintrc');
-const js = require('@eslint/js');
+import { defineConfig, globalIgnores } from 'eslint/config';
+import { fixupPluginRules } from '@eslint/compat';
 
-const importPlugin = require('eslint-plugin-import');
+import importPlugin from 'eslint-plugin-import';
+import bpmnIoPlugin from 'eslint-plugin-bpmn-io';
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-});
-
-module.exports = defineConfig([ globalIgnores([ 'node_modules/*', 'dist/*' ]), {
-  extends: compat.extends('plugin:bpmn-io/jsx', 'plugin:bpmn-io/node', 'plugin:bpmn-io/browser'),
+export default defineConfig([ globalIgnores([ 'node_modules/*', 'dist/*' ]), {
+  extends: [ 'bpmn-io/jsx', 'bpmn-io/node', 'bpmn-io/browser' ],
 
   plugins: {
-    import: fixupPluginRules(importPlugin),
+    'import': fixupPluginRules(importPlugin),
+    'bpmn-io': fixupPluginRules(bpmnIoPlugin),
   },
 
   languageOptions: {
