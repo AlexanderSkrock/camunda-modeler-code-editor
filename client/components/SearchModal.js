@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import { ModalHeader, PaginationNav, Search } from '../../vendor/@carbon/react';
@@ -9,7 +8,7 @@ import { selectId } from '../utils/css';
 
 const DefaultContainer = ({ children }) => <div>{ children }</div>;
 
-export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, ItemRenderer, ItemContainerRenderer = DefaultContainer }) => {
+const SearchModal = ({ open, title, onClose, onSearch, onSelect, pageSize = 10, ItemRenderer, ItemContainerRenderer = DefaultContainer }) => {
   const [ searchFieldId ] = useState(`search-input-${Math.floor(Math.random() * 1000)}`);
 
   const [ currentSearchValue, setCurrentSearchValue ] = useState('');
@@ -54,7 +53,7 @@ export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, ItemR
         <Search id={ searchFieldId } labelText="Search" value={ currentSearchValue } onKeyDown={ handleKeyDown } onChange={ handleSearchValuedChange } onClear={ handleClearSearch } />
         <ItemContainerRenderer>
           {
-            currentResultPage.map(item => <ItemRenderer { ...item } onSelect={ () => onSelect(item.item) } />)
+            currentResultPage.map((item, idx) => <ItemRenderer key={ idx } { ...item } onSelect={ () => onSelect(item.item) } />)
           }
         </ItemContainerRenderer>
         <PaginationNav page={ currentPage } totalItems={ numberOfPages } onChange={ setCurrentPage } />
@@ -62,3 +61,5 @@ export default ({ open, title, onClose, onSearch, onSelect, pageSize = 10, ItemR
     </Modal>
   );
 };
+
+export default SearchModal;

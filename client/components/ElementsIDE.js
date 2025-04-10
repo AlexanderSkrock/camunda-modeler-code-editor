@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useCallback, useEffect, useRef, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
@@ -12,7 +11,7 @@ import { ElementEditor, ElementSearchResultContainer, ElementSearchResultItem, S
 
 import * as styles from './ElementsIDE.module.scss';
 
-export default ({ width, height, elements, onOpen, onClose, onSearch, commandStack }) => {
+const ElementsIDE = ({ width, height, elements, onOpen, onClose, onSearch, commandStack }) => {
   const [ searchOpen, setSearchOpen ] = useState(false);
 
   const [ selectedIndex, selectIndex ] = useState(0);
@@ -79,7 +78,7 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
               return (
                 <TabPanel key={ idx } className={ styles.editor }>
                   <ElementEditor
-                    key={ idx }
+                    name={ `elements-ide-editor-${idx}` }
                     element={ element }
                     moddleElement={ moddleElement }
                     type={ type }
@@ -94,3 +93,5 @@ export default ({ width, height, elements, onOpen, onClose, onSearch, commandSta
     </div>
   );
 };
+
+export default ElementsIDE;

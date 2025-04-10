@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useMemo } from 'camunda-modeler-plugin-helpers/react';
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
@@ -8,7 +7,7 @@ import { Add } from '../../vendor/@carbon/icons-react';
 
 import { getAccessor, getEditableType } from '../../lib';
 
-export default ({ item: { element, moddleElement, type }, onSelect, disabled }) => {
+const ElementSearchResultItem = ({ item: { element, moddleElement, type }, onSelect, disabled }) => {
   const label = useMemo(() => getLabel(element) || element.id, [ element ]);
   const language = useMemo(() => getAccessor(moddleElement).getLanguage(moddleElement), [ moddleElement ]);
   const typeName = useMemo(() => getEditableType(type).name, [ type ]);
@@ -29,3 +28,5 @@ export default ({ item: { element, moddleElement, type }, onSelect, disabled }) 
     </StructuredListRow>
   );
 };
+
+export default ElementSearchResultItem;

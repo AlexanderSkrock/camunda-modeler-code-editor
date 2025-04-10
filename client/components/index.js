@@ -9,4 +9,4 @@ export {
   Footer as ModalFooter,
 } from './Modal';
 export { default as SearchModal } from './SearchModal';
-export { default as withTheme } from './withTheme';
+export { default as Theme } from './Theme';

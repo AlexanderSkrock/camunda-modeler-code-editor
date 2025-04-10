@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
 
 import { getAccessor, getEditor, getScopeProviders } from '../../lib';
@@ -14,7 +13,7 @@ const elementModifier = commandStack => (element, moddleElement, properties) => 
   }
 };
 
-export default ({ key, element, moddleElement, type, commandStack }) => {
+const ElementEditor = ({ name, element, moddleElement, type, commandStack }) => {
   const [ elementScope, setElementScope ] = useState({});
   useEffect(() => {
     const boundProviders = getScopeProviders().map(provider => provider(element, moddleElement, type));
@@ -41,7 +40,7 @@ export default ({ key, element, moddleElement, type, commandStack }) => {
 
   return (
     <EditorComponent
-      key={ key }
+      name={ name }
       element={ element }
       moddleElement={ moddleElement }
       type={ type }
@@ -52,3 +51,5 @@ export default ({ key, element, moddleElement, type, commandStack }) => {
     />
   );
 };
+
+export default ElementEditor;

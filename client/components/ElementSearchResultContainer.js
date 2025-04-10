@@ -1,9 +1,8 @@
-// eslint-disable-next-line no-unused-vars
 import React from 'camunda-modeler-plugin-helpers/react';
 
 import { StructuredListBody, StructuredListCell, StructuredListHead, StructuredListRow, StructuredListWrapper } from '../../vendor/@carbon/react';
 
-export default ({ children }) => (
+const ElementSearchResultItemContainer = ({ children }) => (
   <StructuredListWrapper>
     <StructuredListHead>
       <StructuredListRow head>
@@ -18,3 +17,5 @@ export default ({ children }) => (
     </StructuredListBody>
   </StructuredListWrapper>
 );
+
+export default ElementSearchResultItemContainer;
