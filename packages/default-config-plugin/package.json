@@ -30,8 +30,5 @@
     "@camunda-modeler-code-editor/api": "^1.0.0",
     "@camunda-modeler-code-editor/helpers": "^1.0.0",
     "camunda-modeler-plugin-helpers": "^5.1.0"
-  },
-  "devDependencies": {
-    "camunda-modeler-webpack-plugin": "^0.1.0"
   }
 }
