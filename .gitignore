@@ -3,9 +3,11 @@
 
 /.camunda-modeler
 
-node_modules
+/node_modules
+/packages/*/node_modules
 
 dist
 packed-plugins
 
 .nx/cache
+.nx/workspace-data
