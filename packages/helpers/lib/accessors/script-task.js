@@ -1,6 +1,7 @@
 import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 
 export default {
+  id: 'bpmn:ScriptTask',
   supportsElement: element => {
     const businessObject = getBusinessObject(element);
     return is(businessObject, 'bpmn:ScriptTask');
