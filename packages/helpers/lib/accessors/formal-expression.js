@@ -1,6 +1,7 @@
 import { getBusinessObject, is } from 'bpmn-js/lib/util/ModelUtil';
 
 export default {
+  id: 'bpmn:FormalExpression',
   supportsElement: element => {
     const businessObject = getBusinessObject(element);
     return is(businessObject, 'bpmn:FormalExpression');
