@@ -119,7 +119,7 @@ You'll have to align with following structure:
 
 ```js
 import { registerScopeProvider } from 'camunda-modeler-code-editor/lib';
-registerScopeProvider('scope-variables', VariablesScopeProvider);
+registerScopeProvider('scope-variables', ScopeVariablesProvider);
 ```
 
 ## Licence

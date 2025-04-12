@@ -1,17 +1,17 @@
 {
-  "name": "camunda-modeler-code-editor",
-  "version": "0.3.0",
+  "name": "@camunda-modeler-code-editor/root",
+  "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
-  "exports": {
-    ".": "./index.js",
-    "./lib": "./dist/lib.js"
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "all": "run-s build test",
-    "build": "webpack --config webpack.prod.js",
-    "dev": "webpack -w --config webpack.dev.js",
-    "lint": "eslint .",
+    "dev": "run-p dev:*",
+    "dev:api": "npm run dev -w packages/api",
+    "dev:helpers": "npm run dev -w packages/helpers",
+    "dev:plugin": "npm run dev -w packages/plugin",
+    "dev:default-plugin": "npm run dev -w packages/default-config-plugin",
     "provision": "npx camunda-modeler-provisioner install --overwrite",
     "start": "npx camunda-modeler-provisioner launch"
   },
@@ -19,50 +19,20 @@
     "type": "git",
     "url": "git+github.com/AlexanderSkrock/camunda-modeler-code-editor.git"
   },
-  "keywords": [
-    "camunda",
-    "modeler",
-    "plugin",
-    "code",
-    "js"
-  ],
   "author": "Alexander Skrock",
   "license": "MIT",
-  "dependencies": {
-    "@bpmn-io/extract-process-variables": "^1.0.1",
-    "@bpmn-io/properties-panel": "^3.26.3",
-    "@carbon/icons-react": "^11.57.0",
-    "@carbon/react": "^1.78.2",
-    "ace-builds": "^1.39.0",
-    "bpmn-js": "^18.4.0",
-    "bpmn-js-properties-panel": "^5.34.0",
-    "camunda-modeler-plugin-helpers": "^5.1.0",
-    "diagram-js": "^15.2.4",
-    "min-dom": "^5.1.1",
-    "react": "^18.3.1",
-    "react-ace": "^14.0.1",
-    "react-is": "^18.3.1",
-    "use-debounce": "^10.0.4"
-  },
   "devDependencies": {
     "@babel/core": "^7.21.8",
-    "@eslint/compat": "^1.2.8",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.24.0",
-    "camunda-modeler-webpack-plugin": "^0.1.0",
-    "css-loader": "^7.1.2",
     "eslint": "^9.24.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
-    "eslint-plugin-import": "^2.31.0",
     "npm-run-all": "^4.1.5",
-    "sass-loader": "^16.0.5",
-    "style-loader": "^4.0.0",
     "webpack": "^5.82.0",
     "webpack-cli": "^6.0.1",
     "webpack-merge": "^6.0.1"
   },
-  "files": [
-    "dist",
-    "index.js"
-  ]
+  "dependencies": {
+    "preact": "^10.26.4"
+  }
 }
