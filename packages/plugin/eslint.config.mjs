@@ -10,12 +10,12 @@ export default defineConfig([ globalIgnores([ 'node_modules/*', 'dist/*' ]), {
   },
 
   rules: {
-    'no-restricted-imports': ['error', {
+    'no-restricted-imports': [ 'error', {
       name: '@carbon/react',
       message: '@carbon should be consumed via vendor/@carbon/react until it is provided by the camunda-modeler-plugin-helpers',
     }, {
       name: '@carbon/icons-react',
       message: '@carbon should be consumed via vendor/@carbon/icons-react until it is provided by the camunda-modeler-plugin-helpers',
-    }],
+    } ],
   },
 } ]);
