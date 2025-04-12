@@ -1,20 +1,17 @@
 {
   "name": "@camunda-modeler-code-editor/root",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "",
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
-    "dev": "run-p dev:*",
-    "dev:api": "npm run dev -w packages/api",
-    "dev:accessors": "npm run dev -w packages/accessors",
-    "dev:editable-types": "npm run dev -w packages/editable-types",
-    "dev:editors": "npm run dev -w packages/editors",
-    "dev:scope-providers": "npm run dev -w packages/scope-providers",
-    "dev:plugin": "npm run dev -w packages/plugin",
-    "dev:default-plugin": "npm run dev -w packages/default-config-plugin",
+    "dev": "npx lerna run dev --parallel",
+    "build": "npx lerna run build",
+    "lint": "npx lerna run lint",
+    "test": "npx lerna run test",
+    "release": "npx lerna version --no-private",
     "provision": "npx camunda-modeler-provisioner install --overwrite",
     "start": "npx camunda-modeler-provisioner launch"
   },
@@ -31,9 +28,12 @@
     "camunda-modeler-webpack-plugin": "^0.1.0",
     "eslint": "^9.24.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
+    "lerna": "^8.2.2",
     "npm-run-all": "^4.1.5",
     "webpack": "^5.82.0",
     "webpack-cli": "^6.0.1",
     "webpack-merge": "^6.0.1"
+  },
+  "dependencies": {
   }
 }

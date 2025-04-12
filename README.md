@@ -10,6 +10,7 @@ Use [npm](https://www.npmjs.com/), the [Node.js](https://nodejs.org/en/) package
 
 ```sh
 npm install
+npm install --workspaces
 ```
 
 To make the Camunda Modeler aware of your plugin you must link the plugin to the [Camunda Modeler plugin directory](https://github.com/camunda/camunda-modeler/tree/develop/docs/plugins#plugging-into-the-camunda-modeler) via a symbolic link.
@@ -32,12 +33,6 @@ npm run dev
 ```
 
 Given you've setup and linked your plugin [as explained above](#development-setup), you should be able to reload the modeler to pick up plugin changes. To do so, open the app's built in development toos via `F12`. Then, within the development tools press the reload shortcuts `CTRL + R` or `CMD + R` to reload the app.
-
-To prepare the plugin for release, executing all necessary steps, run:
-
-```sh
-npm run all
-```
 
 ## Extending the plugin
 
