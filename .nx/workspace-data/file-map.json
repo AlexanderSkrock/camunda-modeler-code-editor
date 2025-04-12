@@ -1,0 +1,573 @@
+{
+  "version": "6.0",
+  "nxVersion": "20.7.2",
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".github/workflows/verify-pull-requests.yml",
+        "hash": "2009288433210354549"
+      },
+      {
+        "file": ".github/workflows/npm-publish.yml",
+        "hash": "1028955130423577740"
+      },
+      {
+        "file": "nx.json",
+        "hash": "10431615454095632236"
+      },
+      {
+        "file": "README.md",
+        "hash": "16206299694228001090"
+      },
+      {
+        "file": "camunda-modeler.config.js",
+        "hash": "15962485121069712523"
+      },
+      {
+        "file": "package.json",
+        "hash": "7796808065837230053"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "7933336018140420997"
+      },
+      {
+        "file": ".github/workflows/lint-package.yml",
+        "hash": "3388778774498497479"
+      },
+      {
+        "file": "lerna.json",
+        "hash": "4002623486568433543"
+      },
+      {
+        "file": ".github/workflows/github-publish.yml",
+        "hash": "8088918087432435461"
+      },
+      {
+        "file": ".github/workflows/build-package.yml",
+        "hash": "17155492742741751138"
+      },
+      {
+        "file": ".github/workflows/github-release.yml",
+        "hash": "3712504871870520522"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "8980084821550363948"
+      },
+      {
+        "file": ".github/dependabot.yml",
+        "hash": "11807570225935897857"
+      }
+    ],
+    "projectFileMap": {
+      "@camunda-modeler-code-editor/accessors": [
+        {
+          "file": "packages/accessors/eslint.config.mjs",
+          "hash": "15650451565778389320"
+        },
+        {
+          "file": "packages/accessors/lib/formal-expression.js",
+          "hash": "2989479738185920774"
+        },
+        {
+          "file": "packages/accessors/lib/index.js",
+          "hash": "3525794606200827884"
+        },
+        {
+          "file": "packages/accessors/lib/script-task.js",
+          "hash": "12509577186592709015"
+        },
+        {
+          "file": "packages/accessors/lib/script.js",
+          "hash": "6551163138833308005"
+        },
+        {
+          "file": "packages/accessors/package.json",
+          "hash": "9698219829053606184",
+          "deps": [
+            "npm:bpmn-js"
+          ]
+        },
+        {
+          "file": "packages/accessors/webpack.common.mjs",
+          "hash": "18138459913399031906"
+        },
+        {
+          "file": "packages/accessors/webpack.dev.mjs",
+          "hash": "11845804120956946768"
+        },
+        {
+          "file": "packages/accessors/webpack.prod.mjs",
+          "hash": "13760691234161492863"
+        }
+      ],
+      "@camunda-modeler-code-editor/default-config-plugin": [
+        {
+          "file": "packages/default-config-plugin/client/DefaultCodeEditorClientExtension.js",
+          "hash": "5624472807734080115"
+        },
+        {
+          "file": "packages/default-config-plugin/client/index.js",
+          "hash": "9867670899943268121"
+        },
+        {
+          "file": "packages/default-config-plugin/eslint.config.mjs",
+          "hash": "15650451565778389320"
+        },
+        {
+          "file": "packages/default-config-plugin/index.js",
+          "hash": "13020318074231016039"
+        },
+        {
+          "file": "packages/default-config-plugin/package.json",
+          "hash": "614019459886949411",
+          "deps": [
+            "@camunda-modeler-code-editor/api",
+            "@camunda-modeler-code-editor/accessors",
+            "@camunda-modeler-code-editor/editable-types",
+            "@camunda-modeler-code-editor/editors",
+            "@camunda-modeler-code-editor/scope-providers",
+            "npm:camunda-modeler-plugin-helpers"
+          ]
+        },
+        {
+          "file": "packages/default-config-plugin/webpack.common.js",
+          "hash": "14830685328985310452"
+        },
+        {
+          "file": "packages/default-config-plugin/webpack.dev.js",
+          "hash": "2112395518369343370"
+        },
+        {
+          "file": "packages/default-config-plugin/webpack.prod.js",
+          "hash": "14470794207768943251"
+        }
+      ],
+      "@camunda-modeler-code-editor/api": [
+        {
+          "file": "packages/api/eslint.config.mjs",
+          "hash": "718069543417873134"
+        },
+        {
+          "file": "packages/api/lib/accessors.js",
+          "hash": "6953705988323206714"
+        },
+        {
+          "file": "packages/api/lib/config.js",
+          "hash": "690794059817497587"
+        },
+        {
+          "file": "packages/api/lib/editors.js",
+          "hash": "6089016145641360771"
+        },
+        {
+          "file": "packages/api/lib/index.js",
+          "hash": "7486729275934932915"
+        },
+        {
+          "file": "packages/api/lib/scope.js",
+          "hash": "1783211179098085315"
+        },
+        {
+          "file": "packages/api/lib/types.js",
+          "hash": "1947114970970178673"
+        },
+        {
+          "file": "packages/api/package.json",
+          "hash": "9704970547222108948"
+        },
+        {
+          "file": "packages/api/webpack.common.mjs",
+          "hash": "12268353081239859696"
+        },
+        {
+          "file": "packages/api/webpack.dev.mjs",
+          "hash": "11845804120956946768"
+        },
+        {
+          "file": "packages/api/webpack.prod.mjs",
+          "hash": "13760691234161492863"
+        }
+      ],
+      "@camunda-modeler-code-editor/plugin": [
+        {
+          "file": "packages/plugin/client/CodeEditorBpmnJsPlugin.js",
+          "hash": "10725626333363920077"
+        },
+        {
+          "file": "packages/plugin/client/CodeEditorClientExtension.js",
+          "hash": "3066081058839801203"
+        },
+        {
+          "file": "packages/plugin/client/CodeEditorClientExtension.module.scss",
+          "hash": "9923869092960906598"
+        },
+        {
+          "file": "packages/plugin/client/components/ElementEditor.js",
+          "hash": "10108870579020258188"
+        },
+        {
+          "file": "packages/plugin/client/components/ElementSearchResultContainer.js",
+          "hash": "10685596423948235540"
+        },
+        {
+          "file": "packages/plugin/client/components/ElementSearchResultItem.js",
+          "hash": "7772566025861660538"
+        },
+        {
+          "file": "packages/plugin/client/components/ElementsIDE.js",
+          "hash": "10367323406236838983"
+        },
+        {
+          "file": "packages/plugin/client/components/ElementsIDE.module.scss",
+          "hash": "5706557956629365869"
+        },
+        {
+          "file": "packages/plugin/client/components/Modal.js",
+          "hash": "12624368256460810348"
+        },
+        {
+          "file": "packages/plugin/client/components/Modal.module.scss",
+          "hash": "12018718866734683493"
+        },
+        {
+          "file": "packages/plugin/client/components/SearchModal.js",
+          "hash": "441988991504501060"
+        },
+        {
+          "file": "packages/plugin/client/components/Theme.js",
+          "hash": "16486800062905568975"
+        },
+        {
+          "file": "packages/plugin/client/components/index.js",
+          "hash": "2935284558685474796"
+        },
+        {
+          "file": "packages/plugin/client/hooks/modeler/index.js",
+          "hash": "8302769542071835437"
+        },
+        {
+          "file": "packages/plugin/client/hooks/modeler/useChangingValue.js",
+          "hash": "15162734287062199067"
+        },
+        {
+          "file": "packages/plugin/client/hooks/modeler/useModeler.js",
+          "hash": "2590490942872644872"
+        },
+        {
+          "file": "packages/plugin/client/hooks/modeler/useService.js",
+          "hash": "15235950662923949202"
+        },
+        {
+          "file": "packages/plugin/client/index.js",
+          "hash": "4937491341620856594"
+        },
+        {
+          "file": "packages/plugin/client/services/CodePropertiesProvider.js",
+          "hash": "12390496178074849685"
+        },
+        {
+          "file": "packages/plugin/client/services/DisableModeling.js",
+          "hash": "732360173483691681"
+        },
+        {
+          "file": "packages/plugin/client/services/index.js",
+          "hash": "9508832505792904089"
+        },
+        {
+          "file": "packages/plugin/client/utils/css.js",
+          "hash": "13561388852752647166"
+        },
+        {
+          "file": "packages/plugin/client/utils/events.js",
+          "hash": "15068154486991964724"
+        },
+        {
+          "file": "packages/plugin/eslint.config.mjs",
+          "hash": "4443969350609633505"
+        },
+        {
+          "file": "packages/plugin/index.js",
+          "hash": "14534864752475823810"
+        },
+        {
+          "file": "packages/plugin/package.json",
+          "hash": "16545503647276454085",
+          "deps": [
+            "npm:css-loader",
+            "npm:sass-loader",
+            "npm:style-loader",
+            "npm:@carbon/icons-react",
+            "npm:@carbon/react",
+            "npm:bpmn-js",
+            "npm:camunda-modeler-plugin-helpers",
+            "npm:diagram-js",
+            "npm:min-dom",
+            "npm:react",
+            "npm:react-dom",
+            "npm:use-debounce"
+          ]
+        },
+        {
+          "file": "packages/plugin/vendor/@carbon/icons-react.js",
+          "hash": "8492624999077120350"
+        },
+        {
+          "file": "packages/plugin/vendor/@carbon/react.js",
+          "hash": "503351947114917798"
+        },
+        {
+          "file": "packages/plugin/webpack.common.js",
+          "hash": "13919925375847845838"
+        },
+        {
+          "file": "packages/plugin/webpack.dev.js",
+          "hash": "2112395518369343370"
+        },
+        {
+          "file": "packages/plugin/webpack.prod.js",
+          "hash": "14470794207768943251"
+        }
+      ],
+      "@camunda-modeler-code-editor/editors": [
+        {
+          "file": "packages/editors/eslint.config.mjs",
+          "hash": "15650451565778389320"
+        },
+        {
+          "file": "packages/editors/lib/TextEditor.js",
+          "hash": "14506610083429013163"
+        },
+        {
+          "file": "packages/editors/lib/index.js",
+          "hash": "17757815504663957263"
+        },
+        {
+          "file": "packages/editors/package.json",
+          "hash": "2531880926900163857",
+          "deps": [
+            "npm:ace-builds",
+            "npm:camunda-modeler-plugin-helpers",
+            "npm:react-ace"
+          ]
+        },
+        {
+          "file": "packages/editors/webpack.common.mjs",
+          "hash": "18138459913399031906"
+        },
+        {
+          "file": "packages/editors/webpack.dev.mjs",
+          "hash": "11845804120956946768"
+        },
+        {
+          "file": "packages/editors/webpack.prod.mjs",
+          "hash": "13760691234161492863"
+        }
+      ],
+      "@camunda-modeler-code-editor/scope-providers": [
+        {
+          "file": "packages/scope-providers/eslint.config.mjs",
+          "hash": "15650451565778389320"
+        },
+        {
+          "file": "packages/scope-providers/lib/index.js",
+          "hash": "16229555870529165632"
+        },
+        {
+          "file": "packages/scope-providers/lib/scope-variables/ScopeVariablesProvider.js",
+          "hash": "1635747386585988409"
+        },
+        {
+          "file": "packages/scope-providers/lib/scope-variables/getScopeVariables.js",
+          "hash": "16508378616480657913"
+        },
+        {
+          "file": "packages/scope-providers/lib/scope-variables/index.js",
+          "hash": "9475196165750109050"
+        },
+        {
+          "file": "packages/scope-providers/lib/scope-variables/utils.js",
+          "hash": "9915290078860278410"
+        },
+        {
+          "file": "packages/scope-providers/package.json",
+          "hash": "6649666434865738731",
+          "deps": [
+            "npm:@bpmn-io/extract-process-variables",
+            "npm:bpmn-js"
+          ]
+        },
+        {
+          "file": "packages/scope-providers/webpack.common.mjs",
+          "hash": "18138459913399031906"
+        },
+        {
+          "file": "packages/scope-providers/webpack.dev.mjs",
+          "hash": "11845804120956946768"
+        },
+        {
+          "file": "packages/scope-providers/webpack.prod.mjs",
+          "hash": "13760691234161492863"
+        }
+      ],
+      "@camunda-modeler-code-editor/editable-types": [
+        {
+          "file": "packages/editable-types/eslint.config.mjs",
+          "hash": "15650451565778389320"
+        },
+        {
+          "file": "packages/editable-types/lib/conditional-event/index.js",
+          "hash": "5723860666834429328"
+        },
+        {
+          "file": "packages/editable-types/lib/conditional-event/properties.js",
+          "hash": "6971374010394547681"
+        },
+        {
+          "file": "packages/editable-types/lib/conditional-event/search.js",
+          "hash": "245805661183181222"
+        },
+        {
+          "file": "packages/editable-types/lib/conditional-event/utils.js",
+          "hash": "123671728717674335"
+        },
+        {
+          "file": "packages/editable-types/lib/execution-listener/index.js",
+          "hash": "9510894492696915588"
+        },
+        {
+          "file": "packages/editable-types/lib/execution-listener/properties.js",
+          "hash": "6918750641599369281"
+        },
+        {
+          "file": "packages/editable-types/lib/execution-listener/search.js",
+          "hash": "16913207538641087247"
+        },
+        {
+          "file": "packages/editable-types/lib/execution-listener/utils.js",
+          "hash": "7394227087767475605"
+        },
+        {
+          "file": "packages/editable-types/lib/index.js",
+          "hash": "14312991577951644134"
+        },
+        {
+          "file": "packages/editable-types/lib/input-parameter/index.js",
+          "hash": "10610116448575050454"
+        },
+        {
+          "file": "packages/editable-types/lib/input-parameter/properties.js",
+          "hash": "7795557871624059754"
+        },
+        {
+          "file": "packages/editable-types/lib/input-parameter/search.js",
+          "hash": "6762800444935268600"
+        },
+        {
+          "file": "packages/editable-types/lib/input-parameter/utils.js",
+          "hash": "2848647010393635314"
+        },
+        {
+          "file": "packages/editable-types/lib/output-parameter/index.js",
+          "hash": "16346483643054979517"
+        },
+        {
+          "file": "packages/editable-types/lib/output-parameter/properties.js",
+          "hash": "821106791388984041"
+        },
+        {
+          "file": "packages/editable-types/lib/output-parameter/search.js",
+          "hash": "3462426445395346347"
+        },
+        {
+          "file": "packages/editable-types/lib/output-parameter/utils.js",
+          "hash": "8469882707438922730"
+        },
+        {
+          "file": "packages/editable-types/lib/script-task/index.js",
+          "hash": "1365707122504984789"
+        },
+        {
+          "file": "packages/editable-types/lib/script-task/properties.js",
+          "hash": "5552863995654981959"
+        },
+        {
+          "file": "packages/editable-types/lib/script-task/search.js",
+          "hash": "2565347775210874123"
+        },
+        {
+          "file": "packages/editable-types/lib/script-task/utils.js",
+          "hash": "12877605142210725186"
+        },
+        {
+          "file": "packages/editable-types/lib/sequence-flow/index.js",
+          "hash": "16097360920088796365"
+        },
+        {
+          "file": "packages/editable-types/lib/sequence-flow/properties.js",
+          "hash": "6131147656767215711"
+        },
+        {
+          "file": "packages/editable-types/lib/sequence-flow/search.js",
+          "hash": "5308809234060327601"
+        },
+        {
+          "file": "packages/editable-types/lib/sequence-flow/utils.js",
+          "hash": "7966396083173439390"
+        },
+        {
+          "file": "packages/editable-types/lib/task-listener/index.js",
+          "hash": "15165088562304021084"
+        },
+        {
+          "file": "packages/editable-types/lib/task-listener/properties.js",
+          "hash": "5014302656237913786"
+        },
+        {
+          "file": "packages/editable-types/lib/task-listener/search.js",
+          "hash": "7676597294314737249"
+        },
+        {
+          "file": "packages/editable-types/lib/task-listener/utils.js",
+          "hash": "15637419806644325092"
+        },
+        {
+          "file": "packages/editable-types/lib/utils/index.js",
+          "hash": "15317189165390614421"
+        },
+        {
+          "file": "packages/editable-types/lib/utils/properties.js",
+          "hash": "15969959071920797876"
+        },
+        {
+          "file": "packages/editable-types/package.json",
+          "hash": "16989968527348450510",
+          "deps": [
+            "npm:@bpmn-io/extract-process-variables",
+            "npm:@bpmn-io/properties-panel",
+            "npm:ace-builds",
+            "npm:bpmn-js-properties-panel",
+            "npm:bpmn-js",
+            "npm:camunda-modeler-plugin-helpers",
+            "npm:react-ace"
+          ]
+        },
+        {
+          "file": "packages/editable-types/webpack.common.mjs",
+          "hash": "18138459913399031906"
+        },
+        {
+          "file": "packages/editable-types/webpack.dev.mjs",
+          "hash": "11845804120956946768"
+        },
+        {
+          "file": "packages/editable-types/webpack.prod.mjs",
+          "hash": "13760691234161492863"
+        }
+      ]
+    }
+  }
+}

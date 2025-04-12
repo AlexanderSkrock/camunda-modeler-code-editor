@@ -1,8 +1,11 @@
 name: Publish package to NPM
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      # Matches tags that have the shape `vX.Y.Z`
+      # Reference: https://help.github.com/en/articles/workflow-syntax-for-github-actions#onpushpull_requesttagsbranches
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   verify-build:
@@ -18,7 +21,8 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: npm ci
+      - run: npm ci --workspaces
       - run: npm run build
-      - run: npm publish
+      - run: npx lerna publish from-git --yes
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}

@@ -1,9 +1,9 @@
 {
   "name": "@camunda-modeler-code-editor/default-config-plugin",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack -w --config webpack.dev.js",
+    "dev": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
