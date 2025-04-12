@@ -5,7 +5,7 @@ import CamundaModelerWebpackPlugin from 'camunda-modeler-webpack-plugin';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
-  name: 'helpers',
+  name: 'lib',
   entry: './lib/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),

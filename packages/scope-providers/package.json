@@ -1,0 +1,31 @@
+{
+  "name": "@camunda-modeler-code-editor/scope-providers",
+  "version": "1.0.0",
+  "main": "./dist/lib.js",
+  "scripts": {
+    "dev": "webpack -w --config webpack.dev.mjs",
+    "build": "webpack --config webpack.prod.mjs",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com/AlexanderSkrock/camunda-modeler-code-editor.git"
+  },
+  "keywords": [
+    "camunda",
+    "modeler",
+    "plugin",
+    "code"
+  ],
+  "author": "Alexander Skrock",
+  "license": "MIT",
+  "description": "",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@bpmn-io/extract-process-variables": "^1.0.1",
+    "bpmn-js": "^18.4.0"
+  }
+}

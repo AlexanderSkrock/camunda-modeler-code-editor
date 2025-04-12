@@ -9,7 +9,10 @@
   "scripts": {
     "dev": "run-p dev:*",
     "dev:api": "npm run dev -w packages/api",
-    "dev:helpers": "npm run dev -w packages/helpers",
+    "dev:accessors": "npm run dev -w packages/accessors",
+    "dev:editable-types": "npm run dev -w packages/editable-types",
+    "dev:editors": "npm run dev -w packages/editors",
+    "dev:scope-providers": "npm run dev -w packages/scope-providers",
     "dev:plugin": "npm run dev -w packages/plugin",
     "dev:default-plugin": "npm run dev -w packages/default-config-plugin",
     "provision": "npx camunda-modeler-provisioner install --overwrite",

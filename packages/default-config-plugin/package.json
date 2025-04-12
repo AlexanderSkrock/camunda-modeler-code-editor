@@ -28,7 +28,10 @@
   ],
   "dependencies": {
     "@camunda-modeler-code-editor/api": "^1.0.0",
-    "@camunda-modeler-code-editor/helpers": "^1.0.0",
+    "@camunda-modeler-code-editor/accessors": "^1.0.0",
+    "@camunda-modeler-code-editor/editable-types": "^1.0.0",
+    "@camunda-modeler-code-editor/editors": "^1.0.0",
+    "@camunda-modeler-code-editor/scope-providers": "^1.0.0",
     "camunda-modeler-plugin-helpers": "^5.1.0"
   }
 }
