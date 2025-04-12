@@ -1,0 +1,45 @@
+{
+  "name": "@camunda-modeler-code-editor/plugin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack -w --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com/AlexanderSkrock/camunda-modeler-code-editor.git"
+  },
+  "keywords": [
+    "camunda",
+    "modeler",
+    "plugin",
+    "code"
+  ],
+  "author": "Alexander Skrock",
+  "license": "MIT",
+  "description": "",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "dependencies": {
+    "@carbon/icons-react": "^11.57.0",
+    "@carbon/react": "^1.78.2",
+    "bpmn-js": "^18.4.0",
+    "camunda-modeler-plugin-helpers": "^5.1.0",
+    "diagram-js": "^15.2.4",
+    "min-dom": "^5.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "use-debounce": "^10.0.4"
+  },
+  "devDependencies": {
+    "camunda-modeler-webpack-plugin": "^0.1.0",
+    "css-loader": "^7.1.2",
+    "sass-loader": "^16.0.5",
+    "style-loader": "^4.0.0"
+  }
+}

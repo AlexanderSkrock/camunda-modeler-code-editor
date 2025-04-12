@@ -1,0 +1,36 @@
+{
+  "name": "@camunda-modeler-code-editor/helpers",
+  "version": "1.0.0",
+  "main": "./dist/lib.js",
+  "scripts": {
+    "dev": "webpack -w --config webpack.dev.mjs",
+    "build": "webpack --config webpack.prod.mjs",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+github.com/AlexanderSkrock/camunda-modeler-code-editor.git"
+  },
+  "keywords": [
+    "camunda",
+    "modeler",
+    "plugin",
+    "code"
+  ],
+  "author": "Alexander Skrock",
+  "license": "MIT",
+  "description": "",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@bpmn-io/extract-process-variables": "^1.0.1",
+    "@bpmn-io/properties-panel": "^3.26.3",
+    "ace-builds": "^1.39.0",
+    "bpmn-js-properties-panel": "^5.34.0",
+    "bpmn-js": "^18.4.0",
+    "camunda-modeler-plugin-helpers": "^5.1.0",
+    "react-ace": "^14.0.1"
+  }
+}
