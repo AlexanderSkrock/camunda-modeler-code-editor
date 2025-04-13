@@ -24,8 +24,7 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
 
-      - run: npm ci
-      - run: npm ci -w packages/plugin -w packages/default-config-plugin
+      - run: npm ci --workspaces
       - run: npx lerna run build --include-dependencies --scope @camunda-modeler-code-editor/plugin --scope @camunda-modeler-code-editor/default-config-plugin
       - run: mkdir -p ".packed-plugins"
       - run: npx lerna exec --scope @camunda-modeler-code-editor/plugin --scope @camunda-modeler-code-editor/default-config-plugin -- npm pack --pack-destination "$INIT_CWD/packed-plugins"
