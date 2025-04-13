@@ -12,10 +12,7 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm ci
       - run: npm ci --workspaces
-
-      - run: npm i eslint
-      - run: npm list eslint --all
+      - run: npm ci
 
       - run: npm run lint
