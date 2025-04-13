@@ -1,11 +1,8 @@
 name: Publish package to NPM
 
 on:
-  push:
-    tags:
-      # Matches tags that have the shape `vX.Y.Z`
-      # Reference: https://help.github.com/en/articles/workflow-syntax-for-github-actions#onpushpull_requesttagsbranches
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+  release:
+    types: [created]
 
 jobs:
   verify-build:
