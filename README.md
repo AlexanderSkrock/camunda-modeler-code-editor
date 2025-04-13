@@ -10,6 +10,7 @@ Use [npm](https://www.npmjs.com/), the [Node.js](https://nodejs.org/en/) package
 
 ```sh
 npm install --workspaces
+npm install
 ```
 
 To make the Camunda Modeler aware of your plugin you must link the plugin to the [Camunda Modeler plugin directory](https://github.com/camunda/camunda-modeler/tree/develop/docs/plugins#plugging-into-the-camunda-modeler) via a symbolic link.
