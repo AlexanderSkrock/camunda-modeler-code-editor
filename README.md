@@ -9,7 +9,6 @@ This plugin aims to simplify the development of scripts without the need for ext
 Use [npm](https://www.npmjs.com/), the [Node.js](https://nodejs.org/en/) package manager to download and install required dependencies:
 
 ```sh
-npm install
 npm install --workspaces
 ```
 

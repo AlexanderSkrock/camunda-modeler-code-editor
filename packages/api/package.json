@@ -1,6 +1,6 @@
 {
   "name": "@camunda-modeler-code-editor/api",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "./dist/lib.js",
   "scripts": {
     "dev": "webpack -w --config webpack.dev.mjs",

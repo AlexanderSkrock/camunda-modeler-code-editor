@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
+
       - run: npm ci --workspaces
       - run: npm run build
       - run: npx lerna publish from-git --yes
