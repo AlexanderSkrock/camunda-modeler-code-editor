@@ -21,7 +21,8 @@ jobs:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
       - run: npm ci
+      - run: npm ci --workspaces
       - run: npm run build
-      - run: npm publish
+      - run: npx lerna publish from-git --yes
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
