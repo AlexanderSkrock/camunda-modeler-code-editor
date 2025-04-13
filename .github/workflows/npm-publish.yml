@@ -19,7 +19,9 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - run: npm ci --workspaces
+      - run: npm ci
       - run: npm run build
+
       - run: npx lerna publish from-git --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
