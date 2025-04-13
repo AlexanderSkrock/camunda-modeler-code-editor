@@ -18,7 +18,6 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
 
-      - run: npm ci --workspaces
       - run: npm ci
       - run: npm run build
 
