@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "main": "./dist/lib.js",
   "scripts": {
-    "dev": "webpack --config webpack.dev.mjs",
-    "build": "webpack --config webpack.prod.mjs",
-    "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

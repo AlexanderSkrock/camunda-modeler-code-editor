@@ -1,5 +1,5 @@
-const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
+import { merge } from 'webpack-merge';
+import common from './webpack.common.mjs';
 
 function smartMerge(config, overrides) {
   return Object.prototype.toString.call(config) === '[object Array]'
@@ -7,7 +7,7 @@ function smartMerge(config, overrides) {
     : merge(config, overrides);
 }
 
-module.exports = smartMerge(common, {
-  mode: 'development',
-  devtool: 'inline-source-map',
+export default smartMerge(common, {
+  mode: 'production',
+  devtool: 'source-map',
 });

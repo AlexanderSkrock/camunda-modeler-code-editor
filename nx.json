@@ -1,20 +1,27 @@
 {
   "targetDefaults": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "eslintConfig": "{projectRoot}/eslint.config.mjs",
+        "lintFilePatterns": ["{projectRoot}/lib/**/*.js", "{projectRoot}/client/**/*.js"]
+      }
+    },
     "dev": {
-      "dependsOn": []
+      "dependsOn": ["^dev"],
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "webpackConfig": "{projectRoot}/webpack.dev.mjs"
+      },
+      "outputs": ["{projectRoot}/dist"]
     },
     "build": {
-      "cache": true,
       "dependsOn": ["^build"],
-      "outputs": [
-        "{projectRoot}/dist"
-      ]
-    },
-    "lint": {
-      "dependsOn": []
-    },
-    "test": {
-      "dependsOn": ["build"]
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "webpackConfig": "{projectRoot}/webpack.prod.mjs"
+      },
+      "outputs": ["{projectRoot}/dist"]
     }
   }
 }

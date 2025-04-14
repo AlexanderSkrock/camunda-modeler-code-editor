@@ -1,7 +1,7 @@
-const path = require('path');
-const CamundaModelerWebpackPlugin = require('camunda-modeler-webpack-plugin');
+import path from 'path';
+import CamundaModelerWebpackPlugin from 'camunda-modeler-webpack-plugin';
 
-module.exports = {
+export default {
   name: 'client',
   entry: './client/index.js',
   output: {
@@ -12,7 +12,7 @@ module.exports = {
     alias: {
 
       // FIXME can be potentially be removed when carbon is provided via camunda-modeler-plugin-helpers
-      'react/jsx-runtime': require.resolve('react/jsx-runtime'),
+      'react/jsx-runtime': import.meta.resolve('react/jsx-runtime'),
     },
   },
   plugins: [
