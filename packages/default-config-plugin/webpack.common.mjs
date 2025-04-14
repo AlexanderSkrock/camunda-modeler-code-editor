@@ -1,7 +1,7 @@
-const path = require('path');
-const CamundaModelerWebpackPlugin = require('camunda-modeler-webpack-plugin');
+import path from 'path';
+import CamundaModelerWebpackPlugin from 'camunda-modeler-webpack-plugin';
 
-module.exports = {
+export default {
   name: 'client',
   entry: './client/index.js',
   output: {
