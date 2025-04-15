@@ -11,7 +11,7 @@
       "dependsOn": ["^dev"],
       "executor": "@nx/webpack:webpack",
       "options": {
-        "webpackConfig": "{projectRoot}/webpack.dev.mjs"
+        "mode": "development"
       },
       "outputs": ["{projectRoot}/dist"]
     },
@@ -19,7 +19,7 @@
       "dependsOn": ["^build"],
       "executor": "@nx/webpack:webpack",
       "options": {
-        "webpackConfig": "{projectRoot}/webpack.prod.mjs"
+        "mode": "production"
       },
       "outputs": ["{projectRoot}/dist"]
     }

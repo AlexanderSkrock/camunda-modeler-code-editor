@@ -3,8 +3,24 @@
         "lint": {
         },
         "dev": {
+            "options": {
+                "webpackConfig": "{workspaceRoot}/webpack.config.js",
+                "main": "./client/index.js",
+                "outputPath": "./dist",
+                "outputFileName": "client.js",
+                "supportsStyles": true,
+                "configureJsxRuntimeAlias": true
+            }
         },
         "build": {
+            "options": {
+                "webpackConfig": "{workspaceRoot}/webpack.config.js",
+                "main": "./client/index.js",
+                "outputPath": "./dist",
+                "outputFileName": "client.js",
+                "supportsStyles": true,
+                "configureJsxRuntimeAlias": true
+            }
         }
     }
 }

@@ -3,8 +3,22 @@
         "lint": {
         },
         "dev": {
+            "options": {
+                "webpackConfig": "{workspaceRoot}/webpack.config.js",
+                "main": "./lib/index.js",
+                "outputPath": "./dist",
+                "outputFileName": "lib.js",
+                "asModule": true
+            }
         },
         "build": {
+            "options": {
+                "webpackConfig": "{workspaceRoot}/webpack.config.js",
+                "main": "./lib/index.js",
+                "outputPath": "./dist",
+                "outputFileName": "lib.js",
+                "asModule": true
+            }
         }
     }
 }
