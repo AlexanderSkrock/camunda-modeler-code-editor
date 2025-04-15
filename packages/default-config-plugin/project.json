@@ -1,10 +1,10 @@
 {
     "targets": {
         "lint": {
+            "lintFilePatterns": ["{projectRoot}/client/**/*.js"]
         },
         "dev": {
             "options": {
-                "webpackConfig": "{workspaceRoot}/webpack.config.js",
                 "main": "./client/index.js",
                 "outputPath": "./dist",
                 "outputFileName": "client.js"
@@ -12,7 +12,6 @@
         },
         "build": {
             "options": {
-                "webpackConfig": "{workspaceRoot}/webpack.config.js",
                 "main": "./client/index.js",
                 "outputPath": "./dist",
                 "outputFileName": "client.js"

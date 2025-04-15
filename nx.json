@@ -3,7 +3,7 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "options": {
-        "eslintConfig": "{projectRoot}/eslint.config.mjs",
+        "eslintConfig": "{workspaceRoot}/eslint.config.mjs",
         "lintFilePatterns": ["{projectRoot}/lib/**/*.js", "{projectRoot}/client/**/*.js"]
       }
     },
@@ -11,6 +11,7 @@
       "dependsOn": ["^dev"],
       "executor": "@nx/webpack:webpack",
       "options": {
+        "webpackConfig": "{workspaceRoot}/webpack.config.js",
         "mode": "development"
       },
       "outputs": ["{projectRoot}/dist"]
@@ -19,6 +20,7 @@
       "dependsOn": ["^build"],
       "executor": "@nx/webpack:webpack",
       "options": {
+        "webpackConfig": "{workspaceRoot}/webpack.config.js",
         "mode": "production"
       },
       "outputs": ["{projectRoot}/dist"]
