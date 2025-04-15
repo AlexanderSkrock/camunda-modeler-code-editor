@@ -9,6 +9,7 @@ export default defineConfig([ globalIgnores([ 'node_modules/*', 'dist/*' ]), {
     'bpmn-io': bpmnIoPlugin,
   },
 
+  // the carbon imports rules are only relevant for the plugin package
   rules: {
     'no-restricted-imports': [ 'error', {
       name: '@carbon/react',
