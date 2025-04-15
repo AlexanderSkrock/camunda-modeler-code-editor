@@ -7,11 +7,11 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npx lerna run dev --parallel",
-    "build": "npx lerna run build",
-    "lint": "npx lerna run lint",
-    "test": "npx lerna run test",
-    "release": "npx lerna version --no-private",
+    "dev": "lerna run dev",
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "test": "lerna run test",
+    "release": "lerna version --no-private",
     "provision": "npx camunda-modeler-provisioner install --overwrite",
     "start": "npx camunda-modeler-provisioner launch"
   },
