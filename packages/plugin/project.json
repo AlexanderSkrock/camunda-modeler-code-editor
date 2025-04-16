@@ -20,6 +20,17 @@
                 "supportsStyles": true,
                 "configureJsxRuntimeAlias": true
             }
+        },
+        "pack": {
+            "options": {
+                "args": [
+                    "--source {projectRoot}",
+                    "--destination {projectRoot}/packs"
+                ]
+            },
+            "outputs": [
+                "{projectRoot}/packs"
+            ]
         }
     }
 }

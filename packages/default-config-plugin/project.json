@@ -16,6 +16,17 @@
                 "outputPath": "./dist",
                 "outputFileName": "client.js"
             }
+        },
+        "pack": {
+            "options": {
+                "args": [
+                    "--source {projectRoot}",
+                    "--destination {projectRoot}/packs"
+                ]
+            },
+            "outputs": [
+                "{projectRoot}/packs"
+            ]
         }
     }
 }

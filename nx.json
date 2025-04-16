@@ -15,6 +15,7 @@
         "^dev"
       ],
       "executor": "@nx/webpack:webpack",
+      "cache": true,
       "options": {
         "webpackConfig": "{workspaceRoot}/webpack.config.js",
         "mode": "development"
@@ -28,6 +29,7 @@
         "^build"
       ],
       "executor": "@nx/webpack:webpack",
+      "cache": true,
       "options": {
         "webpackConfig": "{workspaceRoot}/webpack.config.js",
         "mode": "production"
@@ -35,7 +37,25 @@
       "outputs": [
         "{projectRoot}/dist"
       ]
+    },
+    "pack": {
+      "dependsOn": [
+        "build"
+      ],
+      "executor": "nx:run-commands",
+      "options": {
+          "cwd": "{workspaceRoot}",
+          "commands": [
+            "node ./scripts/pack.js"
+          ]
+      }
     }
+  },
+  "release": {
+    "projects": [
+      "*",
+      "!@camunda-modeler-code-editor/root"
+    ]
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudId": "67feef2e449353331a1c6d60"
