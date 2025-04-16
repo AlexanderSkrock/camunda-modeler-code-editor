@@ -10,7 +10,7 @@ function smartMerge(config, ...overrides) {
 }
 
 function envOverrides(config, context) {
-  return context.options.mode === "development"
+  return context.options.mode === 'development'
     ? {
       mode: 'development',
       devtool: 'inline-source-map',
@@ -70,7 +70,7 @@ function styleOverrides(config, context) {
         },
       ],
     },
-  }
+  };
 };
 
 function defaultOverrides(config, context) {
@@ -96,4 +96,4 @@ module.exports = (config, context) => {
     envOverrides(config, context),
   ];
   return smartMerge(config, ...overrides);
-}
+};
