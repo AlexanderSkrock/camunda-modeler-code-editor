@@ -1,12 +1,12 @@
-name: Verify pull requests
+name: Continuous Integration
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-main
   cancel-in-progress: true
 
 jobs:

@@ -8,62 +8,50 @@ on:
       - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
-  verify-build:
-    uses: ./.github/workflows/build-package.yml
-
-  create-release-artifact:
-    needs: verify-build
+  create-github-release:
     runs-on: ubuntu-latest
-    outputs:
-      pluginsArtifactId: ${{ steps.upload-plugin-artifacts.outputs.artifact-id }}
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: https://registry.npmjs.org/
 
-      - run: npm ci --workspaces
-      - run: npx lerna run build --include-dependencies --scope @camunda-modeler-code-editor/plugin --scope @camunda-modeler-code-editor/default-config-plugin
-      - run: mkdir -p ".packed-plugins"
-      - run: npx lerna exec --scope @camunda-modeler-code-editor/plugin --scope @camunda-modeler-code-editor/default-config-plugin -- npm pack --pack-destination "$INIT_CWD/packed-plugins"
-
-      - id: upload-plugin-artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: "packed-plugins"
-          path: $(ls "./packed-plugins" | tr '\n' ',')
-
-  release:
-    needs: create-release-artifact
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: ${PLUGIN_ARTIFACT_ID}
-          path: ${GITHUB_WORKSPACE}/tar
-        env:
-          PLUGIN_ARTIFACT_ID: ${{ needs.create-release-artifact.outputs.pluginsArtifactId }}
-
-      - run: mkdir -p "./tmp"
-      - run: mkdir -p "./zip"
-      - run: |
-          for file in ./tar/*.tgz; do
-            # Extract the tar file into a folder named after the tar file (without extension)
-            dirname="${file%.tgz}"
-            mkdir -p ".temp/$dirname"
-            tar -xzf "$file" -C ".temp/$dirname"
-
-            # Zip the extracted folder with the same name as the original tarball
-            zip -r "./zip/$dirname.zip" ".temp/$dirname"
-          done
-
+      - run: npm ci
+      - run: npx nx run-many -t pack
+  
       - run: zip -r "camunda-modeler-code-editor.zip" .
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "./zip/*.zip"
+          artifacts: "./packages/*packs/*.zip"
+
+  publish-github-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+      - run: npx nx run-many -t build
+      - run: npx nx release publish --registry "https://npm.pkg.github.com/" --exclude "@camunda-modeler-code-editor@root"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-npm-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+      - run: npx nx run-many -t build
+      - run: npx nx release publish --registry "https://registry.npmjs.org/" --exclude "@camunda-modeler-code-editor@root"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
 

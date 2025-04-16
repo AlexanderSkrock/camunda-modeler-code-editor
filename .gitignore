@@ -7,7 +7,7 @@
 /packages/*/node_modules
 
 dist
-packed-plugins
+packs
 
 .nx/cache
 .nx/workspace-data
