@@ -35,10 +35,13 @@ jobs:
 
 
   create-plugin-artifacts:
-    needs: 
+    needs:
       - "verify-lint"
       - "verify-tests"
     
+    permissions:
+      contents: write
+
     uses: ./.github/workflows/create-plugin-artifacts.yml
     with:
       ref: ${{ github.ref }}
