@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm ci      
+      - run: npm ci
 
       - id: collect-plugins
         run: echo "plugins=$(npx nx show projects --with-target pack-plugin --json)" >> $GITHUB_OUTPUT
@@ -62,19 +62,13 @@ jobs:
           node-version: 20
 
       - run: npm ci
-      - run: npx nx pack-plugin ${{ matrix.plugin }}
 
-      - run: echo "PROJECT_PATH=$(npx nx show project ${{ matrix.plugin }} | jq -r '.root')" >> $GITHUB_ENV
-      - run: echo "PROJECT_VERSION=$(jq -r '.version' ${{ env.PROJECT_PATH }}/package.json)">> $GITHUB_ENV
+      - run: echo "PACK_NAME=$(node -p '"${{ matrix.plugin }}".replace("@", "").replace("/", "-")')-${{ inputs.ref_name }}" >> $GITHUB_ENV
+      - run: npx nx pack-plugin ${{ matrix.plugin }} --args="--source {projectRoot} --destination packs --file-name ${{ env.PACK_NAME }}"
+      - run: unzip "packs/${{ env.PACK_NAME }}.zip" -d "packs/${{ env.PACK_NAME }}"
 
-      # be aware: this contains hard-coded {projectRoot}/packs
-      - run: echo "PACKS_PATH=${{ env.PROJECT_PATH }}/packs" >> $GITHUB_ENV
-      # be aware: this contains hard-coded {projectName}-${projectVersion} having @ removed and / replaced with -
-      - run: echo "PACK_NAME=$(node -p '"${{ matrix.plugin }}".replace("@", "").replace("/", "-") + "-${{ env.PROJECT_VERSION }}"')" >> $GITHUB_ENV
-
-      - run: unzip "${{ env.PACKS_PATH }}/${{ env.PACK_NAME }}.zip" -d "${{ env.PACKS_PATH }}/${{ env.PACK_NAME }}"
       - uses: actions/upload-artifact@v4
         with:
-          name: "${{ matrix.plugin }}-${{ inputs.ref_name }}"
-          path: "${{ env.PACKS_PATH }}/${{ env.PACK_NAME }}"
+          name: "${{ env.PACK_NAME }}"
+          path: "packs/${{ env.PACK_NAME }}"
           overwrite: true

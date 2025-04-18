@@ -4,8 +4,14 @@ const archiver = require('archiver');
 const fs = require('fs');
 const path = require('path');
 
+function processFileName(fileName, { name, version }) {
+  const sanitizedPackageName = name.replace('@', '').replace('/', '-');
+  return fileName
+    .replace('#{packageName}', sanitizedPackageName)
+    .replace('#{packageVersion}', version);
+}
 
-async function packProjectAsZip({ source, destination }) {
+async function packProjectAsZip({ source, destination, fileName }) {
   const packageJsonPath = path.resolve(source, 'package.json');
   if (!fs.existsSync(packageJsonPath)) {
     throw new Error(`No package.json found in ${source}`);
@@ -15,9 +21,9 @@ async function packProjectAsZip({ source, destination }) {
     fs.mkdirSync(destination, { recursive: true });
   }
 
-  const { name, version } = require(packageJsonPath);
-  const packName = `${name.replace('@', '').replace('/', '-')}-${version}.zip`;
-  const packPath = path.join(destination, packName);
+  const packageJson = require(packageJsonPath);
+  const packName = processFileName(fileName, packageJson);
+  const packPath = path.join(destination, `${packName}.zip`);
 
   const zipOutput = fs.createWriteStream(packPath);
   const archiveFile = archiver('zip');
@@ -32,10 +38,16 @@ async function packProjectAsZip({ source, destination }) {
   return packPath;
 }
 
+console.log('Start', process.argv);
+
 const args = require('minimist')(process.argv.slice(2));
+
+console.log('Parse', args);
+
 const config = {
   source: args.source || process.cwd(),
   destination: args.destination || process.cwd(),
+  fileName: args['file-name'] || '#{packageName}-#{packageVersion}',
 };
 
 console.log('⚙️ Config: ', config);
