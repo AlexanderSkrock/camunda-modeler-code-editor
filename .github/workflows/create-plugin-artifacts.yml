@@ -1,0 +1,77 @@
+name: Create plugin artifacts
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        type: string
+        required: true
+      ref_name:
+         type: string
+         required: true
+  workflow_dispatch:
+    inputs:
+        ref:
+          type: string
+          required: true
+        ref_name:
+          type: string
+          required: true
+
+concurrency:
+  group: ${{ github.workflow }}-main
+  cancel-in-progress: true
+
+jobs:
+  collect-plugins:
+    runs-on: ubuntu-latest
+    outputs:
+      plugins: ${{ steps.collect-plugins.outputs.plugins }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - id: collect-plugins
+        run: echo "::set-output name=plugins::$(npx nx show projects --with-target pack-plugin --json)"
+
+
+  create-plugin-artifacts:
+    needs:
+      - "collect-plugins"
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        plugin: ${{ fromJson(needs.collect-plugins.outputs.plugins) }}
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+      - run: npx nx pack-plugin ${{ matrix.plugin }}
+
+      - run: echo "PROJECT_PATH=$(npx nx show project ${{ matrix.plugin }} | jq -r '.root')" >> $GITHUB_ENV
+      - run: echo "PROJECT_VERSION=$(jq -r '.version' ${{ env.PROJECT_PATH }}/package.json)">> $GITHUB_ENV
+
+      # be aware: this contains hard-coded {projectRoot}/packs
+      - run: echo "PACKS_PATH=${{ env.PROJECT_PATH }}/packs" >> $GITHUB_ENV
+      # be aware: this contains hard-coded {projectName}-${projectVersion} having @ removed and / replaced with -
+      - run: echo "PACK_NAME=$(node -p "'${{ matrix.plugin }}'.replace('@', '').replace('/', '-') + '-${{ env.PROJECT_VERSION }}'" >> $GITHUB_ENV
+
+      - run: unzip "${{ env.PACKS_PATH }}/${{ env.PACK_NAME }}.zip" -d "${{ env.PACKS_PATH }}/${{ env.PACK_NAME }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: "${{ matrix.plugin }}-${{ inputs.ref_name }}"
+          path: "${{ env.PACKS_PATH }}/${{ env.PACK_NAME }}"
+          overwrite: true
