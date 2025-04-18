@@ -32,3 +32,46 @@ jobs:
       - run: npm ci
       # later we should run our test suite here
       - run: npx nx run-many -t build
+
+
+# in case we later want to publish each plugin as separate artifact,
+# but then we should ensure we dont have nested archives anymore.
+#
+#  collect-plugins:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      plugins: ${{ steps.collect-plugins.outputs.plugins }}
+#    steps:
+#    - id: collect-plugins
+#      run: echo "::set-output name=plugins::$(npx nx show projects --with-target pack-plugin --json)"
+
+
+  create-plugin-artifacts:
+    needs: 
+      - "verify-lint"
+      - "verify-tests"
+
+    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        plugin: ${{ fromJson(needs.collect-plugins.outputs.plugins) }}
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+      - run: npx nx run-many -t pack-plugin
+#      - run: npx nx pack-plugin ${{ matrix.project }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: "plugins-${{ github.ref }}"
+#          name: "${{ matrix.project }}-${{ github.ref }}"
+          path: "./packages/*/packs/*.zip"
+          overwrite: true
