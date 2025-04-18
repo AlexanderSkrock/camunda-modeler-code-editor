@@ -70,7 +70,7 @@ jobs:
       # be aware: this contains hard-coded {projectRoot}/packs
       - run: echo "PACKS_PATH=${{ env.PROJECT_PATH }}/packs" >> $GITHUB_ENV
       # be aware: this contains hard-coded {projectName}-${projectVersion} having @ removed and / replaced with -
-      - run: echo "PACK_NAME=$(node -p '"${{ matrix.plugin }}".replace('@', '').replace('/', '-') + "-${{ env.PROJECT_VERSION }}"')" >> $GITHUB_ENV
+      - run: echo "PACK_NAME=$(node -p '"${{ matrix.plugin }}".replace("@", "").replace("/", "-") + "-${{ env.PROJECT_VERSION }}"')" >> $GITHUB_ENV
 
       - run: unzip "${{ env.PACKS_PATH }}/${{ env.PACK_NAME }}.zip" -d "${{ env.PACKS_PATH }}/${{ env.PACK_NAME }}"
       - uses: actions/upload-artifact@v4
