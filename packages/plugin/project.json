@@ -22,15 +22,6 @@
             }
         },
         "pack-plugin": {
-            "options": {
-                "args": [
-                    "--source {projectRoot}",
-                    "--destination {projectRoot}/packs"
-                ]
-            },
-            "outputs": [
-                "{projectRoot}/packs"
-            ]
         }
     }
 }

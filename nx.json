@@ -45,10 +45,15 @@
       "executor": "nx:run-commands",
       "options": {
           "cwd": "{workspaceRoot}",
-          "commands": [
-            "node ./scripts/pack.js"
+          "command": "node ./scripts/pack-plugin.js",
+          "args": [
+            "--source {projectRoot}",
+            "--destination {projectRoot}/packs"
           ]
-      }
+      },
+      "outputs": [
+        "{projectRoot}/packs"
+      ]
     }
   },
   "release": {
