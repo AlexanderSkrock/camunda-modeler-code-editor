@@ -17,7 +17,7 @@
                 "outputFileName": "client.js"
             }
         },
-        "pack": {
+        "pack-plugin": {
             "options": {
                 "args": [
                     "--source {projectRoot}",

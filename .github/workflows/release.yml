@@ -20,12 +20,11 @@ jobs:
           node-version: 20
 
       - run: npm ci
-      - run: npx nx run-many -t pack
+      - run: npx nx run-many -t pack-plugin
   
-      - run: zip -r "camunda-modeler-code-editor.zip" .
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "./packages/*packs/*.zip"
+          artifacts: "./packages/*/packs/*.zip"
 
   publish-github-package:
     runs-on: ubuntu-latest

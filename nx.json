@@ -38,7 +38,7 @@
         "{projectRoot}/dist"
       ]
     },
-    "pack": {
+    "pack-plugin": {
       "dependsOn": [
         "build"
       ],
@@ -53,9 +53,15 @@
   },
   "release": {
     "projects": [
-      "*",
-      "!@camunda-modeler-code-editor/root"
-    ]
+      "packages/*"
+    ],
+    "releaseTagPattern": "v{version}",
+    "git": {
+      "commitMessage": "chore: version and release v{version}",
+      "commit": true,
+      "tag": true,
+      "push": true
+    }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudId": "67feef2e449353331a1c6d60"

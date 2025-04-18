@@ -21,7 +21,7 @@
                 "configureJsxRuntimeAlias": true
             }
         },
-        "pack": {
+        "pack-plugin": {
             "options": {
                 "args": [
                     "--source {projectRoot}",
