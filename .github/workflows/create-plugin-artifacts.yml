@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 20
       - id: collect-plugins
-        run: echo "::set-output name=plugins::$(npx nx show projects --with-target pack-plugin --json)"
+        run: echo "plugins=$(npx nx show projects --with-target pack-plugin --json)" >> $GITHUB_OUTPUT
 
 
   create-plugin-artifacts:
