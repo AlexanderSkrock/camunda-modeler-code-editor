@@ -38,11 +38,9 @@ async function packProjectAsZip({ source, destination, fileName }) {
   return packPath;
 }
 
-console.log('Start', process.argv);
-
 const args = require('minimist')(process.argv.slice(2));
 
-console.log('Parse', args);
+console.log('💻️ Arguments: ', args);
 
 const config = {
   source: args.source || process.cwd(),
