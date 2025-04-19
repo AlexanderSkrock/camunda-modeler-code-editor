@@ -34,7 +34,7 @@ jobs:
       - run: npx nx run-many -t build
 
   create-plugin-artifacts:
-    if: github.event.pull_request.draft == true
+    if: github.event.pull_request.draft == false
 
     needs: 
       - "verify-lint"
