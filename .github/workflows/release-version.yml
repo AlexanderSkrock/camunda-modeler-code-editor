@@ -1,0 +1,72 @@
+name: Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Ref'
+        type: string
+        default: 'main'
+      version:
+        description: 'Version'
+        type: string
+        required: true
+
+jobs:
+  create-plugin-artifacts:
+    permissions:
+      contents: write
+
+    uses: ./.github/workflows/create-plugin-artifacts.yml
+    with:
+      ref: ${{ inputs.ref }}
+      tag: "pre-release-${{ inputs.version }}"
+      retention-days: 7
+      overwrite: true
+
+    outputs:
+      artifacts_run_id: ${{ jobs.create-plugin-artifacts.outputs.run_id }}
+
+  wait-for-approval:
+    needs:
+      - create-plugin-artifacts
+
+    runs-on: ubuntu-latest
+    
+    permissions:
+      issues: write
+
+    # Wait at maximium for artifact retention time, 60 * 24 * retention-days
+    timeout-minutes: 10080
+
+    steps:
+      - name: Fetch Artifact URLs
+        run: |
+          ARTIFACTS=$(curl -H "Authorization: token ${{ github.token }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.artifacts_run_id }}/artifacts")
+          echo "ARTIFACTS=$ARTIFACTS" >> $GITHUB_ENV
+        
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: AlexanderSkrock
+          issue-title: "Release ${{ inputs.version }}"
+          issue-body: |
+            Please approve or deny version ${{ inputs.version }}
+
+            Have a look on the following artifacts:
+            
+            ${{ env.ARTIFACTS }}
+  release-version:
+    needs:
+      - wait-for-approval
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+      - run: npx nx release version --specifier ${{ inputs.version }}
+
