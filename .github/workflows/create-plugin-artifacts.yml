@@ -20,6 +20,9 @@ on:
         ref:
           type: string
           required: true
+        tag:
+          type: string
+          required: true
         retention-days:
           type:  number
           default: 1
