@@ -45,5 +45,5 @@ jobs:
     with:
       ref: ${{ github.sha }}
       tag: ${{ github.ref_name }}
-      retention-days: ${{ github.retention_days }}
+      retention-days: 90
       overwrite: true
