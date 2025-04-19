@@ -34,6 +34,8 @@ jobs:
       - run: npx nx run-many -t build
 
   create-plugin-artifacts:
+    if: !github.event.pull_request.draft
+
     needs: 
       - "verify-lint"
       - "verify-tests"
@@ -43,6 +45,7 @@ jobs:
     
     uses: ./.github/workflows/create-plugin-artifacts.yml
     with:
-      ref: ${{ github.ref_name }}
+      ref: ${{ github.sha }}
+      tag: ${{ github.ref_name }}
       retention-days: 7
       overwrite: true

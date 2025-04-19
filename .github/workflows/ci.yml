@@ -44,6 +44,7 @@ jobs:
 
     uses: ./.github/workflows/create-plugin-artifacts.yml
     with:
-      ref: ${{ github.ref_name }}
-      retention-days: 90
+      ref: ${{ github.sha }}
+      tag: ${{ github.ref_name }}
+      retention-days: ${{ github.retention_days }}
       overwrite: true
