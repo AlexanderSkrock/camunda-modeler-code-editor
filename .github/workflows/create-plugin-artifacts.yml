@@ -6,17 +6,23 @@ on:
       ref:
         type: string
         required: true
-      ref_name:
-         type: string
-         required: true
+      retention-days:
+        type:  number
+        default: 1
+      overwrite:
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
         ref:
           type: string
           required: true
-        ref_name:
-          type: string
-          required: true
+        retention-days:
+          type:  number
+          default: 1
+        overwrite:
+          type: boolean
+          default: false
 
 concurrency:
   group: ${{ github.workflow }}-main
@@ -63,7 +69,8 @@ jobs:
 
       - run: npm ci
 
-      - run: echo "PACK_NAME=$(node -p '"${{ matrix.plugin }}".replace("@", "").replace("/", "-")')-${{ inputs.ref_name }}" >> $GITHUB_ENV
+      - run: echo "PLUGIN_NAME=$(node -p '"${{ matrix.plugin }}".replace("@", "").replace("/", "-")')"
+      - run: echo "PACK_NAME=$(node -p '"${{ env.PLUGIN_NAME }}-${{ inputs.ref }}".replace("/", "-")')" >> $GITHUB_ENV
       - run: npx nx pack-plugin ${{ matrix.plugin }} --args="--source {projectRoot} --destination packs --file-name ${{ env.PACK_NAME }}"
       - run: unzip "packs/${{ env.PACK_NAME }}.zip" -d "packs/${{ env.PACK_NAME }}"
 
@@ -71,4 +78,5 @@ jobs:
         with:
           name: "${{ env.PACK_NAME }}"
           path: "packs/${{ env.PACK_NAME }}"
-          overwrite: true
+          retention-days: ${{ inputs.retention-days }}
+          overwrite: ${{ inputs.overwrite }}
