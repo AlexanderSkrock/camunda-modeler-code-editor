@@ -37,13 +37,13 @@ jobs:
     needs:
       - "verify-lint"
       - "verify-tests"
-    
+
     permissions:
       contents: write
 
     uses: ./.github/workflows/create-plugin-artifacts.yml
     with:
-      ref: "${{ github.sha }}"
-      tag: "${{ github.ref_name }}"
-      retention-days: 90
+      ref: ${{ github.sha }}
+      tag: ${{ github.ref_name }}
+      retention-days: 14
       overwrite: true
