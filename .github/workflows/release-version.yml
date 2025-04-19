@@ -1,4 +1,4 @@
-name: Version
+name: Release a version
 
 on:
   workflow_dispatch:
@@ -29,7 +29,7 @@ jobs:
       - create-plugin-artifacts
 
     runs-on: ubuntu-latest
-    
+
     permissions:
       issues: write
 
@@ -39,11 +39,11 @@ jobs:
     steps:
       - id: retrieve-artifacts
         run: |
-          ARTIFACTS_RESPONSE=$(curl -H "Authorization: token ${{ github.token }}" \
+          ARTIFACTS_RESPONSE=$(curl -s -H "Authorization: token ${{ github.token }}" \
             "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts")
           ARTIFACT_LIST=$(echo "$ARTIFACTS_RESPONSE" | jq -r '.artifacts[] | "- [\(.name)](\(.archive_download_url))"')
           echo "artifactsList=$ARTIFACT_LIST" >> GITHUB_OUTPUT
-        
+
       - uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.TOKEN }}
