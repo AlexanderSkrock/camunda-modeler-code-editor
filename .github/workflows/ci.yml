@@ -32,18 +32,3 @@ jobs:
       - run: npm ci
       # later we should run our test suite here
       - run: npx nx run-many -t build
-
-  create-plugin-artifacts:
-    needs:
-      - "verify-lint"
-      - "verify-tests"
-
-    permissions:
-      contents: write
-
-    uses: ./.github/workflows/create-plugin-artifacts.yml
-    with:
-      ref: ${{ github.sha }}
-      tag: ${{ github.ref_name }}
-      retention-days: 14
-      overwrite: true

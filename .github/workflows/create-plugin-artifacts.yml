@@ -15,6 +15,10 @@ on:
       overwrite:
         type: boolean
         default: false
+    outputs:
+      run_id:
+        description: "Run ID of this workflow"
+        value: ${{ github.run_id }}
   workflow_dispatch:
     inputs:
         ref:
