@@ -6,6 +6,9 @@ on:
       ref:
         type: string
         required: true
+      tag:
+        type: string
+        required: true
       retention-days:
         type:  number
         default: 1
@@ -70,7 +73,7 @@ jobs:
       - run: npm ci
 
       - run: echo "PLUGIN_NAME=$(node -p '"${{ matrix.plugin }}".replace("@", "").replace("/", "-")')"
-      - run: echo "PACK_NAME=$(node -p '"${{ env.PLUGIN_NAME }}-${{ inputs.ref }}".replace("/", "-")')" >> $GITHUB_ENV
+      - run: echo "PACK_NAME=$(node -p '"${{ env.PLUGIN_NAME }}-${{ inputs.tag }}".replace("/", "-")')" >> $GITHUB_ENV
       - run: npx nx pack-plugin ${{ matrix.plugin }} --args="--source {projectRoot} --destination packs --file-name ${{ env.PACK_NAME }}"
       - run: unzip "packs/${{ env.PACK_NAME }}.zip" -d "packs/${{ env.PACK_NAME }}"
 
