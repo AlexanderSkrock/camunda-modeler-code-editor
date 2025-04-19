@@ -40,7 +40,7 @@ jobs:
       - id: retrieve-artifacts
         run: |
           ARTIFACTS_RESPONSE=$(curl -s -H "Authorization: token ${{ github.token }}" \
-            "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts")
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts")
           ARTIFACT_LIST=$(echo "$ARTIFACTS_RESPONSE" | jq -r '.artifacts[] | "- [\(.name)](\(.archive_download_url))"')
           echo "artifactsList=$ARTIFACT_LIST" >> GITHUB_OUTPUT
 
