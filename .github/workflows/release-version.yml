@@ -37,11 +37,12 @@ jobs:
     timeout-minutes: 10080
 
     steps:
-      - name: Fetch Artifact URLs
+      - id: retrieve-artifacts
         run: |
-          ARTIFACTS=$(curl -H "Authorization: token ${{ github.token }}" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts")
-          echo "ARTIFACTS=$ARTIFACTS" >> $GITHUB_ENV
+          ARTIFACTS_RESPONSE=$(curl -H "Authorization: token ${{ github.token }}" \
+            "https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts")
+          ARTIFACT_LIST=$(echo "$ARTIFACTS_RESPONSE" | jq -r '.artifacts[] | "- [\(.name)](\(.archive_download_url))"')
+          echo "artifactsList=$ARTIFACT_LIST" >> GITHUB_OUTPUT
         
       - uses: trstringer/manual-approval@v1
         with:
@@ -53,7 +54,8 @@ jobs:
 
             Have a look on the following artifacts:
             
-            ${{ env.ARTIFACTS }}
+            ${{ steps.retrieve-artifacts.outputs.artifactsList }}
+
   release-version:
     needs:
       - wait-for-approval
