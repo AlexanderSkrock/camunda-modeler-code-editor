@@ -43,7 +43,7 @@ jobs:
               echo 'artifacts<<EOF'
               curl -s -H "Authorization: ${{ github.token }}" \
                 "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts" \
-                | jq -r '[.artifacts[] | "- [\(.name)](\(.archive_download_url))"] | join("\n")'
+                | jq -r '[.artifacts[] | "- [\(.name)](https://github.com/AlexanderSkrock/camunda-modeler-code-editor/actions/runs/\(.workflow_run.id)/artifacts/\(.id))"] | join("\n")'
               echo EOF
           } >> "$GITHUB_OUTPUT"
 
