@@ -44,6 +44,9 @@ jobs:
           ARTIFACT_LIST=$(echo "$ARTIFACTS_RESPONSE" | jq -r '.artifacts[] | "- [\(.name)](\(.archive_download_url))"')
           echo "artifactsList=$ARTIFACT_LIST" >> GITHUB_OUTPUT
 
+      - run: "echo ${{ steps.retrieve-artifacts.outputs.artifactsList }}"
+      - run: "echo ${{ join(fromJson(steps.retrieve-artifacts.outputs.artifactsList), '\n') }}"
+
       - uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.TOKEN }}
@@ -54,7 +57,7 @@ jobs:
 
             Have a look on the following artifacts:
             
-            ${{ steps.retrieve-artifacts.outputs.artifactsList }}
+            ${{ join(fromJson(steps.retrieve-artifacts.outputs.artifactsList), '\n') }}
 
   release-version:
     needs:
