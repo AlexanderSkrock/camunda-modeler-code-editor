@@ -41,7 +41,9 @@ jobs:
         run: |
           {
               echo 'artifacts<<EOF'
-              curl -s -H "Authorization: ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts") | jq -r '[.artifacts[] | "- [\(.name)](\(.archive_download_url))"] | join("\n")'
+              curl -s -H "Authorization: ${{ github.token }}" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts" \
+                | jq -r '[.artifacts[] | "- [\(.name)](\(.archive_download_url))"] | join("\n")'
               echo EOF
           } >> "GITHUB_OUTPUT"
           echo "artifacts=ARTIFACTS_LIST" >> GITHUB_OUTPUT
