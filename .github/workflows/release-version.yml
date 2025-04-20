@@ -46,7 +46,6 @@ jobs:
                 | jq -r '[.artifacts[] | "- [\(.name)](\(.archive_download_url))"] | join("\n")'
               echo EOF
           } >> "GITHUB_OUTPUT"
-          echo "artifacts=ARTIFACTS_LIST" >> GITHUB_OUTPUT
 
       - run: echo "${{ steps.retrieve-artifacts.outputs.artifacts }}"
 
