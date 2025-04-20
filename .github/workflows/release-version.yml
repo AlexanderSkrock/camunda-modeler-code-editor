@@ -47,8 +47,6 @@ jobs:
               echo EOF
           } >> "$GITHUB_OUTPUT"
 
-      - run: echo "${{ steps.retrieve-artifacts.outputs.artifacts }}"
-
       - uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.TOKEN }}
