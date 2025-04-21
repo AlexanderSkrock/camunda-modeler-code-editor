@@ -1,0 +1,56 @@
+name: Prepare a release
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Ref'
+        type: string
+        default: 'main'
+      version:
+        description: 'Version'
+        type: string
+        required: true
+
+jobs:
+  create-plugin-artifacts:
+    permissions:
+      contents: write
+
+    uses: ./.github/workflows/create-plugin-artifacts.yml
+    with:
+      ref: ${{ inputs.ref }}
+      tag: "pre-release-${{ inputs.version }}"
+      retention-days: 7
+      overwrite: true
+
+  create-release-issue:
+    needs:
+      - create-plugin-artifacts
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+
+    steps:
+      - id: retrieve-artifacts
+        run: |
+          {
+              echo 'artifacts<<EOF'
+              curl -s -H "Authorization: ${{ github.token }}" \
+                "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ needs.create-plugin-artifacts.outputs.run_id }}/artifacts" \
+                | jq -r '[.artifacts[] | "- [\(.name)](https://github.com/AlexanderSkrock/camunda-modeler-code-editor/actions/runs/\(.workflow_run.id)/artifacts/\(.id))"] | join("\n")'
+              echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - id: create-issue
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERSION:  ${{ inputs.version }}
+          ARTIFACTS:  ${{ steps.retrieve-artifacts.outputs.artifacts }}
+        with:
+          filename: .github/ISSUE_TEMPLATE/release.md
+
+      - run: "echo 'Created release issue: ${{ steps.create-issue.outputs.url }}'"

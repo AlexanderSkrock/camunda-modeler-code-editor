@@ -15,21 +15,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
       - run: npm ci
-      - run: npx nx run-many -t pack-plugin
+      - run: npx nx run-many -t pack-plugin --args="--source {projectRoot} --destination packs"
   
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "./packages/*/packs/*.zip"
+          tag: ${{ github.ref }}
+          artifacts: "./packs/*.zip"
+          artifactErrorsFailBuild: true
 
   publish-github-package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -44,6 +50,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
