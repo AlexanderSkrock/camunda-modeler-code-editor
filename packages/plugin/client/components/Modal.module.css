@@ -1,0 +1,8 @@
+.modal {
+    /*
+     * This class is only used for selection.
+     * 
+     * That's already the reason we defined it as css module instead of a scss module,
+     * because the scss loader removes empty modules in production builds.
+     */
+}
