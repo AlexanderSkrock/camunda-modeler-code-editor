@@ -29,7 +29,9 @@ function jsxRuntimeAliasOverrides(config, context) {
     resolve: {
       alias: {
 
-        // FIXME can be potentially be removed when carbon is provided via camunda-modeler-plugin-helpers
+        // FIXME can be removed when the camunda-modeler-plugin-helpers either
+        // use an exact alias for react dependencies or provide those as well.
+        // See: https://github.com/camunda/camunda-modeler-webpack-plugin/blob/main/src/config/react.config.js#L18
         'react/jsx-runtime': require.resolve('react/jsx-runtime'),
       },
     },
