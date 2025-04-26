@@ -5,7 +5,7 @@ import { ComposedModal, ModalBody, ModalFooter, ModalHeader } from '../../vendor
 
 import { selectClass } from '../utils/css';
 
-import * as styles from './Modal.module.scss';
+import * as styles from './Modal.module.css';
 
 export const Header = ModalHeader;
 export const Body = ModalBody;
