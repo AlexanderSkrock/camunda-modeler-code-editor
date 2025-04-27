@@ -51,6 +51,6 @@ jobs:
           VERSION:  ${{ inputs.version }}
           ARTIFACTS:  ${{ steps.retrieve-artifacts.outputs.artifacts }}
         with:
-          filename: .github/ISSUE_TEMPLATE/release.md
+          filename: ./.github/ISSUE_TEMPLATE/release.md
 
       - run: "echo 'Created release issue: ${{ steps.create-issue.outputs.url }}'"
