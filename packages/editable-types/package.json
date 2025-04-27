@@ -23,10 +23,8 @@
   "dependencies": {
     "@bpmn-io/extract-process-variables": "^1.0.1",
     "@bpmn-io/properties-panel": "^3.26.3",
-    "ace-builds": "^1.39.0",
     "bpmn-js-properties-panel": "^5.34.0",
     "bpmn-js": "^18.4.0",
-    "camunda-modeler-plugin-helpers": "^5.1.0",
-    "react-ace": "^14.0.1"
+    "camunda-modeler-plugin-helpers": "^5.1.0"
   }
 }
