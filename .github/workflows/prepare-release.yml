@@ -7,6 +7,7 @@ on:
         description: 'Ref'
         type: string
         default: 'main'
+        required: true
       version:
         description: 'Version'
         type: string
@@ -52,8 +53,8 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          VERSION:  ${{ inputs.version }}
-          ARTIFACTS:  ${{ steps.retrieve-artifacts.outputs.artifacts }}
+          VERSION: ${{ inputs.version }}
+          ARTIFACTS: ${{ steps.retrieve-artifacts.outputs.artifacts }}
         with:
           filename: ./.github/ISSUE_TEMPLATE/release.md
 

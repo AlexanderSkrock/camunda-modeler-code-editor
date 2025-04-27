@@ -16,7 +16,6 @@ When everything seems alright, use another Github Action: [Release a version](ht
 
 
 Checklist:
-
-[] Plugin artifacts are up to date
-[] Plugins could be installed into the current Camunda Desktop Modeler version.
-[] All core functionality was usable as expected (open editor, search for elements, save changes)
+- [ ] Plugin artifacts are up to date
+- [ ] Plugins could be installed into the current Camunda Desktop Modeler version
+- [ ] All core functionality was usable as expected (open editor, search for elements, save changes)
