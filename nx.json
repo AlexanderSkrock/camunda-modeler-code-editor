@@ -61,11 +61,13 @@
       "packages/*"
     ],
     "releaseTagPattern": "v{version}",
-    "git": {
-      "commitMessage": "chore: version and release v{version}",
-      "commit": true,
-      "tag": true,
-      "push": true
+    "version": {
+      "git": {
+        "commitMessage": "chore: version and release v{version}",
+        "commit": true,
+        "tag": true,
+        "push": true
+      }
     }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
