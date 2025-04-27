@@ -44,6 +44,10 @@ jobs:
               echo EOF
           } >> "$GITHUB_OUTPUT"
 
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
       - id: create-issue
         uses: JasonEtco/create-an-issue@v2
         env:
