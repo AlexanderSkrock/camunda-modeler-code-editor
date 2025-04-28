@@ -65,8 +65,7 @@
       "git": {
         "commitMessage": "chore: version and release v{version}",
         "commit": true,
-        "tag": true,
-        "push": true
+        "tag": true
       }
     }
   },
