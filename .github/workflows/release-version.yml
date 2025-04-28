@@ -16,17 +16,21 @@ jobs:
   release-version:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-
     steps:
+      - id: releaser-app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.RELEASER_APP_ID }}
+          private-key: ${{ secrets.RELEASER_PRIVATE_KEY }}
+
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
+          token: ${{ steps.releaser-app-token.outputs.token }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - run: npm ci
 
       - run: |
