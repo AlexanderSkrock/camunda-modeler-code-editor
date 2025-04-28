@@ -32,6 +32,10 @@ jobs:
 
   publish-github-package:
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,12 +48,17 @@ jobs:
 
       - run: npm ci
       - run: npx nx run-many -t build
-      - run: npx nx release publish --registry "https://npm.pkg.github.com/" --exclude "@camunda-modeler-code-editor@root"
+      - run: npx nx release publish --tag ${{ github.ref_name }} --access public --exclude "@camunda-modeler-code-editor/root"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
 
   publish-npm-package:
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -62,7 +71,8 @@ jobs:
 
       - run: npm ci
       - run: npx nx run-many -t build
-      - run: npx nx release publish --registry "https://registry.npmjs.org/" --exclude "@camunda-modeler-code-editor@root"
+      - run: npx nx release publish --tag ${{ github.ref_name }} --access public --exclude "@camunda-modeler-code-editor/root"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+          NPM_CONFIG_PROVENANCE: true
 
