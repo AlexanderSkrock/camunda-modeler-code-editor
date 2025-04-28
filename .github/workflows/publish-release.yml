@@ -40,6 +40,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
+          scope: "@camunda-modeler-code-editor"
 
       - run: npm ci
       - run: npx nx run-many -t build
@@ -57,6 +58,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
+          scope: "@camunda-modeler-code-editor"
 
       - run: npm ci
       - run: npx nx run-many -t build
