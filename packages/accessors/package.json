@@ -2,8 +2,7 @@
   "name": "@camunda-modeler-code-editor/accessors",
   "version": "1.0.0",
   "main": "./dist/lib.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+github.com/AlexanderSkrock/camunda-modeler-code-editor.git"
