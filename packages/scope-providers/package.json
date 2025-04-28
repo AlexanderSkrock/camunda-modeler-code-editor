@@ -5,7 +5,7 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+github.com/AlexanderSkrock/camunda-modeler-code-editor.git"
+    "url": "https://github.com/AlexanderSkrock/camunda-modeler-code-editor"
   },
   "keywords": [
     "camunda",
