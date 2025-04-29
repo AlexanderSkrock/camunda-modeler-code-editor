@@ -22,6 +22,7 @@
   "dependencies": {
     "@bpmn-io/extract-process-variables": "^1.0.1",
     "@bpmn-io/properties-panel": "^3.26.3",
+    "@camunda-modeler-code-editor/api": "^1.0.0",
     "bpmn-js-properties-panel": "^5.34.0",
     "bpmn-js": "^18.4.0",
     "camunda-modeler-plugin-helpers": "^5.1.0"
