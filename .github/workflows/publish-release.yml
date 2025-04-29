@@ -30,29 +30,31 @@ jobs:
           artifacts: "./packs/*.zip"
           artifactErrorsFailBuild: true
 
-  publish-github-package:
-    runs-on: ubuntu-latest
-
-    permissions:
-      id-token: write
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com/
-          scope: "@camunda-modeler-code-editor"
-
-      - run: npm ci
-      - run: npx nx run-many -t build
-
-      - run: npx nx release publish --access public --exclude "@camunda-modeler-code-editor/root"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+# Currently we do not publish to GithubPackages
+#          
+#  publish-github-package:
+#    runs-on: ubuntu-latest
+#
+#    permissions:
+#      id-token: write
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#        with:
+#          ref: ${{ github.ref }}
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version: 20
+#          registry-url: https://npm.pkg.github.com/
+#          scope: "@camunda-modeler-code-editor"
+#
+#      - run: npm ci
+#      - run: npx nx run-many -t build
+#
+#      - run: npx nx release publish --access public --exclude "@camunda-modeler-code-editor/root"
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          NPM_CONFIG_PROVENANCE: true
 
   publish-npm-package:
     runs-on: ubuntu-latest
