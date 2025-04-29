@@ -2,7 +2,17 @@
 
 [![Compatible with Camunda Modeler version 5](https://img.shields.io/badge/Modeler_Version-5.0.0+-blue.svg)](#) [![Plugin Type](https://img.shields.io/badge/Plugin_Type-BPMN-orange.svg)](#)
 
-This plugin aims to simplify the development of scripts without the need for external tools.
+This plugin aims to simplify the development of scripts or alike without the need for external tools.
+
+## Overview
+
+The main feature is a the `Open in editor`-action which is available for a variety of properties.
+
+![](./img/camunda-modeler-code-editor.gif)
+
+While this helps a lot, sometimes you need to access to multiple scripts at the same time or would like to quickly switch between them. That's where the `Open another`-action comes in place. In a small dialog you can search for other relevant properties you would edit within the editor.
+
+![](./img/camunda-modeler-code-editor-search.gif)
 
 ## Development setup
 
