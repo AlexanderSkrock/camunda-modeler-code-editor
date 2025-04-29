@@ -118,7 +118,7 @@ registerScopeProvider('scope-variables', ScopeVariablesProvider);
 
 ### Bundle your own distribution
 
-Instead of using the afore described extension points to add functionality you can also use the `@camunda-modeler-code-editor/plugin-base` and optionally `@camunda-modeler-code-editor/config-default` to create your own plugin artifact tailored to your needs. Currently the ui code from `@camunda-modeler-code-editor/plugin-base` is barely customizable but this might change in the future.
+Instead of using the afore described extension points to add functionality you can also use the `@camunda-modeler-code-editor/plugin-base` and optionally `@camunda-modeler-code-editor/config` to create your own plugin artifact tailored to your needs. Currently the ui code from `@camunda-modeler-code-editor/plugin-base` is barely customizable but this might change in the future.
 
 ## Licence
 

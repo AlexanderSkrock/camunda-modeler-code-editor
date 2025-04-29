@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@camunda-modeler-code-editor/plugin-base": "^1.0.0",
-    "@camunda-modeler-code-editor/config-default": "^1.0.0",
+    "@camunda-modeler-code-editor/config": "^1.0.0",
     "camunda-modeler-plugin-helpers": "^5.1.0"
   }
 }
