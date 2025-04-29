@@ -10,6 +10,10 @@ on:
 jobs:
   create-github-release:
     runs-on: ubuntu-latest
+
+    env:
+      NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD }}
+
     permissions:
       contents: write
 
@@ -35,6 +39,9 @@ jobs:
 #  publish-github-package:
 #    runs-on: ubuntu-latest
 #
+#    env:
+#      NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD }}
+#
 #    permissions:
 #      id-token: write
 #
@@ -58,6 +65,9 @@ jobs:
 
   publish-npm-package:
     runs-on: ubuntu-latest
+
+    env:
+      NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD }}
 
     permissions:
       id-token: write

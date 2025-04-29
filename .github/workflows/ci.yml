@@ -12,6 +12,10 @@ concurrency:
 jobs:
   verify-lint:
     runs-on: ubuntu-latest
+
+    env:
+      NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,6 +27,10 @@ jobs:
 
   verify-tests:
     runs-on: ubuntu-latest
+
+    env:
+      NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

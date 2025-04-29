@@ -37,6 +37,10 @@ on:
 jobs:
   collect-plugins:
     runs-on: ubuntu-latest
+
+    env:
+      NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD }}
+
     outputs:
       plugins: ${{ steps.collect-plugins.outputs.plugins }}
     steps:
@@ -58,6 +62,10 @@ jobs:
       - "collect-plugins"
 
     runs-on: ubuntu-latest
+
+    env:
+      NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD }}
+
     strategy:
       matrix:
         plugin: ${{ fromJson(needs.collect-plugins.outputs.plugins) }}
