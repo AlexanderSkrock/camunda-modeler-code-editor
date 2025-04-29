@@ -44,7 +44,7 @@ import CodeEditorApi from '@camunda-modeler-code-editor/api';
 ```
 
 > [!IMPORTANT]
-> This library dependency does not include runtime code. Thus, you'll need to have this plugin next to your custom implementation.
+> This library dependency does not include runtime code. Thus, you'll need to have this plugin next to your custom implementation. For another option have a look on [Bundle your own distribution](#bundle-your-own-distribution).
 
 ### Custom editors
 
