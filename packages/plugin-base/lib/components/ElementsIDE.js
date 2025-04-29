@@ -7,7 +7,7 @@ import { getEditableType } from '@camunda-modeler-code-editor/api';
 import { Button, Tab, TabList, TabPanel, TabPanels, Tabs } from '../../vendor/@carbon/react';
 import { Add } from '../../vendor/@carbon/icons-react';
 
-import { ElementEditor, ElementSearchResultContainer, ElementSearchResultItem, SearchModal } from './';
+import { ElementEditor, ElementSearchResultContainer, ElementSearchResultItem, SearchModal } from '.';
 
 import * as styles from './ElementsIDE.module.scss';
 

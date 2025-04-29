@@ -1,7 +1,7 @@
 {
-  "name": "@camunda-modeler-code-editor/default-config-plugin",
+  "name": "@camunda-modeler-code-editor/config-default",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/lib.js",
   "scripts": {},
   "repository": {
     "type": "git",
@@ -18,7 +18,6 @@
   "license": "MIT",
   "description": "",
   "files": [
-    "index.js",
     "dist"
   ],
   "dependencies": {
@@ -26,7 +25,6 @@
     "@camunda-modeler-code-editor/accessors": "^1.0.0",
     "@camunda-modeler-code-editor/editable-types": "^1.0.0",
     "@camunda-modeler-code-editor/editors": "^1.0.0",
-    "@camunda-modeler-code-editor/scope-providers": "^1.0.0",
-    "camunda-modeler-plugin-helpers": "^5.1.0"
+    "@camunda-modeler-code-editor/scope-providers": "^1.0.0"
   }
 }

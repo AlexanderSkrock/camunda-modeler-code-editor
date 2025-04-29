@@ -1,13 +1,13 @@
 {
     "targets": {
         "lint": {
-            "lintFilePatterns": ["{projectRoot}/client/**/*.js"]
+            "lintFilePatterns": ["{projectRoot}/client/**/*.js", "{projectRoot}/vendor/**/*.js"]
         },
         "dev": {
             "options": {
                 "main": "./client/index.js",
                 "outputPath": "./dist",
-                "outputFileName": "client.js"
+                "outputFileName": "client.js",
             }
         },
         "build": {

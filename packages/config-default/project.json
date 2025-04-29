@@ -1,0 +1,23 @@
+{
+    "targets": {
+        "lint": {
+            "lintFilePatterns": ["{projectRoot}/lib/**/*.js"]
+        },
+        "dev": {
+            "options": {
+                "main": "./lib/index.js",
+                "outputPath": "./dist",
+                "outputFileName": "lib.js",
+                "asModule": true
+            }
+        },
+        "build": {
+            "options": {
+                "main": "./lib/index.js",
+                "outputPath": "./dist",
+                "outputFileName": "lib.js",
+                "asModule": true
+            }
+        }
+    }
+}

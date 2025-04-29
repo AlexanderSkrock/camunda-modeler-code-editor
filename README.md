@@ -40,7 +40,7 @@ To extend or modify the functionality and ui, feel free to implement another plu
 This package provides a js api to enhance the development process of extensions. Simply add this package as a dependency via your package manager to consume the api.
 
 ```js
-import CodeEditorApi from 'camunda-modeler-code-editor/lib';
+import CodeEditorApi from '@camunda-modeler-code-editor/api';
 ```
 
 > [!IMPORTANT]
@@ -51,7 +51,7 @@ import CodeEditorApi from 'camunda-modeler-code-editor/lib';
 To integrate a custom editor implementation, all you'll need to do is to register your implementation via `registerEditor` or `registerDefaultEditor`.
 
 ```js
-import { registerEditor } from 'camunda-modeler-code-editor/lib';
+import { registerEditor } from '@camunda-modeler-code-editor/api';
 registerEditor('JavaScript', JavaScriptEditor);
 ```
 
@@ -79,7 +79,7 @@ When you feel that another property or moddle element should be editable within 
 To achieve this, you can call the following library method:
 
 ```js
-import { registerEditableType } from 'camunda-modeler-code-editor/lib';
+import { registerEditableType } from '@camunda-modeler-code-editor/api';
 registerEditableType(InputParameter);
 ```
 
@@ -95,7 +95,7 @@ A so-called editable type needs to provide two properties:
 In addition, you may need to implement an accessor. An Accessor tells this plugin how it can read and modify properties. For a couple moddle element types, there already exists such an implementation.
 
 ```js
-import { registerAccessor } from 'camunda-modeler-code-editor/lib';
+import { registerAccessor } from '@camunda-modeler-code-editor/api';
 registerAccessor(ScriptAccessor);
 ```
 
@@ -115,6 +115,10 @@ You'll have to align with following structure:
 import { registerScopeProvider } from 'camunda-modeler-code-editor/lib';
 registerScopeProvider('scope-variables', ScopeVariablesProvider);
 ```
+
+### Bundle your own distribution
+
+Instead of using the afore described extension points to add functionality you can also use the `@camunda-modeler-code-editor/plugin-base` and optionally `@camunda-modeler-code-editor/config-default` to create your own plugin artifact tailored to your needs. Currently the ui code from `@camunda-modeler-code-editor/plugin-base` is barely customizable but this might change in the future.
 
 ## Licence
 

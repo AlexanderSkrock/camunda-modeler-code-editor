@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modele
 import { ModalHeader, PaginationNav, Search } from '../../vendor/@carbon/react';
 import { useDebounce } from 'use-debounce';
 
-import { Modal, ModalBody } from './';
+import { Modal, ModalBody } from '.';
 import { selectId } from '../utils/css';
 
 const DefaultContainer = ({ children }) => <div>{ children }</div>;

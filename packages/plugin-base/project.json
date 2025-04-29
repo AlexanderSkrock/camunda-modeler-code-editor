@@ -1,27 +1,27 @@
 {
     "targets": {
         "lint": {
-            "lintFilePatterns": ["{projectRoot}/client/**/*.js", "{projectRoot}/vendor/**/*.js"]
+            "lintFilePatterns": ["{projectRoot}/lib/**/*.js"]
         },
         "dev": {
             "options": {
-                "main": "./client/index.js",
+                "main": "./lib/index.js",
                 "outputPath": "./dist",
-                "outputFileName": "client.js",
+                "outputFileName": "lib.js",
+                "asModule": true,
                 "supportsStyles": true,
                 "configureJsxRuntimeAlias": true
             }
         },
         "build": {
             "options": {
-                "main": "./client/index.js",
+                "main": "./lib/index.js",
                 "outputPath": "./dist",
-                "outputFileName": "client.js",
+                "outputFileName": "lib.js",
+                "asModule": true,
                 "supportsStyles": true,
                 "configureJsxRuntimeAlias": true
             }
-        },
-        "pack-plugin": {
         }
     }
 }
