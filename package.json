@@ -25,7 +25,7 @@
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.25.1",
     "@npmcli/arborist": "^8.0.0",
-    "@nx/eslint": "20.8.0",
+    "@nx/eslint": "20.8.1",
     "@nx/webpack": "20.8.0",
     "archiver": "^7.0.1",
     "camunda-modeler-webpack-plugin": "^0.1.0",
