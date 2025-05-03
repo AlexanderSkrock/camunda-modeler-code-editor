@@ -1,5 +1,6 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
 const CamundaModelerWebpackPlugin = require('camunda-modeler-webpack-plugin');
 
@@ -7,6 +8,16 @@ function smartMerge(config, ...overrides) {
   return Object.prototype.toString.call(config) === '[object Array]'
     ? config.map(config => merge(config, ...overrides))
     : merge(config, ...overrides);
+}
+
+function watchOverrides(config, context) {
+  return context.options.watch
+    ? {
+      watch: true,
+    }
+    : {
+      watch: false,
+    };
 }
 
 function envOverrides(config, context) {
@@ -84,8 +95,23 @@ function defaultOverrides(config, context) {
       filename: context.options.outputFileName,
     },
     plugins: [
-      new CamundaModelerWebpackPlugin(),
+      new CamundaModelerWebpackPlugin({
+        propertiesPanelLoader: false,
+        reactLoader: false,
+      }),
     ],
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          loader: 'esbuild-loader',
+          options: {
+            loader: 'jsx',
+            target: 'es2020',
+          },
+        }
+      ],
+    },
   };
 }
 
@@ -96,6 +122,7 @@ module.exports = (config, context) => {
     moduleOverrides(config, context),
     jsxRuntimeAliasOverrides(config, context),
     envOverrides(config, context),
+    watchOverrides(config, context),
   ];
-  return smartMerge(config, ...overrides);
+  return new SpeedMeasurePlugin().wrap(smartMerge(config, ...overrides));
 };
