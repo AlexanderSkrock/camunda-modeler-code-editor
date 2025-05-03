@@ -11,14 +11,13 @@
       }
     },
     "dev": {
-      "dependsOn": [
-        "^dev"
-      ],
+      "dependsOn": [],
       "executor": "@nx/webpack:webpack",
       "cache": true,
       "options": {
         "webpackConfig": "{workspaceRoot}/webpack.config.js",
-        "mode": "development"
+        "mode": "development",
+        "watch": true
       },
       "outputs": [
         "{projectRoot}/dist"
