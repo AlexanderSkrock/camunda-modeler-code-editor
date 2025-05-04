@@ -5,18 +5,16 @@
         },
         "dev": {
             "options": {
-                "main": "./lib/index.js",
-                "outputPath": "./dist",
-                "outputFileName": "lib.js",
-                "asModule": true
+                "main": "{projectRoot}/lib/index.js",
+                "outputPath": "{projectRoot}/dist",
+                "outputFileName": "lib.js"
             }
         },
         "build": {
             "options": {
-                "main": "./lib/index.js",
-                "outputPath": "./dist",
-                "outputFileName": "lib.js",
-                "asModule": true
+                "main": "{projectRoot}/lib/index.js",
+                "outputPath": "{projectRoot}/dist",
+                "outputFileName": "lib.js"
             }
         }
     },

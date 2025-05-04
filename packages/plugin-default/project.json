@@ -5,15 +5,15 @@
         },
         "dev": {
             "options": {
-                "main": "./client/index.js",
-                "outputPath": "./dist",
+                "main": "{projectRoot}/client/index.js",
+                "outputPath": "{projectRoot}/dist",
                 "outputFileName": "client.js"
             }
         },
         "build": {
             "options": {
-                "main": "./client/index.js",
-                "outputPath": "./dist",
+                "main": "{projectRoot}/client/index.js",
+                "outputPath": "{projectRoot}/dist",
                 "outputFileName": "client.js"
             }
         },

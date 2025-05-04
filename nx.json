@@ -12,12 +12,14 @@
     },
     "dev": {
       "dependsOn": [],
-      "executor": "@nx/webpack:webpack",
+      "executor": "@nx/esbuild:esbuild",
       "cache": true,
       "options": {
-        "webpackConfig": "{workspaceRoot}/webpack.config.js",
-        "mode": "development",
-        "watch": true
+        "esbuildConfig": "{workspaceRoot}/esbuild.config.js",
+        "tsConfig": "{workspaceRoot}/tsconfig.json",
+        "sourcemap": "inline",
+        "watch": true,
+        "deleteOutputPath": false
       },
       "outputs": [
         "{projectRoot}/dist"
@@ -27,11 +29,13 @@
       "dependsOn": [
         "^build"
       ],
-      "executor": "@nx/webpack:webpack",
+      "executor": "@nx/esbuild:esbuild",
       "cache": true,
       "options": {
-        "webpackConfig": "{workspaceRoot}/webpack.config.js",
-        "mode": "production"
+        "esbuildConfig": "{workspaceRoot}/esbuild.config.js",
+        "tsConfig": "{workspaceRoot}/tsconfig.json",
+        "sourcemap": "linked",
+        "minify": true
       },
       "outputs": [
         "{projectRoot}/dist"

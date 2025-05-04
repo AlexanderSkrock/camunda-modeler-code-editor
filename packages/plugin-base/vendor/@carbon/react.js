@@ -3,12 +3,7 @@
  * we can access the carbon components directly via the `camunda-modeler-plugin-helpers` dependency.
  */
 /* eslint-disable */
-import '@carbon/react/scss/components/button/_index.scss';
-import '@carbon/react/scss/components/modal/_index.scss';
-import '@carbon/react/scss/components/pagination-nav/_index.scss';
-import '@carbon/react/scss/components/search/_index.scss';
-import '@carbon/react/scss/components/structured-list/_index.scss';
-import '@carbon/react/scss/components/tabs/_index.scss';
+import '@carbon/styles/css/styles.min.css';
 
 export {
     Button,
