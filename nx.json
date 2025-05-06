@@ -18,8 +18,7 @@
         "esbuildConfig": "{workspaceRoot}/esbuild.config.js",
         "tsConfig": "{workspaceRoot}/tsconfig.json",
         "sourcemap": "inline",
-        "watch": true,
-        "deleteOutputPath": false
+        "watch": true 
       },
       "outputs": [
         "{projectRoot}/dist"
