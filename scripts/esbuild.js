@@ -8,26 +8,6 @@
 const esbuild = require('esbuild');
 const { resolve } = require('node:path');
 
-const rebuildLoggerPlugin = {
-  name: 'rebuild-logger',
-  setup(build) {
-    build.onStart(() => {
-      console.log('🔄 Rebuilding...');
-    });
-    build.onEnd(result => {
-      console.log('✅ Rebuild complete:', new Date().toLocaleTimeString());
-    });
-  }
-};
-
-function appendPlugin(config, pluginToAppend) {
-  if (config.plugins) {
-    config.plugins = [ ...config.plugins, pluginToAppend ];
-  } else {
-    config.plugins = [ pluginToAppend ];
-  }
-}
-
 function convertExecutorConfigToEsbuildConfig(executorConfig) {
   const { bundle, esbuildConfig, main, outputPath, outputFileName, tsConfig, watch, _, ...standardArgs } = executorConfig;
   const esbuildConfigPath = resolve(process.cwd(), esbuildConfig);
@@ -46,7 +26,6 @@ const args = require('minimist')(process.argv.slice(2));
 console.log('💻️ Arguments: ', args);
 
 const esbuildConfig = convertExecutorConfigToEsbuildConfig(args);
-appendPlugin(esbuildConfig, rebuildLoggerPlugin);
 console.log('⚙️ Config: ', esbuildConfig);
 
 (async () => {

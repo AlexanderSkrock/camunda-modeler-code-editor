@@ -92,8 +92,22 @@ const aliasPlugin = (aliasMap) => {
   };
 };
 
+const rebuildLoggerPlugin = () => ({
+  name: 'rebuild-logger',
+  setup(build) {
+    build.onStart(() => {
+      console.log('🔄 Rebuilding...');
+    });
+    build.onEnd(result => {
+      console.log('✅ Rebuild complete:', new Date().toLocaleTimeString());
+    });
+  }
+});
+
+
 module.exports = {
   plugins: [
+    rebuildLoggerPlugin(),
 
     // does the same as the Camunda Modeler Webpack Plugin
     // see https://github.com/camunda/camunda-modeler-webpack-plugin
