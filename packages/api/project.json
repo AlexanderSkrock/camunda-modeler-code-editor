@@ -1,4 +1,6 @@
 {
+    "projectType": "library",
+    "sourceRoot": "packages/api/lib",
     "targets": {
         "lint": {
             "lintFilePatterns": ["{projectRoot}/lib/**/*.js"]

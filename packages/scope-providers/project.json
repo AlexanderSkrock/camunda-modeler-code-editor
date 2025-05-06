@@ -1,4 +1,6 @@
 {
+    "projectType": "library",
+    "sourceRoot": "packages/scope-providers/lib",
     "targets": {
         "lint": {
             "lintFilePatterns": ["{projectRoot}/lib/**/*.js"]
