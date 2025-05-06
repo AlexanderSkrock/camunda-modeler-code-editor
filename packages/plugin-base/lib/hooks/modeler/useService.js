@@ -1,4 +1,4 @@
-import { useMemo } from 'camunda-modeler-plugin-helpers/react';
+import { useMemo } from 'react';
 
 function safeServiceGetter(modeler, serviceName) {
   if (!modeler || !serviceName) {

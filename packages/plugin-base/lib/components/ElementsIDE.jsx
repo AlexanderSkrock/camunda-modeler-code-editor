@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 

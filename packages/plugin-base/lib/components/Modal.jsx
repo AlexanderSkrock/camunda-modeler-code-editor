@@ -1,4 +1,4 @@
-import React from 'camunda-modeler-plugin-helpers/react';
+import React from 'react';
 import { Modal as ModelerModal } from 'camunda-modeler-plugin-helpers/components';
 
 import { ComposedModal, ModalBody, ModalFooter, ModalHeader } from '../../vendor/@carbon/react';

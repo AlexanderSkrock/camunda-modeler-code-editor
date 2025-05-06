@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
 
 import search from 'diagram-js/lib/features/search/search';
 import { isLabel } from 'diagram-js/lib/util/ModelUtil';

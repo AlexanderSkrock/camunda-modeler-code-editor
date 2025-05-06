@@ -1,4 +1,4 @@
-import React from 'camunda-modeler-plugin-helpers/react';
+import React from 'react';
 
 import { Theme as CarbonTheme } from '../../vendor/@carbon/react';
 
