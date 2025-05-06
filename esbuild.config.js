@@ -14,33 +14,79 @@ const aliasPlugin = (aliasMap) => {
   return {
     name: 'alias',
     setup(build) {
-      build.onResolve({ filter: /.*/ }, args => {
-        for (const [ aliasName, aliasReplacement ] of Object.entries(aliasMap)) {
-          const needsExactMatch = aliasName.endsWith('$');
-          const importToMatch = aliasName.endsWith('$') ? aliasName.substring(aliasName.length - 1) : aliasName;
+      build.onResolve({ filter: /.*/ }, async args => {
+        function toResolveParams(args) {
+          return {
+            kind: args.kind,
+            importer: args.importer,
+            namespace: args.namespace,
+            resolveDir: args.resolveDir,
+            pluginData: args.pluginData
+          };
+        };
 
-          if (args.path === importToMatch) {
-            console.log(`🔁 Alias matched: "${args.path}" → ${aliasReplacement}`);
-            return {
-              path: aliasReplacement,
-              namespace: 'file'
-            };
-          } else if (!needsExactMatch && args.path.startsWith(importToMatch + '/')) {
-            const subPath = args.path.substring(importToMatch.length + 1);
+        async function defaultResolve(adjustedImport, args) {
+          return build.resolve(adjustedImport, args);
+        }
 
-            const isFile = extname(aliasReplacement) !== '' || existsSync(aliasReplacement) && statSync(aliasReplacement).isFile();
-            const adjustedReplacement = isFile
-              ? join(dirname(aliasReplacement), subPath)
-              : join(aliasReplacement, subPath);
+        function findMatchingAlias(path) {
+          for (const [ aliasName, aliasReplacement ] of Object.entries(aliasMap)) {
+            const needsExactMatch = aliasName.endsWith('$');
+            const importToMatch = aliasName.endsWith('$') ? aliasName.substring(aliasName.length - 1) : aliasName;
 
-            console.log(`🔁 Subpath of alias matched: "${args.path}" → ${adjustedReplacement}`);
-            return {
-              path: require.resolve(adjustedReplacement),
-              namespace: 'file'
-            };
+            if (path === importToMatch) {
+              return {
+                exact: needsExactMatch,
+                alias: aliasName,
+                path: path,
+                replacement: aliasReplacement,
+              };
+            } else if (!needsExactMatch && path.startsWith(importToMatch + '/')) {
+              const subPath = path.substring(importToMatch.length + 1);
+
+              const isFile = extname(aliasReplacement) !== '' || existsSync(aliasReplacement) && statSync(aliasReplacement).isFile();
+              const adjustedReplacement = isFile
+                ? join(dirname(aliasReplacement), subPath)
+                : join(aliasReplacement, subPath);
+
+              return {
+                exact: needsExactMatch,
+                alias: aliasName,
+                path: path,
+                replacement: adjustedReplacement,
+              };
+            }
           }
         }
-        return undefined;
+
+        async function aliasResolve(path, args) {
+          const visited = new Set();
+          let currentPath = path;
+          while (true) {
+            if (visited.has(currentPath)) {
+              console.warn(`⚠️  Alias cycle detected for: ${currentPath}`);
+              break;
+            }
+            visited.add(currentPath);
+
+            const match = findMatchingAlias(currentPath);
+            if (!match) break;
+
+            currentPath = match.replacement;
+          }
+
+          if (currentPath !== path) {
+            return await defaultResolve(currentPath, args);
+          } else {
+            return undefined;
+          }
+        }
+
+        const result = await aliasResolve(args.path, toResolveParams(args));
+        if (result && result.path) {
+          console.log(`🔁 Alias matched: "${args.path}" → ${result.path}`);
+        }
+        return result;
       });
     }
   };

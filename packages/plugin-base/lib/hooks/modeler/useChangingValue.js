@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'camunda-modeler-plugin-helpers/react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 export default ({ initialValue, onChange, debounceTime = 500 }) => {

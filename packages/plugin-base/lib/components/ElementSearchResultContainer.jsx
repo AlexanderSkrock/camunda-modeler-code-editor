@@ -1,4 +1,4 @@
-import React from 'camunda-modeler-plugin-helpers/react';
+import React from 'react';
 
 import { StructuredListBody, StructuredListCell, StructuredListHead, StructuredListRow, StructuredListWrapper } from '../../vendor/@carbon/react';
 

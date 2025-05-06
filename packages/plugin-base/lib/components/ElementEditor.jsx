@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { getAccessor, getEditor, getScopeProviders } from '@camunda-modeler-code-editor/api';
 

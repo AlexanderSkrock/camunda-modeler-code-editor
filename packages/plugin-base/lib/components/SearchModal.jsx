@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ModalHeader, PaginationNav, Search } from '../../vendor/@carbon/react';
 import { useDebounce } from 'use-debounce';

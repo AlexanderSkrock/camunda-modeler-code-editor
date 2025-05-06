@@ -1,4 +1,4 @@
-import React, { useMemo } from 'camunda-modeler-plugin-helpers/react';
+import React, { useMemo } from 'react';
 
 import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
