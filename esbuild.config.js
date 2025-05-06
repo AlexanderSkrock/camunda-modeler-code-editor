@@ -2,6 +2,14 @@ const { existsSync, statSync } = require('node:fs');
 const { dirname, extname, join } = require('node:path');
 const { sassPlugin } = require('esbuild-sass-plugin');
 
+/**
+ * This plugins aims to do equivalent work as the resolve alias feature of Webpack.
+ * Exact matches can be defined using a trailing $. If this is not present, then we
+ * will also match subpaths, e. g. react will also match react/jsx-runtime.
+ * As the aliases are evaluated in order, always the first possible match will win.
+ * Actually, this is slightly different to Webpack, because there exact matches always
+ * had precendence.
+ */
 const aliasPlugin = (aliasMap) => {
   return {
     name: 'alias',
