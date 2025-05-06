@@ -59,34 +59,24 @@ const aliasPlugin = (aliasMap) => {
           }
         }
 
-        async function aliasResolve(path, args) {
-          const visited = new Set();
-          let currentPath = path;
-          while (true) {
-            if (visited.has(currentPath)) {
-              console.warn(`⚠️  Alias cycle detected for: ${currentPath}`);
-              break;
-            }
-            visited.add(currentPath);
+        async function aliasResolve(path, resolveParams) {
+          const match = findMatchingAlias(path);
+          if (!match) {
+            return undefined;
+          };
 
-            const match = findMatchingAlias(currentPath);
-            if (!match) break;
-
-            currentPath = match.replacement;
-          }
-
-          if (currentPath !== path) {
-            return await defaultResolve(currentPath, args);
-          } else {
+          if (path === match.replacement) {
             return undefined;
           }
+
+          return await defaultResolve(match.replacement, resolveParams);
         }
 
-        const result = await aliasResolve(args.path, toResolveParams(args));
-        if (result && result.path) {
-          console.log(`🔁 Alias matched: "${args.path}" → ${result.path}`);
+        const resolvedAlias = await aliasResolve(args.path, toResolveParams(args));
+        if (resolvedAlias && resolvedAlias.path) {
+          console.log(`🔁 Alias matched: "${args.path}" → ${resolvedAlias.path}`);
         }
-        return result;
+        return resolvedAlias;
       });
     }
   };
