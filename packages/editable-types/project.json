@@ -1,4 +1,6 @@
 {
+    "projectType": "library",
+    "sourceRoot": "packages/editable-types/lib",
     "targets": {
         "lint": {
             "lintFilePatterns": ["{projectRoot}/lib/**/*.js"]

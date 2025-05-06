@@ -1,34 +1,51 @@
 {
   "compilerOptions": {
-    // Base Options recommended for all projects
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2022",
+    "target": "es2020",
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    // Enable strict type checking so you can catch bugs early
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
-    // Transpile our TypeScript code to JavaScript
     "module": "NodeNext",
-    // Include the DOM types
     "lib": [
-      "es2022",
+      "es2020",
       "dom",
       "dom.iterable"
-    ]
+    ],
+    "paths": {
+      "@camunda-modeler-code-editor/accessors": [
+        "./packages/accessors/lib/index.js"
+      ],
+      "@camunda-modeler-code-editor/scope-providers": [
+        "./packages/scope-providers/lib/index.js"
+      ],
+      "@camunda-modeler-code-editor/editable-types": [
+        "./packages/editable-types/lib/index.js"
+      ],
+      "@camunda-modeler-code-editor/plugin-base": [
+        "./packages/plugin-base/lib/index.js"
+      ],
+      "@camunda-modeler-code-editor/editors": [
+        "./packages/editors/lib/index.js"
+      ],
+      "@camunda-modeler-code-editor/config": [
+        "./packages/config/lib/index.js"
+      ],
+      "@camunda-modeler-code-editor/api": [
+        "./packages/api/lib/index.js"
+      ]
+    }
   },
-  // Include the necessary files for your project
   "include": [
-    // We will slowly migrate to TypeScript
-    "**/*.js",
-    "**/*.jsx",
-    "**/*.ts",
-    "**/*.tsx"
+    "packages/**/*.js",
+    "packages/**/*.jsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx"
   ],
   "exclude": [
     "**/dist",
