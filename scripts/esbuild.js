@@ -20,32 +20,39 @@ const rebuildLoggerPlugin = {
   }
 };
 
+function appendPlugin(config, pluginToAppend) {
+  if (config.plugins) {
+    config.plugins = [ ...config.plugins, pluginToAppend ];
+  } else {
+    config.plugins = [ pluginToAppend ];
+  }
+}
+
+function convertExecutorConfigToEsbuildConfig(executorConfig) {
+  const { bundle, esbuildConfig, main, outputPath, outputFileName, tsConfig, watch, _, ...standardArgs } = executorConfig;
+  const esbuildConfigPath = resolve(process.cwd(), esbuildConfig);
+
+  return {
+    ...require(esbuildConfigPath),
+    bundle: !!bundle,
+    entryPoints: [ resolve(main) ],
+    outfile: resolve(outputPath, outputFileName),
+    tsconfig: tsConfig,
+    ...standardArgs,
+  };
+}
+
 const args = require('minimist')(process.argv.slice(2));
 console.log('💻️ Arguments: ', args);
 
-const { bundle, esbuildConfig, main, outputPath, outputFileName, tsConfig, watch, _, ...standardArgs } = args;
-const esbuildConfigPath = resolve(process.cwd(), esbuildConfig);
-
-const esBuildConfigFromArgs = {
-  ...require(esbuildConfigPath),
-  bundle: !!bundle,
-  entryPoints: [ resolve(main) ],
-  outfile: resolve(outputPath, outputFileName),
-  tsconfig: tsConfig,
-  ...standardArgs,
-};
-
-const finalConfig = {
-  ...esBuildConfigFromArgs,
-  plugins: esBuildConfigFromArgs.plugins ? [ ...esBuildConfigFromArgs.plugins, rebuildLoggerPlugin ] : [ rebuildLoggerPlugin ],
-  ...standardArgs,
-};
-console.log('⚙️ Config: ', finalConfig);
+const esbuildConfig = convertExecutorConfigToEsbuildConfig(args);
+appendPlugin(esbuildConfig, rebuildLoggerPlugin);
+console.log('⚙️ Config: ', esbuildConfig);
 
 (async () => {
-  const ctx = await esbuild.context(finalConfig);
+  const ctx = await esbuild.context(esbuildConfig);
 
-  if (watch) {
+  if (args.watch) {
     await ctx.watch();
     console.log('👀 Watching for changes...');
     await new Promise(() => {});
