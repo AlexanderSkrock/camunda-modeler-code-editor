@@ -14,6 +14,8 @@ const aliasPlugin = (aliasMap) => {
   return {
     name: 'alias',
     setup(build) {
+      const asyncCache = new Map();
+
       build.onResolve({ filter: /.*/ }, async args => {
         function toResolveParams(args) {
           return {
@@ -69,14 +71,25 @@ const aliasPlugin = (aliasMap) => {
             return undefined;
           }
 
-          return await defaultResolve(match.replacement, resolveParams);
+          return defaultResolve(match.replacement, resolveParams);
         }
 
-        const resolvedAlias = await aliasResolve(args.path, toResolveParams(args));
-        if (resolvedAlias && resolvedAlias.path) {
-          console.log(`🔁 Alias matched: "${args.path}" → ${resolvedAlias.path}`);
+        const pathToLookup = args.path;
+
+        if (asyncCache.has(pathToLookup)) {
+          return asyncCache.get(pathToLookup);
+        } else {
+          const resolvedAlias = aliasResolve(pathToLookup, toResolveParams(args));
+          asyncCache.set(pathToLookup, resolvedAlias);
+
+          resolvedAlias.then(result => {
+            if (result && result.path) {
+              console.log(`🔁 Alias matched: "${pathToLookup}" → ${result.path}`);
+            }
+          });
+
+          return resolvedAlias;
         }
-        return resolvedAlias;
       });
     }
   };
