@@ -14,6 +14,7 @@ updates:
       # After the Camunda Modeler issue 4511 is resolved, these dependencies can be removed entirely from this package.
       # See: https://github.com/camunda/camunda-modeler/issues/4511
       - dependency-name: "react"
+      - dependency-name: "react-dom"
       - dependency-name: "react-is"
       - dependency-name: "@carbon/react"
       - dependency-name: "@carbon/icons-react"
