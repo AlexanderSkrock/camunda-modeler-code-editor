@@ -2,6 +2,13 @@
   "name": "@camunda-modeler-code-editor/plugin-base",
   "version": "1.0.1",
   "main": "./dist/lib.js",
+  "exports": {
+    ".": {
+      "import": "./dist/lib.js",
+      "require": "./dist/lib.js"
+    },
+    "./style": "./dist/lib.css"
+  },
   "scripts": {},
   "repository": {
     "type": "git",

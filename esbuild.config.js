@@ -1,4 +1,5 @@
 const { existsSync, statSync } = require('node:fs');
+const { readFile } = require('node:fs/promises');
 const { dirname, extname, join } = require('node:path');
 const { sassPlugin } = require('esbuild-sass-plugin');
 
@@ -107,7 +108,6 @@ const rebuildLoggerPlugin = () => ({
   }
 });
 
-
 module.exports = {
   plugins: [
     rebuildLoggerPlugin(),
@@ -128,7 +128,7 @@ module.exports = {
     }),
     sassPlugin({
       filter: /\.scss$/,
-      type: 'style',
+      type: 'css',
     }),
   ],
   loader: {
