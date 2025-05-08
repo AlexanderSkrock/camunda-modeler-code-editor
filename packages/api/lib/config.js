@@ -1,3 +1,5 @@
+const GLOBAL_CONFIG_NAME = 'code-editor';
+
 const DEFAULT_CONFIG = {
   defaultEditor: null,
   editors: {},
@@ -6,9 +8,13 @@ const DEFAULT_CONFIG = {
   scopeProviders: {},
 };
 
+export function resetConfig() {
+  globalThis[GLOBAL_CONFIG_NAME] = { ... DEFAULT_CONFIG };
+}
+
 export function ensureConfig() {
-  if (!globalThis['code-editor']) {
-    globalThis['code-editor'] = DEFAULT_CONFIG;
+  if (!globalThis[GLOBAL_CONFIG_NAME]) {
+    globalThis[GLOBAL_CONFIG_NAME] = { ...DEFAULT_CONFIG };
   }
-  return globalThis['code-editor'];
+  return globalThis[GLOBAL_CONFIG_NAME];
 }
