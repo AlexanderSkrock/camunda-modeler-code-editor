@@ -41,6 +41,9 @@
       ]
     },
     "test": {
+      "dependsOn": [
+        "build"
+      ],
       "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "{workspaceRoot}/jest.config.js",
