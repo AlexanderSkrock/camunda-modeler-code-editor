@@ -18,7 +18,7 @@
         "esbuildConfig": "{workspaceRoot}/esbuild.config.js",
         "tsConfig": "{workspaceRoot}/tsconfig.json",
         "sourcemap": "inline",
-        "watch": true 
+        "watch": true
       },
       "outputs": [
         "{projectRoot}/dist"
@@ -40,18 +40,25 @@
         "{projectRoot}/dist"
       ]
     },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "{workspaceRoot}/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
     "pack-plugin": {
       "dependsOn": [
         "build"
       ],
       "executor": "nx:run-commands",
       "options": {
-          "cwd": "{workspaceRoot}",
-          "command": "node ./scripts/pack-plugin.js",
-          "args": [
-            "--source {projectRoot}",
-            "--destination {projectRoot}/packs"
-          ]
+        "cwd": "{workspaceRoot}",
+        "command": "node ./scripts/pack-plugin.js",
+        "args": [
+          "--source {projectRoot}",
+          "--destination {projectRoot}/packs"
+        ]
       },
       "outputs": [
         "{projectRoot}/packs"
@@ -72,5 +79,5 @@
     }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "nxCloudId": "67feef2e449353331a1c6d60"
+  "nxCloudId": "67feef2e449353331a1c6d60",
 }
