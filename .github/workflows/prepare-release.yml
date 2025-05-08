@@ -14,7 +14,27 @@ on:
         required: true
 
 jobs:
+  verify-tests:
+    runs-on: ubuntu-latest
+
+    env:
+      NX_NO_CLOUD: ${{ vars.NX_NO_CLOUD }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+      - run: npx nx run-many -t test
+
   create-plugin-artifacts:
+    needs:
+      - verify-tests
+
     permissions:
       contents: write
 
