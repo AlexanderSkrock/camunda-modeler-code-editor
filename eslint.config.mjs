@@ -19,4 +19,8 @@ export default defineConfig([ globalIgnores([ 'node_modules/*', 'dist/*' ]), {
       message: '@carbon should be consumed via vendor/@carbon/icons-react until it is provided by the camunda-modeler-plugin-helpers',
     } ],
   },
+
+  env: {
+    jest: true,
+  },
 } ]);
