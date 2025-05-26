@@ -22,7 +22,7 @@
   "author": "Alexander Skrock",
   "license": "MIT",
   "devDependencies": {
-    "@npmcli/arborist": "^9.0.2",
+    "@npmcli/arborist": "^9.1.1",
     "@nx/devkit": "^21.0.0",
     "@nx/esbuild": "^21.0.1",
     "@nx/eslint": "21.0.1",
