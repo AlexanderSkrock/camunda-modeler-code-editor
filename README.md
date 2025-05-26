@@ -47,7 +47,7 @@ Given you've setup and linked your plugin [as explained above](#development-setu
 
 To extend or modify the functionality and ui, feel free to implement another plugin next to this one!
 
-This package provides a js api to enhance the development process of extensions. Simply add this package as a dependency via your package manager to consume the api.
+This package provides a js api to enhance the development process of extensions. Simply add `@camunda-modeler-code-editor/api` as a dependency via your package manager to consume the api.
 
 ```js
 import CodeEditorApi from '@camunda-modeler-code-editor/api';
@@ -128,7 +128,7 @@ registerScopeProvider('scope-variables', ScopeVariablesProvider);
 
 ### Bundle your own distribution
 
-Instead of using the afore described extension points to add functionality you can also use the `@camunda-modeler-code-editor/plugin-base` and optionally `@camunda-modeler-code-editor/config` to create your own plugin artifact tailored to your needs. Currently the ui code from `@camunda-modeler-code-editor/plugin-base` is barely customizable but this might change in the future.
+Instead of using the afore described extension points to add functionality you can also use the `@camunda-modeler-code-editor/plugin-base` and optionally `@camunda-modeler-code-editor/config` to create your own plugin artifact tailored to your needs. Currently the ui code from `@camunda-modeler-code-editor/plugin-base` is barely customizable but this might change in the future. Please note that you'll need to include its styles either via its dedicated `@camunda-modeler-code-editor/plugin-base/style` import or referencing `@camunda-modeler-code-editor/plugin-base/dist/client.css` as style entry for your plugin.
 
 ## Licence
 
