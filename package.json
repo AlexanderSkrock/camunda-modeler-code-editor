@@ -23,7 +23,7 @@
   "license": "MIT",
   "devDependencies": {
     "@npmcli/arborist": "^9.0.2",
-    "@nx/devkit": "^21.0.0",
+    "@nx/devkit": "^21.1.2",
     "@nx/esbuild": "^21.0.1",
     "@nx/eslint": "21.0.1",
     "archiver": "^7.0.1",
