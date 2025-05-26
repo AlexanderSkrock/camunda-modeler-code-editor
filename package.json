@@ -34,7 +34,7 @@
     "eslint-plugin-bpmn-io": "^2.2.0",
     "minimist": "^1.2.8",
     "npm-packlist": "^10.0.0",
-    "nx": "^21.0.1"
+    "nx": "^21.1.2"
   },
   "overrides": {
     "esbuild": "^0.20.2"
