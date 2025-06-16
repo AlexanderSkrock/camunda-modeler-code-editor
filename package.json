@@ -30,7 +30,7 @@
     "esbuild": "^0.20.2",
     "esbuild-plugin-alias": "^0.2.1",
     "esbuild-sass-plugin": "^3.3.1",
-    "eslint": "^9.26.0",
+    "eslint": "^9.29.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
     "minimist": "^1.2.8",
     "npm-packlist": "^10.0.0",
