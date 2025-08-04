@@ -20,7 +20,7 @@
     "dist"
   ],
   "dependencies": {
-    "ace-builds": "^1.41.0",
+    "ace-builds": "^1.43.2",
     "camunda-modeler-plugin-helpers": "^5.1.0",
     "react-ace": "^14.0.1"
   }
