@@ -27,15 +27,10 @@
     "dist"
   ],
   "dependencies": {
-    "@carbon/icons-react": "^11.57.0",
-    "@carbon/react": "^1.78.2",
     "bpmn-js": "^18.6.2",
     "camunda-modeler-plugin-helpers": "^6.0.0",
     "diagram-js": "^15.2.4",
     "min-dom": "^5.1.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-is": "^18.3.1",
     "use-debounce": "^10.0.5"
   }
 }

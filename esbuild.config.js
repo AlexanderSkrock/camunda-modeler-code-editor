@@ -1,5 +1,4 @@
 const { existsSync, statSync } = require('node:fs');
-const { readFile } = require('node:fs/promises');
 const { dirname, extname, join } = require('node:path');
 const { sassPlugin } = require('esbuild-sass-plugin');
 
@@ -118,9 +117,10 @@ module.exports = {
       '@bpmn-io/properties-panel': require.resolve('camunda-modeler-plugin-helpers/vendor/@bpmn-io/properties-panel'),
       'bpmn-js-properties-panel': require.resolve('camunda-modeler-plugin-helpers/vendor/bpmn-js-properties-panel'),
 
-      // currently the helpers module only provides react and not sub paths like react/jsx-runtime
-      'react/jsx-runtime': require.resolve('react/jsx-runtime'),
-      'react': require.resolve('camunda-modeler-plugin-helpers/react')
+      'react': require.resolve('camunda-modeler-plugin-helpers/vendor/react'),
+
+      '@carbon/react': require.resolve('camunda-modeler-plugin-helpers/vendor/@carbon/react'),
+      '@carbon/icons-react': require.resolve('camunda-modeler-plugin-helpers/vendor/@carbon/icons-react'),
     }),
     sassPlugin({
       filter: /\.module\.scss$/,
