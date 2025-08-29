@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StructuredListBody, StructuredListCell, StructuredListHead, StructuredListRow, StructuredListWrapper } from '../../vendor/@carbon/react';
+import { StructuredListBody, StructuredListCell, StructuredListHead, StructuredListRow, StructuredListWrapper } from '@carbon/react';
 
 const ElementSearchResultItemContainer = ({ children }) => (
   <StructuredListWrapper>

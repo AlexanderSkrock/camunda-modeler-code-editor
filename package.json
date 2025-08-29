@@ -35,9 +35,5 @@
     "minimist": "^1.2.8",
     "npm-packlist": "^10.0.1",
     "nx": "^21.1.2"
-  },
-  "overrides": {
-    "esbuild": "^0.20.2"
-  },
-  "//": "Esbuild override is necessary because @nx/esbuild has an old peer dependency: https://github.com/nrwl/nx/issues/29358"
+  }
 }

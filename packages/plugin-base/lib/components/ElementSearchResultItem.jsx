@@ -4,8 +4,8 @@ import { getLabel } from 'bpmn-js/lib/util/LabelUtil';
 
 import { getAccessor, getEditableType } from '@camunda-modeler-code-editor/api';
 
-import { Button, StructuredListCell, StructuredListRow } from '../../vendor/@carbon/react';
-import { Add } from '../../vendor/@carbon/icons-react';
+import { Button, StructuredListCell, StructuredListRow } from '@carbon/react';
+import { Add } from '@carbon/icons-react';
 
 const ElementSearchResultItem = ({ item: { element, moddleElement, type }, onSelect, disabled }) => {
   const label = useMemo(() => getLabel(element) || element.id, [ element ]);

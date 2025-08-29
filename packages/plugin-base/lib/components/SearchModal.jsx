@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ModalHeader, PaginationNav, Search } from '../../vendor/@carbon/react';
+import { ModalHeader, PaginationNav, Search } from '@carbon/react';
 import { useDebounce } from 'use-debounce';
 
 import { Modal, ModalBody } from '.';
