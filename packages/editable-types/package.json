@@ -1,6 +1,6 @@
 {
   "name": "@camunda-modeler-code-editor/editable-types",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "main": "./dist/lib.js",
   "scripts": {},
   "repository": {
@@ -22,7 +22,7 @@
   "dependencies": {
     "@bpmn-io/extract-process-variables": "^1.0.1",
     "@bpmn-io/properties-panel": "^3.31.0",
-    "@camunda-modeler-code-editor/api": "^1.0.1",
+    "@camunda-modeler-code-editor/api": "^2.0.0",
     "bpmn-js-properties-panel": "^5.42.0",
     "bpmn-js": "^18.6.2",
     "camunda-modeler-plugin-helpers": "^6.0.0"
