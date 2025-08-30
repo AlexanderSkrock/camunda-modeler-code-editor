@@ -1,6 +1,6 @@
 # Camunda Modeler Code Editor
 
-[![Compatible with Camunda Modeler version 5](https://img.shields.io/badge/Modeler_Version-5.0.0+-blue.svg)](#) [![Plugin Type](https://img.shields.io/badge/Plugin_Type-BPMN-orange.svg)](#)
+[![Compatible with Camunda Modeler version 5](https://img.shields.io/badge/Modeler_Version-5.38.0+-blue.svg)](#) [![Plugin Type](https://img.shields.io/badge/Plugin_Type-BPMN-orange.svg)](#)
 
 This plugin aims to simplify the development of scripts or alike without the need for external tools.
 
