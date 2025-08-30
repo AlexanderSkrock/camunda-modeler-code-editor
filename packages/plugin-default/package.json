@@ -1,6 +1,6 @@
 {
   "name": "@camunda-modeler-code-editor/plugin-default",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "main": "index.js",
   "scripts": {},
   "repository": {
@@ -21,8 +21,8 @@
     "dist"
   ],
   "dependencies": {
-    "@camunda-modeler-code-editor/plugin-base": "^1.0.1",
-    "@camunda-modeler-code-editor/config": "^1.0.1",
+    "@camunda-modeler-code-editor/plugin-base": "^2.0.0",
+    "@camunda-modeler-code-editor/config": "^2.0.0",
     "camunda-modeler-plugin-helpers": "^6.0.0"
   }
 }

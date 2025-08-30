@@ -1,6 +1,6 @@
 {
   "name": "@camunda-modeler-code-editor/config",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "main": "./dist/lib.js",
   "scripts": {},
   "repository": {
@@ -21,10 +21,10 @@
     "dist"
   ],
   "dependencies": {
-    "@camunda-modeler-code-editor/api": "^1.0.1",
-    "@camunda-modeler-code-editor/accessors": "^1.0.1",
-    "@camunda-modeler-code-editor/editable-types": "^1.0.1",
-    "@camunda-modeler-code-editor/editors": "^1.0.1",
-    "@camunda-modeler-code-editor/scope-providers": "^1.0.1"
+    "@camunda-modeler-code-editor/api": "^2.0.0",
+    "@camunda-modeler-code-editor/accessors": "^2.0.0",
+    "@camunda-modeler-code-editor/editable-types": "^2.0.0",
+    "@camunda-modeler-code-editor/editors": "^2.0.0",
+    "@camunda-modeler-code-editor/scope-providers": "^2.0.0"
   }
 }
