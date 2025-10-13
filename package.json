@@ -35,6 +35,6 @@
     "minimist": "^1.2.8",
     "npm-packlist": "^10.0.2",
     "nx": "^21.5.3",
-    "sass-embedded": "^1.91.0"
+    "sass-embedded": "^1.93.2"
   }
 }
