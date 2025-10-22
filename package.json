@@ -4,7 +4,8 @@
   "private": true,
   "description": "",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "scripts": {
     "dev": "npx nx run plugin-default:dev",
