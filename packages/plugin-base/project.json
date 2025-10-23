@@ -3,7 +3,7 @@
     "sourceRoot": "packages/plugin-base/lib",
     "targets": {
         "lint": {
-            "lintFilePatterns": ["{projectRoot}/lib/**/*.js"]
+            "lintFilePatterns": ["{projectRoot}/lib/**/*.js", "{projectRoot}/lib/**/*.jsx"]
         },
         "dev": {
             "options": {

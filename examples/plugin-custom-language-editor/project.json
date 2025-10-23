@@ -2,7 +2,7 @@
     "projectType": "application",
     "targets": {
         "lint": {
-            "lintFilePatterns": ["{projectRoot}/client/**/*.js"]
+            "lintFilePatterns": ["{projectRoot}/lib/**/*.js", "{projectRoot}/lib/**/*.jsx"]
         },
         "dev": {
             "executor": "nx:run-commands",
@@ -42,6 +42,10 @@
             }
         },
         "pack-plugin": {
+        },
+        "provision": {
+        },
+        "start": {
         }
     },
     "$schema": "./node_modules/nx/schemas/project-schema.json"
