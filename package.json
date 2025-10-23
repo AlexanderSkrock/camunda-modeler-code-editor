@@ -8,12 +8,13 @@
     "examples/*"
   ],
   "scripts": {
+    "provision": "npx nx run plugin-default:provision",
+    "start": "npx nx run plugin-default:start",
     "dev": "npx nx run plugin-default:dev",
+
     "build": "npx nx run-many -t build",
     "lint": "npx nx run-many -t lint",
     "test": "npx nx run-many -t test",
-    "provision": "npx camunda-modeler-provisioner install --overwrite",
-    "start": "npx camunda-modeler-provisioner launch",
     "update-tsconfig": "node ./scripts/update-typescript-config.js --file tsconfig.json"
   },
   "repository": {
