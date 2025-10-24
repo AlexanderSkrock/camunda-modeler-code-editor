@@ -1,9 +1,9 @@
 {
-  "name": "@camunda-modeler-code-editor/plugin-custom-language-editor",
+  "name": "@camunda-modeler-code-editor/plugin-custom-default-editor-distribution",
   "version": "2.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nx run plugin-custom-language-editor:dev",
+    "dev": "npx nx run plugin-custom-default-editor-distribution:dev",
     "provision": "npx camunda-modeler-provisioner install --overwrite",
     "start": "npx camunda-modeler-provisioner launch"
   },
