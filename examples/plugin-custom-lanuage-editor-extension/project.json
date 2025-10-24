@@ -1,0 +1,52 @@
+{
+    "projectType": "application",
+    "targets": {
+        "lint": {
+            "lintFilePatterns": ["{projectRoot}/lib/**/*.js", "{projectRoot}/lib/**/*.jsx"]
+        },
+        "dev": {
+            "executor": "nx:run-commands",
+            "options": {
+                "cwd": "{workspaceRoot}",
+                "command": "node ./scripts/esbuild.js",
+                "args": [
+                  "--main {projectRoot}/client/index.js",
+                  "--outputPath {projectRoot}/dist",
+                  "--outputFileName client.js",
+                  "--esbuildConfig ./esbuild.config.js",
+                  "--tsConfig ./tsconfig.json",
+                  "--sourcemap inline",
+                  "--watch true",
+                  "--platform browser",
+                  "--format iife",
+                  "--bundle true"
+                ]
+            }
+        },
+        "build": {
+            "executor": "nx:run-commands",
+            "options": {
+                "cwd": "{workspaceRoot}",
+                "command": "node ./scripts/esbuild.js",
+                "args": [
+                  "--main {projectRoot}/client/index.js",
+                  "--outputPath {projectRoot}/dist",
+                  "--outputFileName client.js",
+                  "--esbuildConfig ./esbuild.config.js",
+                  "--tsConfig ./tsconfig.json",
+                  "--sourcemap linked",
+                  "--platform browser",
+                  "--format iife",
+                  "--bundle true"
+                ]
+            }
+        },
+        "pack-plugin": {
+        },
+        "provision": {
+        },
+        "start": {
+        }
+    },
+    "$schema": "./node_modules/nx/schemas/project-schema.json"
+}
