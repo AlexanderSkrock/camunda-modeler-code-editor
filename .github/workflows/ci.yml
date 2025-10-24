@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm ci
+      - run: npm ci --verbose
       - run: npx nx run-many -t lint
 
   verify-tests:
