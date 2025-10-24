@@ -32,8 +32,6 @@
   },
   "dependencies": {
     "@camunda-modeler-code-editor/api": "^2.0.0",
-    "@camunda-modeler-code-editor/config": "^2.0.0",
-    "@camunda-modeler-code-editor/plugin-base": "^2.0.0",    
     "camunda-modeler-plugin-helpers": "^6.0.0",
     "react-ace": "^11.0.1",
     "ace-builds": "^1.32.8"
