@@ -20,6 +20,10 @@
     "index.js",
     "dist"
   ],
+  "peerDependencies": {
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  },
   "dependencies": {
     "@camunda-modeler-code-editor/plugin-base": "^2.0.0",
     "@camunda-modeler-code-editor/config": "^2.0.0",

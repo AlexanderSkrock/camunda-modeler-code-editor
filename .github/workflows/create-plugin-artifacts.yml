@@ -54,8 +54,7 @@ jobs:
       - run: npm ci
 
       - id: collect-plugins
-        run: echo "plugins=$(npx nx show projects --with-target pack-plugin --json)" >> $GITHUB_OUTPUT
-
+        run: echo "plugins=$(npx nx show projects --with-target pack-plugin --exclude examples/* --json)" >> $GITHUB_OUTPUT
 
   create-plugin-artifacts:
     needs:

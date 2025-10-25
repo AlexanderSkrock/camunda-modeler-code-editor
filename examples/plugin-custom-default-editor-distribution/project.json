@@ -2,7 +2,7 @@
     "projectType": "application",
     "targets": {
         "lint": {
-            "lintFilePatterns": ["{projectRoot}/client/**/*.js"]
+            "lintFilePatterns": ["{projectRoot}/lib/**/*.js", "{projectRoot}/lib/**/*.jsx"]
         },
         "dev": {
             "executor": "nx:run-commands",

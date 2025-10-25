@@ -1,0 +1,41 @@
+{
+  "name": "@camunda-modeler-code-editor/plugin-custom-language-editor-distribution",
+  "version": "2.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nx run plugin-custom-language--distribution:dev",
+    "provision": "npx camunda-modeler-provisioner install --overwrite",
+    "start": "npx camunda-modeler-provisioner launch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AlexanderSkrock/camunda-modeler-code-editor"
+  },
+  "keywords": [
+    "camunda",
+    "modeler",
+    "plugin",
+    "code",
+    "example",
+    "js"
+  ],
+  "author": "Alexander Skrock",
+  "license": "MIT",
+  "description": "",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  },
+  "dependencies": {
+    "@camunda-modeler-code-editor/api": "^2.0.0",
+    "@camunda-modeler-code-editor/config": "^2.0.0",
+    "@camunda-modeler-code-editor/plugin-base": "^2.0.0",    
+    "camunda-modeler-plugin-helpers": "^6.0.0",
+    "react-ace": "^11.0.1",
+    "ace-builds": "^1.32.8"
+  }
+}

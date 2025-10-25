@@ -45,7 +45,11 @@
     "packages/**/*.js",
     "packages/**/*.jsx",
     "packages/**/*.ts",
-    "packages/**/*.tsx"
+    "packages/**/*.tsx",
+    "examples/**/*.js",
+    "examples/**/*.jsx",
+    "examples/**/*.ts",
+    "examples/**/*.tsx"
   ],
   "exclude": [
     "**/dist",

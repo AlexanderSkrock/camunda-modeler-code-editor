@@ -56,6 +56,22 @@
       "outputs": [
         "{projectRoot}/packs"
       ]
+    },
+    "provision": {
+      "executor": "nx:run-commands",
+      "options": {
+          "cwd": "{projectRoot}",
+          "command": "npx camunda-modeler-provisioner install --overwrite"
+      },
+      "outputs": []
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+          "cwd": "{projectRoot}",
+          "command": "npx camunda-modeler-provisioner launch"
+      },
+      "outputs": []
     }
   },
   "release": {
