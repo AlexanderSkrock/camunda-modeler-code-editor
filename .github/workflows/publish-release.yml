@@ -23,7 +23,7 @@ jobs:
           ref: ${{ github.ref }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - run: npm ci
       - run: npx nx run-many -t pack-plugin --exclude="examples/*" --args="--source {projectRoot} --destination packs"
@@ -51,7 +51,7 @@ jobs:
 #          ref: ${{ github.ref }}
 #      - uses: actions/setup-node@v4
 #        with:
-#          node-version: 20
+#          node-version: 22
 #          registry-url: https://npm.pkg.github.com/
 #          scope: "@camunda-modeler-code-editor"
 #
@@ -78,7 +78,7 @@ jobs:
           ref: ${{ github.ref }}
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           registry-url: https://registry.npmjs.org/
           scope: "@camunda-modeler-code-editor"
 
