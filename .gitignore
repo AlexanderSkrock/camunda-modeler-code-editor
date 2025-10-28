@@ -3,8 +3,7 @@
 
 .camunda-modeler
 
-/node_modules
-/packages/*/node_modules
+node_modules
 
 dist
 packs
