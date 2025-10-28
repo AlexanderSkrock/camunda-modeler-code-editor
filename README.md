@@ -53,6 +53,8 @@ This package provides a js api to enhance the development process of extensions.
 import CodeEditorApi from '@camunda-modeler-code-editor/api';
 ```
 
+Please find working examples on this inside the [examples](./examples/) directory.
+
 > [!IMPORTANT]
 > This library dependency does not include runtime code. Thus, you'll need to have this plugin next to your custom implementation. For another option have a look on [Bundle your own distribution](#bundle-your-own-distribution).
 
@@ -129,6 +131,8 @@ registerScopeProvider('scope-variables', ScopeVariablesProvider);
 ### Bundle your own distribution
 
 Instead of using the afore described extension points to add functionality you can also use the `@camunda-modeler-code-editor/plugin-base` and optionally `@camunda-modeler-code-editor/config` to create your own plugin artifact tailored to your needs. Currently the ui code from `@camunda-modeler-code-editor/plugin-base` is barely customizable but this might change in the future. Please note that you'll need to include its styles either via its dedicated `@camunda-modeler-code-editor/plugin-base/style` import or referencing `@camunda-modeler-code-editor/plugin-base/dist/client.css` as style entry for your plugin.
+
+Please find working examples on this inside the [examples](./examples/) directory.
 
 ## Licence
 
