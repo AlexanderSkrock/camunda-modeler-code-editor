@@ -26,7 +26,7 @@
   "devDependencies": {
     "@npmcli/arborist": "^9.1.4",
     "@nx/devkit": "^21.6.3",
-    "@nx/esbuild": "^21.6.3",
+    "@nx/esbuild": "^22.0.2",
     "@nx/eslint": "21.6.3",
     "archiver": "^7.0.1",
     "esbuild": "^0.25.10",
