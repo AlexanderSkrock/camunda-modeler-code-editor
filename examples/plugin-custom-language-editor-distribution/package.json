@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nx run plugin-custom-language--distribution:dev",
+    "dev": "npx nx run plugin-custom-language-distribution:dev",
     "provision": "npx camunda-modeler-provisioner install --overwrite",
     "start": "npx camunda-modeler-provisioner launch"
   },

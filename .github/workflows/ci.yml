@@ -38,5 +38,4 @@ jobs:
           node-version: 22
 
       - run: npm ci
-      # later we should run our test suite here
-      - run: npx nx run-many -t build
+      - run: npx nx run-many -t test

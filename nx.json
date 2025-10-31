@@ -40,6 +40,16 @@
         "{projectRoot}/dist"
       ]
     },
+    "test": {
+      "dependsOn": [
+        "build"
+      ],
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "{workspaceRoot}/jest.config.js",
+        "passWithNoTests": true
+    }
+    },
     "pack-plugin": {
       "dependsOn": [
         "build"
