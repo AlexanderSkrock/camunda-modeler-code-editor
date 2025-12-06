@@ -10,4 +10,8 @@ export default defineConfig([ globalIgnores([ 'node_modules/*', 'dist/*' ]), {
     'bpmn-io': bpmnIoPlugin,
     'jest': jestPlugin,
   },
+
+  languageOptions: {
+    globals: jestPlugin.environments.globals.globals,
+  },
 } ]);
