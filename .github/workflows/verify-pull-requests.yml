@@ -22,7 +22,6 @@ jobs:
         with:
           node-version: 22
 
-      - run: npm cache clean --force
       - run: npm ci
       - run: npx nx run-many -t lint
 
