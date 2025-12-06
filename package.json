@@ -11,10 +11,6 @@
     "provision": "npx nx run plugin-default:provision",
     "start": "npx nx run plugin-default:start",
     "dev": "npx nx run plugin-default:dev",
-
-    "build": "npx nx run-many -t build",
-    "lint": "npx nx run-many -t lint",
-    "test": "npx nx run-many -t test",
     "update-tsconfig": "node ./scripts/update-typescript-config.js --file tsconfig.json"
   },
   "repository": {
@@ -28,12 +24,16 @@
     "@nx/devkit": "^21.6.3",
     "@nx/esbuild": "^22.0.2",
     "@nx/eslint": "21.6.3",
+    "@nx/jest": "^22.0.2",
     "archiver": "^7.0.1",
     "esbuild": "^0.25.10",
+    "esbuild-jest": "^0.5.0",
     "esbuild-plugin-alias": "^0.2.1",
     "esbuild-sass-plugin": "^3.3.1",
     "eslint": "^9.38.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
+    "eslint-plugin-jest": "^29.0.1",
+    "jest": "^30.2.0",
     "minimist": "^1.2.8",
     "npm-packlist": "^10.0.2",
     "nx": "^21.6.5",

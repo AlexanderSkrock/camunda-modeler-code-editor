@@ -18,6 +18,8 @@
                 "outputPath": "{projectRoot}/dist",
                 "outputFileName": "lib.js"
             }
+        },
+        "test": {
         }
     },
     "$schema": "./node_modules/nx/schemas/project-schema.json"
